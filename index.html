@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Fluxos - PPGE</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f0f2f5; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #1a3a5a; border-bottom: 2px solid #1a3a5a; padding-bottom: 10px; }
+        .fluxo-card { display: flex; align-items: center; justify-content: space-between; padding: 15px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; transition: 0.3s; }
+        .fluxo-card:hover { background-color: #f9f9f9; transform: translateX(5px); border-color: #1a3a5a; }
+        .fluxo-info h3 { margin: 0; color: #333; }
+        .fluxo-info p { margin: 5px 0 0; font-size: 0.9em; color: #666; }
+        .btn-abrir { background-color: #1a3a5a; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; }
+        .btn-abrir:hover { background-color: #2a5a8a; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📋 Procedimentos Internos - PPGE</h1>
+    <p>Selecione um processo abaixo para visualizar o fluxograma interativo:</p>
+
+    <div class="fluxo-card">
+        <div class="fluxo-info">
+            <h3>Agendamento de Bancas</h3>
+            <p>Fluxo completo desde o formulário do aluno até o arquivamento.</p>
+        </div>
+        <a href="agendamento-bancas.html" class="btn-abrir">Abrir Fluxo</a>
+    </div>
+
+    <div class="fluxo-card">
+        <div class="fluxo-info">
+            <h3>Matrícula Especial</h3>
+            <p>Procedimentos para alunos ouvintes e disciplinas isoladas.</p>
+        </div>
+        <a href="#" class="btn-abrir" style="background-color: #ccc;">Em breve</a>
+    </div>
+
+</div>
+
+</body>
+</html>
