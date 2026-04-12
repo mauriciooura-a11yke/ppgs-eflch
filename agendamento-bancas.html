@@ -1,145 +1,259 @@
+
         <!DOCTYPE html>
         <html lang="pt-br">
         <head>
             <meta charset="UTF-8">
             <style>
-                body { font-family: 'Segoe UI', sans-serif; background: #f1f5f9; display: flex; flex-direction: column; align-items: center; padding: 40px; }
+                body { font-family: 'Segoe UI', sans-serif; background: #f4f7f9; display: flex; flex-direction: column; align-items: center; padding: 40px; color: #334155; }
+                .step-container { display: flex; flex-direction: column; align-items: center; width: 100%; }
                 .step-card { 
-                    background: white; border-left: 5px solid #1a3a5a; padding: 20px; 
-                    width: 500px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-                    display: flex; align-items: center; gap: 20px;
+                    background: white; border-top: 4px solid #1a3a5a; padding: 20px; 
+                    width: 350px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                    text-align: center; position: relative; margin: 10px;
                 }
-                .step-number { 
-                    background: #1a3a5a; color: white; width: 30px; height: 30px; 
-                    border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
-                }
-                .arrow { font-size: 24px; color: #1a3a5a; margin: 10px 0; }
-                h1 { color: #1a3a5a; }
+                .shape-tag { font-size: 10px; text-transform: uppercase; background: #e2e8f0; padding: 2px 8px; border-radius: 10px; color: #64748b; }
+                .link-btn { display: inline-block; margin-top: 10px; padding: 6px 12px; background: #3b82f6; color: white; text-decoration: none; border-radius: 6px; font-size: 12px; }
+                .connectors { display: flex; justify-content: center; gap: 40px; width: 100%; margin-top: 10px; }
+                .branch { display: flex; flex-direction: column; align-items: center; }
+                .line { width: 2px; height: 30px; background: #1a3a5a; }
+                .arrow { color: #1a3a5a; font-weight: bold; margin-bottom: 5px; }
+                h1 { color: #1a3a5a; margin-bottom: 40px; border-bottom: 2px solid #cbd5e1; padding-bottom: 10px; }
             </style>
         </head>
         <body>
             <h1>Agendamento Bancas PPGE</h1>
             
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <strong>Início</strong>
-                    
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Cápsula (Início/Fim)</span>
+                        <p>Início</p>
+                        
+                    </div>
+                </div>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Estudante agenda a banca via forms disponível no site</p>
+                        <a href="https://ppg.unifesp.br/educacao/alunos/manual-do-aluno" target="_blank" class="link-btn">Acessar Documento</a>
+                    </div>
+                </div>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Registrar nova banca na planilha de bancas do PPGE</p>
+                        <a href="https://docs.google.com/spreadsheets/d/1WJOZqziDQtMjNyhJf6Q8cAHZa-pTw4AK9kPO4p0FMuE/edit?gid=1022884617#gid=1022884617" target="_blank" class="link-btn">Acessar Documento</a>
+                    </div>
+                </div>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Losango (Decisão)</span>
+                        <p>É banca de qualificação?</p>
+                        
+                    </div>
+                </div>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        <span>Sim</span>
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Gerar check-list QUALIFICAÇÃO no Menu PPGE</p>
+                        
+                    </div>
+                </div>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Emitir e enviar Carta-convite</p>
+                        
+                    </div>
+                </div>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Atualizar planilha de bancas</p>
+                        <a href="https://docs.google.com/spreadsheets/d/1WJOZqziDQtMjNyhJf6Q8cAHZa-pTw4AK9kPO4p0FMuE/edit?gid=1022884617#gid=1022884617" target="_blank" class="link-btn">Acessar Documento</a>
+                    </div>
+                </div>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Arquivar check-list</p>
+                        
+                    </div>
+                </div>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Cápsula (Início/Fim)</span>
+                        <p>Fim</p>
+                        
+                    </div>
                 </div>
             </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <strong>Fim</strong>
-                    
+                    </div></div></div>
+                    </div></div></div>
+                    </div></div></div>
+                    </div></div></div>
+                    </div>
+                    <div class="branch">
+                        <div class="line"></div>
+                        <span>Não</span>
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Gerar check-list DEFESA no Menu PPGE</p>
+                        
+                    </div>
                 </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <strong>Estudante agenda a banca via forms disponível no site</strong>
-                    <br><a href="https://ppg.unifesp.br/educacao/alunos/manual-do-aluno" target="_blank" style="color: #3b82f6; font-size: 0.8em;">🔗 Acessar Link</a>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Cadastrar tese e membros no sistema de bancas</p>
+                        <a href="https://procdados.epm.br/dpd/pg/" target="_blank" class="link-btn">Acessar Documento</a>
+                    </div>
                 </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <strong>É banca de qualificação?</strong>
-                    
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Se necessário, solicitar cadastro de membros da banca à CaPGPq</p>
+                        
+                    </div>
                 </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">5</div>
-                <div class="step-content">
-                    <strong>Gerar check-list QUALIFICAÇÃO no Menu PPGE</strong>
-                    
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Gerar protocolo envio de tese</p>
+                        
+                    </div>
                 </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">6</div>
-                <div class="step-content">
-                    <strong>Emitir e enviar Carta-convite</strong>
-                    
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Inserir no processo de defesas o conjunto de docs para compor o lote mensal a ser pautado na reunião da CaPGPq</p>
+                        
+                    </div>
                 </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">7</div>
-                <div class="step-content">
-                    <strong>Registrar nova banca na planilha de bancas do PPGE</strong>
-                    <br><a href="https://docs.google.com/spreadsheets/d/1WJOZqziDQtMjNyhJf6Q8cAHZa-pTw4AK9kPO4p0FMuE/edit?gid=1022884617#gid=1022884617" target="_blank" style="color: #3b82f6; font-size: 0.8em;">🔗 Acessar Link</a>
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+            <div class="step-container">
+                <div class="step-card">
+                    <div class="step-info">
+                        <span class="shape-tag">Retângulo (Processo)</span>
+                        <p>Remeter processo para Câmara de Pós-Graduação</p>
+                        
+                    </div>
                 </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">8</div>
-                <div class="step-content">
-                    <strong>Cadastrar tese e membros no sistema de bancas</strong>
-                    <br><a href="https://procdados.epm.br/dpd/pg/" target="_blank" style="color: #3b82f6; font-size: 0.8em;">🔗 Acessar Link</a>
-                </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">9</div>
-                <div class="step-content">
-                    <strong>Se necessário, solicitar cadastro de membros da banca à CaPGPq</strong>
-                    
-                </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">10</div>
-                <div class="step-content">
-                    <strong>Gerar check-list DEFESA no Menu PPGE</strong>
-                    
-                </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">11</div>
-                <div class="step-content">
-                    <strong>Gerar protocolo envio de tese</strong>
-                    
-                </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">12</div>
-                <div class="step-content">
-                    <strong>Inserir no processo de defesas o conjunto de docs para compor o lote mensal a ser pautado na reunião da CaPGPq</strong>
-                    
-                </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">13</div>
-                <div class="step-content">
-                    <strong>Remeter processo para Câmara de Pós-Graduação</strong>
-                    
-                </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">14</div>
-                <div class="step-content">
-                    <strong>Atualizar planilha de bancas</strong>
-                    <br><a href="https://docs.google.com/spreadsheets/d/1WJOZqziDQtMjNyhJf6Q8cAHZa-pTw4AK9kPO4p0FMuE/edit?gid=1022884617#gid=1022884617" target="_blank" style="color: #3b82f6; font-size: 0.8em;">🔗 Acessar Link</a>
-                </div>
-            </div>
-            <div class="arrow">↓</div>
-            <div class="step-card">
-                <div class="step-number">15</div>
-                <div class="step-content">
-                    <strong>Arquivar check-list</strong>
-                    
-                </div>
-            </div>
-            
+            <div class="connectors">
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+                    </div></div></div>
+                    </div></div></div>
+                    </div></div></div>
+                    </div>
+                    <div class="branch">
+                        <div class="line"></div>
+                        
+                        <div class="arrow">↓</div>
+                        
+                    </div></div></div>
+                    </div></div></div>
+                    </div></div></div>
+                    </div></div></div>
+                    </div></div></div>
+                    </div></div></div>
+                    </div></div></div>
         </body>
         </html>
         
