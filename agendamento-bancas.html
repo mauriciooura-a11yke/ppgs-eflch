@@ -1,199 +1,37 @@
-
-        <!DOCTYPE html>
-        <html lang="pt-br">
-        <head>
-            <meta charset="UTF-8">
-            <style>
-                body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; flex-direction: column; align-items: center; padding: 50px; }
-                .node-container { display: flex; flex-direction: column; align-items: center; }
-                
-                /* Estilização das Formas */
-                .node { 
-                    background: white; border: 2px solid #1a3a5a; color: #1a3a5a;
-                    display: flex; flex-direction: column; align-items: center; justify-content: center;
-                    padding: 15px; text-align: center; font-weight: 600; font-size: 14px;
-                    transition: transform 0.2s; position: relative; z-index: 2;
-                }
-                .node:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-
-                .shape-rect { width: 220px; min-height: 60px; border-radius: 4px; }
-                .shape-capsule { width: 180px; min-height: 50px; border-radius: 50px; background: #1a3a5a; color: white; }
-                .shape-circle { width: 100px; height: 100px; border-radius: 50%; }
-                
-                .shape-diamond { 
-                    width: 150px; height: 150px; transform: rotate(45deg); margin: 30px 0;
-                }
-                .shape-diamond .node-text { transform: rotate(-45deg); }
-                .shape-diamond .node-link { transform: rotate(-45deg); }
-
-                /* Conectores */
-                .connector-line { width: 2px; height: 40px; background: #1a3a5a; }
-                .branches { display: flex; justify-content: center; gap: 50px; border-top: 2px solid #1a3a5a; padding-top: 0; margin-top: -2px; }
-                .branch-path { display: flex; flex-direction: column; align-items: center; border-left: 2px solid #1a3a5a; margin-left: -2px; padding-top: 20px; }
-                .branch-label { background: #f0f2f5; padding: 2px 10px; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #1a3a5a; }
-                
-                .node-link { font-size: 11px; color: #3b82f6; text-decoration: none; margin-top: 5px; }
-                .terminal { background: #64748b !important; border: none !important; font-size: 12px; }
-                h1 { color: #1a3a5a; margin-bottom: 50px; text-transform: uppercase; letter-spacing: 1px; }
-            </style>
-        </head>
-        <body>
-            <h1>Agendamento Bancas PPGE</h1>
-            
-            <div class="node-container">
-                <div class="node shape-capsule">
-                    <div class="node-text">Início</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Estudante agenda a banca via forms disponível no site</div>
-                    <a href="https://ppg.unifesp.br/educacao/alunos/manual-do-aluno" target="_blank" class="node-link">🔗 Docs</a>
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Registrar nova banca na planilha de bancas do PPGE</div>
-                    <a href="https://docs.google.com/spreadsheets/d/1WJOZqziDQtMjNyhJf6Q8cAHZa-pTw4AK9kPO4p0FMuE/edit?gid=1022884617#gid=1022884617" target="_blank" class="node-link">🔗 Docs</a>
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-diamond">
-                    <div class="node-text">É banca de qualificação?</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        <div class="branch-label">Sim</div>
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Gerar check-list QUALIFICAÇÃO no Menu PPGE</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Emitir e enviar Carta-convite</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Atualizar planilha de bancas</div>
-                    <a href="https://docs.google.com/spreadsheets/d/1WJOZqziDQtMjNyhJf6Q8cAHZa-pTw4AK9kPO4p0FMuE/edit?gid=1022884617#gid=1022884617" target="_blank" class="node-link">🔗 Docs</a>
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Arquivar check-list</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-capsule">
-                    <div class="node-text">Fim</div>
-                    
-                </div>
-            </div>
-                    </div></div></div>
-                    </div></div></div>
-                    </div></div></div>
-                    </div></div></div>
-                    </div>
-                    <div class="branch-path">
-                        <div class="branch-label">Não</div>
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Gerar check-list DEFESA no Menu PPGE</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Cadastrar tese e membros no sistema de bancas</div>
-                    <a href="https://procdados.epm.br/dpd/pg/" target="_blank" class="node-link">🔗 Docs</a>
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Se necessário, solicitar cadastro de membros da banca à CaPGPq</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Gerar protocolo envio de tese</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Inserir no processo de defesas o conjunto de docs para compor o lote mensal a ser pautado na reunião da CaPGPq</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-            <div class="node-container">
-                <div class="node shape-rect">
-                    <div class="node-text">Remeter processo para Câmara de Pós-Graduação</div>
-                    
-                </div>
-            <div class="connector-line"></div><div class="branches">
-                    <div class="branch-path">
-                        
-                        
-                    </div></div></div>
-                    </div></div></div>
-                    </div></div></div>
-                    </div>
-                    <div class="branch-path">
-                        
-                        
-                    </div></div></div>
-                    </div></div></div>
-                    </div></div></div>
-                    </div></div></div>
-                    </div></div></div>
-                    </div></div></div>
-                    </div></div></div>
-        </body>
-        </html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Fluxo: Agendamento Bancas PPGE</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f4f8; margin: 0; padding: 40px; color: #333; }
+        .container { background: white; max-width: 1000px; margin: 0 auto; padding: 40px; border-radius: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 8px solid #1a3a5a; }
+        h1 { color: #1a3a5a; text-align: center; font-size: 28px; margin-bottom: 30px; }
+        .flow-wrapper { text-align: center; padding: 20px; background: #fafafa; border: 1px solid #eee; border-radius: 10px; }
+        img { max-width: 100%; height: auto; }
+        .links-section { margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
+        .links-section h2 { color: #1a3a5a; font-size: 20px; }
+        ul { list-style-type: none; padding: 0; }
+        .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Agendamento Bancas PPGE</h1>
         
+        <div class="flow-wrapper">
+            <img src="https://mermaid.ink/img/Z3JhcGggVEQKICBpbmljaW8oKEluw61jaW8pKQogIHN0eWxlIGluaWNpbyBmaWxsOiNmZmYsc3Ryb2tlOiMxYTNhNWEsc3Ryb2tlLXdpZHRoOjJweCxjb2xvcjojMWEzYTVhCiAgZmltKChGaW0pKQogIHN0eWxlIGZpbSBmaWxsOiNmZmYsc3Ryb2tlOiMxYTNhNWEsc3Ryb2tlLXdpZHRoOjJweCxjb2xvcjojMWEzYTVhCiAgZm9ybXNfYWx1bm9bRXN0dWRhbnRlIGFnZW5kYSBhIGJhbmNhIHZpYSBmb3JtcyBkaXNwb27DrXZlbCBubyBzaXRlXQogIHN0eWxlIGZvcm1zX2FsdW5vIGZpbGw6I2ZmZixzdHJva2U6IzFhM2E1YSxzdHJva2Utd2lkdGg6MnB4LGNvbG9yOiMxYTNhNWEKICB0aXBvX2JhbmNhe8OJIGJhbmNhIGRlIHF1YWxpZmljYcOnw6NvP30KICBzdHlsZSB0aXBvX2JhbmNhIGZpbGw6I2ZmZixzdHJva2U6IzFhM2E1YSxzdHJva2Utd2lkdGg6MnB4LGNvbG9yOiMxYTNhNWEKICBub3ZvX2NoZWNrX2xpc3RfcXVhbGlbR2VyYXIgY2hlY2stbGlzdCBRVUFMSUZJQ0HDh8ODTyBubyBNZW51IFBQR0VdCiAgc3R5bGUgbm92b19jaGVja19saXN0X3F1YWxpIGZpbGw6I2ZmZixzdHJva2U6IzFhM2E1YSxzdHJva2Utd2lkdGg6MnB4LGNvbG9yOiMxYTNhNWEKICBjb252aXRlW0VtaXRpciBlIGVudmlhciBDYXJ0YS1jb252aXRlXQogIHN0eWxlIGNvbnZpdGUgZmlsbDojZmZmLHN0cm9rZTojMWEzYTVhLHN0cm9rZS13aWR0aDoycHgsY29sb3I6IzFhM2E1YQogIG5vdm9fcmVnaXN0cm9fcGxhbmlsaGFfYmFuY2FzW1JlZ2lzdHJhciBub3ZhIGJhbmNhIG5hIHBsYW5pbGhhIGRlIGJhbmNhcyBkbyBQUEdFXQogIHN0eWxlIG5vdm9fcmVnaXN0cm9fcGxhbmlsaGFfYmFuY2FzIGZpbGw6I2ZmZixzdHJva2U6IzFhM2E1YSxzdHJva2Utd2lkdGg6MnB4LGNvbG9yOiMxYTNhNWEKICBjYWRhc3RyYXJfc2lpdVtDYWRhc3RyYXIgdGVzZSBlIG1lbWJyb3Mgbm8gc2lzdGVtYSBkZSBiYW5jYXNdCiAgc3R5bGUgY2FkYXN0cmFyX3NpaXUgZmlsbDojZmZmLHN0cm9rZTojMWEzYTVhLHN0cm9rZS13aWR0aDoycHgsY29sb3I6IzFhM2E1YQogIGZvcm1zX2NhcGdwcVtTZSBuZWNlc3PDoXJpbywgc29saWNpdGFyIGNhZGFzdHJvIGRlIG1lbWJyb3MgZGEgYmFuY2Egw6AgQ2FQR1BxXQogIHN0eWxlIGZvcm1zX2NhcGdwcSBmaWxsOiNmZmYsc3Ryb2tlOiMxYTNhNWEsc3Ryb2tlLXdpZHRoOjJweCxjb2xvcjojMWEzYTVhCiAgbm92b19jaGVja19saXN0X2RlZmVzYVtHZXJhciBjaGVjay1saXN0IERFRkVTQSBubyBNZW51IFBQR0VdCiAgc3R5bGUgbm92b19jaGVja19saXN0X2RlZmVzYSBmaWxsOiNmZmYsc3Ryb2tlOiMxYTNhNWEsc3Ryb2tlLXdpZHRoOjJweCxjb2xvcjojMWEzYTVhCiAgcHJvdG9jb2xvX3NpaXVbR2VyYXIgcHJvdG9jb2xvIGVudmlvIGRlIHRlc2VdCiAgc3R5bGUgcHJvdG9jb2xvX3NpaXUgZmlsbDojZmZmLHN0cm9rZTojMWEzYTVhLHN0cm9rZS13aWR0aDoycHgsY29sb3I6IzFhM2E1YQogIGxvdGVfZGVmZXNhW0luc2VyaXIgbm8gcHJvY2Vzc28gZGUgZGVmZXNhcyBvIGNvbmp1bnRvIGRlIGRvY3MgcGFyYSBjb21wb3IgbyBsb3RlIG1lbnNhbCBhIHNlciBwYXV0YWRvIG5hIHJldW5pw6NvIGRhIENhUEdQcV0KICBzdHlsZSBsb3RlX2RlZmVzYSBmaWxsOiNmZmYsc3Ryb2tlOiMxYTNhNWEsc3Ryb2tlLXdpZHRoOjJweCxjb2xvcjojMWEzYTVhCiAgcmVtZXNzYV9wcm9jZXNzb19jYXBncHFbUmVtZXRlciBwcm9jZXNzbyBwYXJhIEPDom1hcmEgZGUgUMOzcy1HcmFkdWHDp8Ojb10KICBzdHlsZSByZW1lc3NhX3Byb2Nlc3NvX2NhcGdwcSBmaWxsOiNmZmYsc3Ryb2tlOiMxYTNhNWEsc3Ryb2tlLXdpZHRoOjJweCxjb2xvcjojMWEzYTVhCiAgYXR1YWxpemFfcGxhbmlsaGFfYmFuY2FzW0F0dWFsaXphciBwbGFuaWxoYSBkZSBiYW5jYXNdCiAgc3R5bGUgYXR1YWxpemFfcGxhbmlsaGFfYmFuY2FzIGZpbGw6I2ZmZixzdHJva2U6IzFhM2E1YSxzdHJva2Utd2lkdGg6MnB4LGNvbG9yOiMxYTNhNWEKICBhcnF1aXZhX2NoZWNrX2xpc3RbQXJxdWl2YXIgY2hlY2stbGlzdF0KICBzdHlsZSBhcnF1aXZhX2NoZWNrX2xpc3QgZmlsbDojZmZmLHN0cm9rZTojMWEzYTVhLHN0cm9rZS13aWR0aDoycHgsY29sb3I6IzFhM2E1YQogIGluaWNpbyAtLT4gZm9ybXNfYWx1bm8KICBmb3Jtc19hbHVubyAtLT4gbm92b19yZWdpc3Ryb19wbGFuaWxoYV9iYW5jYXMKICBub3ZvX3JlZ2lzdHJvX3BsYW5pbGhhX2JhbmNhcyAtLT4gdGlwb19iYW5jYQogIHRpcG9fYmFuY2EgLS0+fFNpbXwgbm92b19jaGVja19saXN0X3F1YWxpCiAgdGlwb19iYW5jYSAtLT58TsOjb3wgbm92b19jaGVja19saXN0X2RlZmVzYQogIG5vdm9fY2hlY2tfbGlzdF9xdWFsaSAtLT4gY29udml0ZQogIG5vdm9fY2hlY2tfbGlzdF9kZWZlc2EgLS0+IGNhZGFzdHJhcl9zaWl1CiAgY2FkYXN0cmFyX3NpaXUgLS0+IGZvcm1zX2NhcGdwcQogIGZvcm1zX2NhcGdwcSAtLT4gcHJvdG9jb2xvX3NpaXUKICBwcm90b2NvbG9fc2lpdSAtLT4gbG90ZV9kZWZlc2EKICBsb3RlX2RlZmVzYSAtLT4gcmVtZXNzYV9wcm9jZXNzb19jYXBncHEKICBmb3Jtc19jYXBncHEgLS0+IGNvbnZpdGUKICBjb252aXRlIC0tPiBhdHVhbGl6YV9wbGFuaWxoYV9iYW5jYXMKICByZW1lc3NhX3Byb2Nlc3NvX2NhcGdwcSAtLT4gYXR1YWxpemFfcGxhbmlsaGFfYmFuY2FzCiAgYXR1YWxpemFfcGxhbmlsaGFfYmFuY2FzIC0tPiBhcnF1aXZhX2NoZWNrX2xpc3QKICBhcnF1aXZhX2NoZWNrX2xpc3QgLS0+IGZpbQ==" alt="Fluxograma Institucional">
+        </div>
+
+        <div class="links-section">
+            <h2>📂 Documentos e Links Úteis</h2>
+            <ul><li style="margin-bottom: 12px;"><a href="https://ppg.unifesp.br/educacao/alunos/manual-do-aluno" target="_blank" style="color: #0056b3; text-decoration: none; font-weight: bold;">🔗 Estudante agenda a banca via forms disponível no site</a></li><li style="margin-bottom: 12px;"><a href="https://docs.google.com/spreadsheets/d/1WJOZqziDQtMjNyhJf6Q8cAHZa-pTw4AK9kPO4p0FMuE/edit?gid=1022884617#gid=1022884617" target="_blank" style="color: #0056b3; text-decoration: none; font-weight: bold;">🔗 Registrar nova banca na planilha de bancas do PPGE</a></li><li style="margin-bottom: 12px;"><a href="https://procdados.epm.br/dpd/pg/" target="_blank" style="color: #0056b3; text-decoration: none; font-weight: bold;">🔗 Cadastrar tese e membros no sistema de bancas</a></li><li style="margin-bottom: 12px;"><a href="https://docs.google.com/spreadsheets/d/1WJOZqziDQtMjNyhJf6Q8cAHZa-pTw4AK9kPO4p0FMuE/edit?gid=1022884617#gid=1022884617" target="_blank" style="color: #0056b3; text-decoration: none; font-weight: bold;">🔗 Atualizar planilha de bancas</a></li></ul>
+        </div>
+
+        <div class="footer">
+            Secretaria PPGE - Unifesp<br>
+            Documento gerado automaticamente pelo Sistema de Fluxos.
+        </div>
+    </div>
+</body>
+</html>
