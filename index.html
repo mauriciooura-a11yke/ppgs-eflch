@@ -12,9 +12,9 @@
             --accent: #38bdf8;
             --text-bright: #e2e8f0;
             --text-dim: #94a3b8;
-            --tag-systems: #8b5cf6; /* Roxo para Sistemas */
-            --tag-norms: #f59e0b;    /* Laranja para Normativos */
-            --tag-flow: #10b981;     /* Verde para Fluxos */
+            --tag-systems: #8b5cf6;
+            --tag-norms: #f59e0b;
+            --tag-flow: #10b981;
         }
 
         body { 
@@ -69,6 +69,26 @@
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
         }
 
+        /* Estilo dos Títulos de Seção */
+        .section-title {
+            max-width: 1200px;
+            margin: 40px auto 20px;
+            color: var(--accent);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::after {
+            content: "";
+            height: 1px;
+            background: var(--border);
+            flex-grow: 1;
+        }
+
         .grid-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -95,7 +115,6 @@
             background: #1e2636;
         }
 
-        /* Badge de Categoria */
         .category-tag {
             font-size: 0.65rem;
             font-weight: 800;
@@ -143,6 +162,10 @@
             border-top: 1px solid var(--border);
             padding-top: 20px;
         }
+
+        @media (max-width: 600px) {
+            header { flex-direction: column; text-align: center; gap: 15px; }
+        }
     </style>
 </head>
 <body>
@@ -154,15 +177,15 @@
             <h1>PPGE<span>Flows</span> <small>Portal de Fluxos e Procedimentos</small></h1>
         </div>
     </div>
-    <div style="font-size: 0.7rem; color: var(--text-dim); font-family: monospace;">v 2.4</div>
+    <div style="font-size: 0.7rem; color: var(--text-dim); font-family: monospace;">v 2.5</div>
 </header>
 
 <div class="search-box">
-    <input type="text" id="searchInput" onkeyup="filter()" placeholder="Pesquar fluxos, sistemas ou normas...">
+    <input type="text" id="searchInput" onkeyup="filter()" placeholder="Pesquisar fluxos, sistemas ou normas...">
 </div>
 
-<div class="grid-container" id="grid">
-    
+<h2 class="section-title">Fluxos</h2>
+<div class="grid-container">
     <div class="card">
         <div>
             <span class="category-tag tag-flow">Fluxo</span>
@@ -189,7 +212,10 @@
         </div>
         <a href="homologacao.svg" class="btn-view" target="_blank">VISUALIZAR FLUXO</a>
     </div>
+</div>
 
+<h2 class="section-title">Sistemas</h2>
+<div class="grid-container">
     <div class="card">
         <div>
             <span class="category-tag tag-system">Sistema</span>
@@ -235,8 +261,6 @@
         <a href="https://notas-propgpq.siiu.unifesp.br/prematricula" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
     </div>
 
-
-
     <div class="card">
         <div>
             <span class="category-tag tag-system">Sistema</span>
@@ -245,7 +269,10 @@
         </div>
         <a href="https://sucupira.capes.gov.br" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
     </div>
+</div>
 
+<h2 class="section-title">Normativos</h2>
+<div class="grid-container">
     <div class="card">
         <div>
             <span class="category-tag tag-norm">Normativo</span>
@@ -263,7 +290,6 @@
         </div>
         <a href="https://sei.unifesp.br/sei/publicacoes/controlador_publicacoes.php?acao=publicacao_visualizar&id_documento=819047&id_orgao_publicacao=0" class="btn-view" target="_blank">ABRIR DOCUMENTO</a>
     </div>
-
 </div>
 
 <footer>
@@ -279,10 +305,16 @@
     function filter() {
         let val = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.querySelectorAll('.card');
+        let titles = document.querySelectorAll('.section-title');
+        
         cards.forEach(card => {
-            // O filtro agora lê tudo dentro do card (Título, Categoria e Descrição)
             let txt = card.innerText.toLowerCase();
             card.style.display = txt.includes(val) ? "" : "none";
+        });
+
+        // Oculta os títulos das seções se houver uma pesquisa ativa
+        titles.forEach(title => {
+            title.style.display = val === "" ? "" : "none";
         });
     }
 </script>
