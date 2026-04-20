@@ -305,11 +305,20 @@
     }
 
     function setCategory(cat) {
-        currentCategory = cat;
-        document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-        const btn = document.getElementById('btn-' + cat);
-        if(btn) btn.classList.add('active');
-        filter();
+    currentCategory = cat;
+
+    // 1. Gerencia a aparência dos botões no menu lateral
+    document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+    const btn = document.getElementById('btn-' + cat);
+    if(btn) btn.classList.add('active');
+
+    // 2. Se clicar em 'all', limpa o campo de busca
+    if (cat === 'all') {
+        document.getElementById('searchInput').value = '';
+    }
+
+    // 3. Aplica o filtro (que agora levará em conta o campo vazio se for 'all')
+    filter();
     }
 
     function filter() {
