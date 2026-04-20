@@ -217,14 +217,14 @@
 <script src="assets.js"></script>
 
 <script>
-    // Se o logo vier do assets.js
     if (window.LOGO_PPGE) { document.getElementById('logoUnifesp').src = window.LOGO_PPGE; }
 
+    // MAPEAMENTO CORRIGIDO: tagClass agora bate exatamente com as classes do seu <style>
     const secoes = [
-    { id: 'fluxo', titulo: 'Fluxos', arquivo: 'fluxos.json', tagClass: 'tag-flow' },
-    { id: 'sistema', titulo: 'Sistemas', arquivo: 'sistemas.json', tagClass: 'tag-system' },
-    { id: 'normativo', titulo: 'Normativos', arquivo: 'normativos.json', tagClass: 'tag-norm' },
-    { id: 'processo', titulo: 'Processos', arquivo: 'processos.json', tagClass: 'tag-proc' }
+        { id: 'fluxo', titulo: 'Fluxos', arquivo: 'fluxos.json', tagClass: 'tag-flow' },
+        { id: 'sistema', titulo: 'Sistemas', arquivo: 'sistemas.json', tagClass: 'tag-system' },
+        { id: 'normativo', titulo: 'Normativos', arquivo: 'normativos.json', tagClass: 'tag-normative' },
+        { id: 'processo', titulo: 'Processos', arquivo: 'processos.json', tagClass: 'tag-process' }
     ];
 
     let currentCategory = 'all';
@@ -238,7 +238,12 @@
         for (const sec of secoes) {
             try {
                 const response = await fetch(sec.arquivo);
-                if (!response.ok) throw new Error(`Erro ao ler ${sec.arquivo}`);
+                
+                if (!response.ok) {
+                    console.error(`ERRO: O arquivo ${sec.arquivo} não foi encontrado na pasta.`);
+                    continue; // Pula para a próxima seção se esta falhar
+                }
+                
                 const dados = await response.json();
 
                 fullHtml += `
@@ -259,17 +264,19 @@
                     </div>
                 `;
             } catch (e) {
-                console.error(e);
+                console.error(`Erro crítico ao processar ${sec.arquivo}:`, e);
             }
         }
-        container.innerHTML = fullHtml;
+        
+        container.innerHTML = fullHtml || '<p style="color: var(--tag-proc)">Nenhum arquivo JSON foi carregado. Verifique o console (F12).</p>';
         filter(); 
     }
 
     function setCategory(cat) {
         currentCategory = cat;
         document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-        document.getElementById('btn-' + cat).classList.add('active');
+        const btn = document.getElementById('btn-' + cat);
+        if(btn) btn.classList.add('active');
         filter();
     }
 
@@ -300,7 +307,6 @@
         });
     }
 
-    // Inicializa
     carregarDados();
 </script>
 
