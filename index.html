@@ -16,7 +16,7 @@
             --tag-norms: #f59e0b;
             --tag-flow: #10b981;
             --tag-proc: #f43f5e;
-            --sidebar-width: 240px;
+            --sidebar-width: 260px;
         }
 
         body { 
@@ -61,13 +61,12 @@
             transition: 0.3s;
             cursor: pointer;
             border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .sidebar-link:hover {
-            background: rgba(56, 189, 248, 0.05);
-            color: var(--accent);
-        }
-
+        .sidebar-link:hover { background: rgba(56, 189, 248, 0.05); color: var(--accent); }
         .sidebar-link.active {
             background: rgba(56, 189, 248, 0.15);
             color: var(--accent);
@@ -95,7 +94,7 @@
 
         .brand-container { display: flex; align-items: center; gap: 15px; }
         .logo-img { height: 45px; width: auto; }
-        .brand h1 { font-size: 1.4rem; margin: 0; }
+        .brand h1 { font-size: 1.4rem; margin: 0; letter-spacing: -0.5px; }
         .brand h1 span { color: var(--accent); font-weight: bold; }
         
         .search-box {
@@ -112,13 +111,14 @@
             border-radius: 8px;
             color: white;
             font-size: 1rem;
+            transition: all 0.3s;
         }
 
-        .section-block { margin-bottom: 50px; }
+        .section-block { margin-bottom: 60px; }
 
         .section-title {
             max-width: 1200px;
-            margin: 0 0 20px;
+            margin: 0 0 25px;
             color: var(--accent);
             font-size: 1.1rem;
             text-transform: uppercase;
@@ -131,20 +131,22 @@
 
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             transition: all 0.2s ease;
         }
+
+        .card:hover { transform: translateY(-4px); border-color: var(--accent); }
 
         .category-tag {
             font-size: 0.65rem;
@@ -152,7 +154,7 @@
             text-transform: uppercase;
             padding: 3px 8px;
             border-radius: 4px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: inline-block;
         }
 
@@ -161,28 +163,36 @@
         .tag-norm { background: rgba(245, 158, 11, 0.15); color: var(--tag-norms); border: 1px solid var(--tag-norms); }
         .tag-proc { background: rgba(244, 63, 94, 0.15); color: var(--tag-proc); border: 1px solid var(--tag-proc); }
 
+        .card h3 { margin: 0 0 10px 0; font-size: 1.1rem; color: #fff; line-height: 1.4; }
+        .card p { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 20px; line-height: 1.5; }
+
         .btn-view {
             background: rgba(56, 189, 248, 0.08);
             color: var(--accent);
             text-decoration: none;
             text-align: center;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
             border: 1px solid var(--accent);
+            transition: 0.2s;
         }
 
-        @media (max-width: 900px) {
+        .btn-view:hover { background: var(--accent); color: var(--bg-dark); }
+
+        footer { text-align: center; margin-top: 80px; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid var(--border); padding-top: 20px; }
+
+        @media (max-width: 1024px) {
             .sidebar { display: none; }
-            .main-wrapper { margin-left: 0; }
+            .main-wrapper { margin-left: 0; padding: 20px; }
         }
     </style>
 </head>
 <body>
 
 <nav class="sidebar">
-    <div class="sidebar-title">Navegação</div>
+    <div class="sidebar-title">Menu Principal</div>
     <a onclick="setCategory('all')" id="btn-all" class="sidebar-link active">🏠 Início / Tudo</a>
     <a onclick="setCategory('fluxo')" id="btn-fluxo" class="sidebar-link">🌊 Fluxos</a>
     <a onclick="setCategory('sistema')" id="btn-sistema" class="sidebar-link">💻 Sistemas</a>
@@ -195,10 +205,10 @@
         <div class="brand-container">
             <img id="logoUnifesp" class="logo-img" src="" alt="Logo PPGE">
             <div class="brand">
-                <h1>PPGE<span>Flows</span></h1>
+                <h1>PPGE<span>Flows</span> <small>Portal de Fluxos e Procedimentos</small></h1>
             </div>
         </div>
-        <div style="font-size: 0.7rem; color: var(--text-dim);">v 2.7</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim); font-family: monospace;">v 2.7</div>
     </header>
 
     <div class="search-box">
@@ -209,16 +219,16 @@
         <h2 class="section-title">Fluxos</h2>
         <div class="grid-container">
             <div class="card">
-                <div><span class="category-tag tag-flow">Fluxo</span><h3>Agendamento de Bancas</h3><p>Fluxo de agendamento e envio de carta-convite.</p></div>
-                <a href="agendamento_bancas.svg" class="btn-view" target="_blank">VISUALIZAR</a>
+                <div><span class="category-tag tag-flow">Fluxo</span><h3>Agendamento de Bancas</h3><p>Fluxo de agendamento e envio de carta-convite para membros.</p></div>
+                <a href="agendamento_bancas.svg" class="btn-view" target="_blank">VISUALIZAR FLUXO</a>
             </div>
             <div class="card">
-                <div><span class="category-tag tag-flow">Fluxo</span><h3>Atas de Bancas</h3><p>Elaboração de atas e envio de carta de agradecimento.</p></div>
-                <a href="atas_bancas.svg" class="btn-view" target="_blank">VISUALIZAR</a>
+                <div><span class="category-tag tag-flow">Fluxo</span><h3>Atas de Bancas</h3><p>Elaboração de atas e envio de carta de agradecimento aos participantes.</p></div>
+                <a href="atas_bancas.svg" class="btn-view" target="_blank">VISUALIZAR FLUXO</a>
             </div>
             <div class="card">
                 <div><span class="category-tag tag-flow">Fluxo</span><h3>Homologação de Título</h3><p>Trâmites para homologação de título.</p></div>
-                <a href="homologacao.svg" class="btn-view" target="_blank">VISUALIZAR</a>
+                <a href="homologacao.svg" class="btn-view" target="_blank">VISUALIZAR FLUXO</a>
             </div>
         </div>
     </div>
@@ -227,41 +237,85 @@
         <h2 class="section-title">Sistemas</h2>
         <div class="grid-container">
             <div class="card">
-                <div><span class="category-tag tag-system">Sistema</span><h3>SEI!</h3><p>Sistema Eletrônico de Informações.</p></div>
-                <a href="https://sei.unifesp.br" class="btn-view" target="_blank">ACESSAR</a>
+                <div><span class="category-tag tag-system">Sistema</span><h3>SEI!</h3><p>Acesso ao Sistema Eletrônico de Informações para abertura de processos.</p></div>
+                <a href="https://sei.unifesp.br" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
             </div>
             <div class="card">
-                <div><span class="category-tag tag-system">Sistema</span><h3>SIIU</h3><p>Sistema Integrado de Informações Universitária.</p></div>
-                <a href="https://siiu.unifesp.br/login" class="btn-view" target="_blank">ACESSAR</a>
+                <div><span class="category-tag tag-system">Sistema</span><h3>SIIU</h3><p>Acesso ao Sistema Integrado de Informações Universitária - SIIU.</p></div>
+                <a href="https://siiu.unifesp.br/login" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
             </div>
+            <div class="card">
+                <div><span class="category-tag tag-system">Sistema</span><h3>Área Exclusiva - Sistema de Bancas</h3><p>Acesso ao Sistema Área Exclsuiva para cadastro de bancas.</p></div>
+                <a href="https://procdados.epm.br/dpd/pg/" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
             </div>
+            <div class="card">
+                <div><span class="category-tag tag-system">Sistema</span><h3>Repositório Institucional</h3><p>Acesso ao Sistema Repositório Institucional.</p></div>
+                <a href="https://repositorio.unifesp.br/login" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
+            </div>
+            <div class="card">
+                <div><span class="category-tag tag-system">Sistema</span><h3>Pré-matrícula - Tela do Ingressante</h3><p>Acesso ao Sistema de Pré-Matrícula - Tela do ingressante.</p></div>
+                <a href="https://notas-propgpq.siiu.unifesp.br/prematricula" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
+            </div>
+            <div class="card">
+                <div><span class="category-tag tag-system">Sistema</span><h3>Plataforma Sucupira</h3><p>Sistema de coleta de dados e avaliação dos programas de pós-graduação.</p></div>
+                <a href="https://sucupira.capes.gov.br" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
+            </div>
+            <div class="card">
+                <div><span class="category-tag tag-system">Sistema</span><h3>Cadastro de Autorizados</h3><p>Sistema de cadastro de autorizados.</p></div>
+                <a href="https://phpu.unifesp.br/drhunifesp/autorizados/index.php" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
+            </div>
+            <div class="card">
+                <div><span class="category-tag tag-system">Sistema</span><h3>Consulta de Matrícula - Crachá</h3><p>Interface para o ingressante consultar a matrícula e crachá.</p></div>
+                <a href="https://infoti.unifesp.edu.br/cracha/" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
+            </div>
+            <div class="card">
+                <div><span class="category-tag tag-system">Sistema</span><h3>Portal SEI - Externo</h3><p>Interface para usuários externos.</p></div>
+                <a href="https://portalsei.unifesp.br/usuario-externo" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
+            </div>
+        </div>
     </div>
 
     <div class="section-block" id="sec-normativo">
         <h2 class="section-title">Normativos</h2>
         <div class="grid-container">
             <div class="card">
-                <div><span class="category-tag tag-norm">Normativo</span><h3>Regimento Interno PPGE</h3><p>Regras gerais do programa.</p></div>
-                <a href="#" class="btn-view" target="_blank">ABRIR</a>
+                <div><span class="category-tag tag-norm">Normativo</span><h3>Regimento Interno PPGE</h3><p>Regras gerais e normas de funcionamento do programa PPGE (31/07/2025).</p></div>
+                <a href="https://ppg.unifesp.br/educacao/images/regimento/Regimento_do_PPGE_Homologado_Conselho_de_Ps-Graduao_e_Pesquisa_31-07-2025.pdf" class="btn-view" target="_blank">ABRIR DOCUMENTO</a>
+            </div>
+            <div class="card">
+                <div><span class="category-tag tag-norm">Normativo</span><h3>RESOLUÇÃO Nº 204/2021</h3><p>Regimento interno da pós-graduação e pesquisa da Unifesp.</p></div>
+                <a href="https://sei.unifesp.br/sei/publicacoes/controlador_publicacoes.php?acao=publicacao_visualizar&id_documento=819047&id_orgao_publicacao=0" class="btn-view" target="_blank">ABRIR DOCUMENTO</a>
+            </div>
+            <div class="card">
+                <div><span class="category-tag tag-norm">Normativo</span><h3>RESOLUÇÃO nº 005/2022</h3><p>Extensão da integralização, licenças e afastamentos por saúde.</p></div>
+                <a href="https://sei.unifesp.br/sei/modulos/pesquisa/md_pesq_documento_consulta_externa.php?9LibXMqGnN7gSpLFOOgUQFziRouBJ5VnVL5b7-UrE5RY0RBgM_3R-M8MtuoYAso_mRReaiTQ9kx5FfUBultQTnVV8an1a5jnka-pVGUxRsDFzElXJdOw7yRvaFzyIW9m" class="btn-view" target="_blank">ABRIR DOCUMENTO</a>
             </div>
         </div>
     </div>
 
     <div class="section-block" id="sec-processo">
-        <h2 class="section-title">Processos</h2>
+        <h2 class="section-title">Processos SEI</h2>
         <div class="grid-container">
             <div class="card">
                 <div>
-                    <span class="category-tag tag-proc">Processo SEI</span>
-                    <h3>Processo nº 23089.012345/2024-00</h3>
-                    <p>Credenciamento de Docentes - Análise de currículos.</p>
+                    <span class="category-tag tag-proc">Processo</span>
+                    <h3>23089.012345/2024-00</h3>
+                    <p>Credenciamento de Docentes - Fluxo de análise de currículos e publicações.</p>
                 </div>
-                <a href="#" class="btn-view" target="_blank">ABRIR</a>
+                <a href="#" class="btn-view" target="_blank">ABRIR PROCESSO</a>
+            </div>
+            <div class="card">
+                <div>
+                    <span class="category-tag tag-proc">Processo</span>
+                    <h3>23089.987654/2024-11</h3>
+                    <p>Reforma Curricular - Documentação e atas de reuniões pedagógicas.</p>
+                </div>
+                <a href="#" class="btn-view" target="_blank">ABRIR PROCESSO</a>
             </div>
         </div>
     </div>
 
-    <footer>&copy; 2026 PPGE UNIFESP</footer>
+    <footer>&copy; 2026 PPGE UNIFESP | Maurício Massao Oura</footer>
 </div>
 
 <script src="assets.js"></script>
@@ -272,14 +326,9 @@
 
     function setCategory(cat) {
         currentCategory = cat;
-        
-        // Atualiza estilo dos botões
         document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
         document.getElementById('btn-' + cat).classList.add('active');
-        
-        // Limpa a busca ao mudar de categoria (opcional)
         document.getElementById('searchInput').value = '';
-        
         filter();
     }
 
@@ -292,11 +341,8 @@
             let cards = section.querySelectorAll('.card');
             let hasVisibleCards = false;
 
-            // Lógica de exibição da SEÇÃO
             if (currentCategory === 'all' || currentCategory === sectionId) {
                 section.style.display = "";
-                
-                // Lógica de exibição dos CARDS dentro da seção
                 cards.forEach(card => {
                     let txt = card.innerText.toLowerCase();
                     if (txt.includes(val)) {
@@ -306,11 +352,7 @@
                         card.style.display = "none";
                     }
                 });
-
-                // Se não houver nenhum card que bata com a busca, esconde a seção
-                if (!hasVisibleCards && val !== "") {
-                    section.style.display = "none";
-                }
+                if (!hasVisibleCards && val !== "") section.style.display = "none";
             } else {
                 section.style.display = "none";
             }
