@@ -15,7 +15,7 @@
   },
   {
     "titulo": "23089.000018/2026-21",
-    "descricao": "Dispensas e Certificados PAD (Programa de Aperfeiçoamento Didático).",
+    "descricao": "Dispensas e Certificados PAD (Programa de Aperfeiçoamento Didático.",
     "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=3430621",
     "botao": "ABRIR PROCESSO",
     "status": "ativo"
@@ -57,56 +57,56 @@
   },
   {
     "titulo": "23089.006699/2023-99",
-    "descricao": "Processo de bancas de defesa - lote mensal para Câmara de Pós-Graduação",
+    "descricao": "Processo de bancas de defesa - lote mensal para Câmara de Pós-Graduação.",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=1673763",
     "botao": "ABRIR PROCESSO",
     "status": "ativo"
   },
   {
     "titulo": "23089.035068/2024-68",
-    "descricao": "Declarações EMTU",
+    "descricao": "Declarações EMTU.",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=2649390",
     "botao": "ABRIR PROCESSO",
     "status": "ativo"
   },
   {
     "titulo": "23089.033678/2023-46",
-    "descricao": "Pós-docs Diversos",
+    "descricao": "Pós-docs Diversos.",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=2049738",
     "botao": "ABRIR PROCESSO",
     "status": "inativo"
   },
   {
     "titulo": "23089.006929/2024-09",
-    "descricao": "Pós-docs Diversos",
+    "descricao": "Pós-docs Diversos.",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=2247054",
     "botao": "ABRIR PROCESSO",
     "status": "inativo"
   },
   {
     "titulo": "23089.014006/2025-01",
-    "descricao": "Verba PROAP 2025 - Informações diversas",
+    "descricao": "Verba PROAP 2025 - Informações diversas.",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=2943953",
     "botao": "ABRIR PROCESSO",
     "status": "inativo"
   },
   {
     "titulo": "23089.040163/2025-64",
-    "descricao": "Ações afirmativas - Fase V - Processo seletivo 2025 - Ingresso em 2026",
+    "descricao": "Ações afirmativas - Fase V - Processo seletivo 2025 - Ingresso em 2026.",
     "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=3312577",
     "botao": "ABRIR PROCESSO",
     "status": "inativo"
   },
   {
     "titulo": "23089.036758/2023-53",
-    "descricao": "Homologação de reprovação de Greice Aparecida Martins Santos, Márcia Maria Staquecini",
+    "descricao": "Homologação de reprovação de Greice Aparecida Martins Santos, Márcia Maria Staquecini.",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=2096376",
     "botao": "ABRIR PROCESSO",
     "status": "inativo"
   },
   {
     "titulo": "23089.007475/2023-02",
-    "descricao": "Qualificações e Defesas de 2023 - 2024 (Erick)",
+    "descricao": "Qualificações e Defesas de 2023 - 2024 (Erick).",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=1684088",
     "botao": "ABRIR PROCESSO",
     "status": "inativo"
@@ -119,50 +119,57 @@
     "status": "ativo"
   },
   {
-    "titulo": "23089.011988/2025-71",
-    "descricao": "Declarações de Comparecimento em Exame de Proficiência",
+    "titulo": "titulo: \"23089.011988/2025-71\",",
+    "descricao": "Declarações de Comparecimento em Exame de Proficiência.",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=2915123",
     "botao": "ABRIR PROCESSO",
     "status": "ativo"
   },
   {
-    "titulo": "23089.008191/2025-97",
-    "descricao": "Declarações de Matrícula em Disciplinas",
+    "titulo": "titulo: \"23089.008191/2025-97\",",
+    "descricao": "Declarações de Matrícula em Disciplinas.",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=2862082",
     "botao": "ABRIR PROCESSO",
     "status": "ativo"
   },
   {
-    "titulo": "23089.034702/2025-26",
-    "descricao": "ANPED - Pagamento de anuidade 2025",
+    "titulo": "titulo: \"23089.008191/2025-97\",",
+    "descricao": "Declarações de Matrícula em Disciplinas.",
+    "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=2862082",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo"
+  },
+  {
+    "titulo": "titulo: \"23089.034702/2025-26\",",
+    "descricao": "ANPED - Pagamento de anuidade 2025.",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=3227659",
     "botao": "ABRIR PROCESSO",
     "status": "inativo"
   },
   {
-    "titulo": "23089.005566/2026-48",
-    "descricao": "ANPED - Pagamento de anuidade 2026",
+    "titulo": "titulo: \"23089.005566/2026-48\",",
+    "descricao": "ANPED - Pagamento de anuidade 2026.",
     "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=3515519",
     "botao": "ABRIR PROCESSO",
     "status": "ativo"
   },
   {
-    "titulo": "23089.005810/2022-49",
-    "descricao": "ENSALAMENTO PPGs",
+    "titulo": "titulo: \"23089.005810/2022-49\",",
+    "descricao": "ENSALAMENTO PPGs.",
     "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=1116906",
     "botao": "ABRIR PROCESSO",
     "status": "ativo"
   },
   {
-    "titulo": "23089.008132/2026-08",
-    "descricao": "Lançamento de proficiências dos doutorandos, recém-ingressantes",
+    "titulo": "titulo: \"23089.008132/2026-08\",",
+    "descricao": "Lançamento de proficiências dos doutorandos, recém-ingressantes.",
     "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=3551008",
     "botao": "ABRIR PROCESSO",
     "status": "ativo"
   },
   {
-    "titulo": "23089.010026/2026-86",
-    "descricao": "Editais e resultados das provas de proficiência",
+    "titulo": "titulo: \"23089.010026/2026-86\",",
+    "descricao": "Editais e resultados das provas de proficiência.",
     "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=3578753",
     "botao": "ABRIR PROCESSO",
     "status": "ativo"
