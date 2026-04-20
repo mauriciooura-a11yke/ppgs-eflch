@@ -12,6 +12,9 @@
             --accent: #38bdf8;
             --text-bright: #e2e8f0;
             --text-dim: #94a3b8;
+            --tag-systems: #8b5cf6; /* Roxo para Sistemas */
+            --tag-norms: #f59e0b;    /* Laranja para Normativos */
+            --tag-flow: #10b981;     /* Verde para Fluxos */
         }
 
         body { 
@@ -37,17 +40,9 @@
             gap: 15px;
         }
 
-        .logo-img {
-            height: 45px;
-            width: auto;
-        }
+        .logo-img { height: 45px; width: auto; }
 
-        .brand h1 { 
-            font-size: 1.4rem; 
-            margin: 0; 
-            letter-spacing: -0.5px;
-        }
-        
+        .brand h1 { font-size: 1.4rem; margin: 0; letter-spacing: -0.5px; }
         .brand h1 span { color: var(--accent); font-weight: bold; }
         .brand small { color: var(--text-dim); font-size: 0.8rem; font-weight: normal; margin-left: 5px; }
 
@@ -91,6 +86,7 @@
             flex-direction: column;
             justify-content: space-between;
             transition: all 0.2s ease;
+            position: relative;
         }
 
         .card:hover {
@@ -99,12 +95,22 @@
             background: #1e2636;
         }
 
-        .card h3 { 
-            margin: 0 0 10px 0; 
-            font-size: 1.15rem; 
-            line-height: 1.3; 
-            color: #fff; 
+        /* Badge de Categoria */
+        .category-tag {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: inline-block;
+            width: fit-content;
         }
+        .tag-flow { background: rgba(16, 185, 129, 0.15); color: var(--tag-flow); border: 1px solid var(--tag-flow); }
+        .tag-system { background: rgba(139, 92, 246, 0.15); color: var(--tag-systems); border: 1px solid var(--tag-systems); }
+        .tag-norm { background: rgba(245, 158, 11, 0.15); color: var(--tag-norms); border: 1px solid var(--tag-norms); }
+
+        .card h3 { margin: 0 0 10px 0; font-size: 1.15rem; line-height: 1.3; color: #fff; }
 
         .card p { 
             font-size: 0.9rem; 
@@ -127,10 +133,7 @@
             transition: all 0.2s;
         }
 
-        .btn-view:hover {
-            background: var(--accent);
-            color: var(--bg-dark);
-        }
+        .btn-view:hover { background: var(--accent); color: var(--bg-dark); }
 
         footer {
             text-align: center;
@@ -140,11 +143,6 @@
             border-top: 1px solid var(--border);
             padding-top: 20px;
         }
-
-        @media (max-width: 600px) {
-            header { flex-direction: column; text-align: center; gap: 15px; }
-            .brand-container { flex-direction: column; }
-        }
     </style>
 </head>
 <body>
@@ -152,36 +150,73 @@
 <header>
     <div class="brand-container">
         <img id="logoUnifesp" class="logo-img" src="" alt="Logo PPGE">
-        
         <div class="brand">
             <h1>PPGE<span>Flows</span> <small>Portal de Fluxos e Procedimentos</small></h1>
         </div>
     </div>
-    <div style="font-size: 0.7rem; color: var(--text-dim); font-family: monospace;">v 2.3</div>
+    <div style="font-size: 0.7rem; color: var(--text-dim); font-family: monospace;">v 2.4</div>
 </header>
 
 <div class="search-box">
-    <input type="text" id="searchInput" onkeyup="filter()" placeholder="Pesquisar fluxo...">
+    <input type="text" id="searchInput" onkeyup="filter()" placeholder="Pesquar fluxos, sistemas ou normas...">
 </div>
 
 <div class="grid-container" id="grid">
+    
     <div class="card">
-        <h3>Agendamento de Bancas</h3>
-        <p>Fluxo de agendamento e envio de carta-convite para membros.</p>
+        <div>
+            <span class="category-tag tag-flow">Fluxo</span>
+            <h3>Agendamento de Bancas</h3>
+            <p>Fluxo de agendamento e envio de carta-convite para membros.</p>
+        </div>
         <a href="agendamento_bancas.svg" class="btn-view" target="_blank">VISUALIZAR FLUXO</a>
     </div>
 
     <div class="card">
-        <h3>Atas de Bancas</h3>
-        <p>Elaboração de atas e envio de carta de agradecimento aos participantes.</p>
+        <div>
+            <span class="category-tag tag-flow">Fluxo</span>
+            <h3>Atas de Bancas</h3>
+            <p>Elaboração de atas e envio de carta de agradecimento aos participantes.</p>
+        </div>
         <a href="atas_bancas.svg" class="btn-view" target="_blank">VISUALIZAR FLUXO</a>
     </div>
 
     <div class="card">
-        <h3>Homologação de Título</h3>
-        <p>Trâmites para homologação de título.</p>
-        <a href="homologacao.svg" class="btn-view" target="_blank">VISUALIZAR FLUXO</a>
+        <div>
+            <span class="category-tag tag-system">Sistema</span>
+            <h3>Portal SEI</h3>
+            <p>Acesso ao Sistema Eletrônico de Informações para abertura de processos.</p>
+        </div>
+        <a href="https://sei.unifesp.br" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
     </div>
+
+    <div class="card">
+        <div>
+            <span class="category-tag tag-system">Sistema</span>
+            <h3>Plataforma Sucupira</h3>
+            <p>Sistema de coleta de dados e avaliação dos programas de pós-graduação.</p>
+        </div>
+        <a href="https://sucupira.capes.gov.br" class="btn-view" target="_blank">ACESSAR SISTEMA</a>
+    </div>
+
+    <div class="card">
+        <div>
+            <span class="category-tag tag-norm">Normativo</span>
+            <h3>Regimento Interno</h3>
+            <p>Regras gerais e normas de funcionamento do programa PPGE.</p>
+        </div>
+        <a href="regimento_ppge.pdf" class="btn-view" target="_blank">ABRIR DOCUMENTO</a>
+    </div>
+
+    <div class="card">
+        <div>
+            <span class="category-tag tag-norm">Normativo</span>
+            <h3>Instrução Normativa 01/2024</h3>
+            <p>Dispõe sobre os critérios de proficiência em língua estrangeira.</p>
+        </div>
+        <a href="#" class="btn-view" target="_blank">ABRIR DOCUMENTO</a>
+    </div>
+
 </div>
 
 <footer>
@@ -190,7 +225,6 @@
 
 <script src="assets.js"></script>
 <script>
-    // Carrega a logo do arquivo externo
     if (window.LOGO_PPGE) {
         document.getElementById('logoUnifesp').src = window.LOGO_PPGE;
     }
@@ -199,6 +233,7 @@
         let val = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.querySelectorAll('.card');
         cards.forEach(card => {
+            // O filtro agora lê tudo dentro do card (Título, Categoria e Descrição)
             let txt = card.innerText.toLowerCase();
             card.style.display = txt.includes(val) ? "" : "none";
         });
