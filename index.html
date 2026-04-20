@@ -3,102 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPGE Flows - Unifesp</title>
+    <title>PPGE Flows - Acesso Restrito</title>
     <style>
         /* Estilos da Tela de Login */
         #loginOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #1a1a1a;
-            display: flex; /* O Firebase controlará isso */
+            background: #121212;
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: white;
             z-index: 9999;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         .login-card {
-            background: #2d2d2d;
+            background: #1e1e1e;
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.8);
             text-align: center;
-            width: 300px;
+            width: 350px;
+            border: 1px solid #333;
         }
 
-        .login-card h2 { margin-bottom: 20px; color: #4dabf7; }
-
-        input {
+        .google-btn {
             width: 100%;
             padding: 12px;
-            margin: 15px 0;
-            border-radius: 6px;
-            border: 1px solid #444;
-            background: #3d3d3d;
-            color: white;
-            box-sizing: border-box;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #228be6;
-            color: white;
+            background: white;
+            color: #333;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 16px;
+            transition: 0.3s;
         }
 
-        button:hover { background: #1c7ed6; }
+        .google-btn:hover { background: #e5e5e5; }
 
         #errorMsg {
-            color: #ff6b6b;
-            font-size: 0.9em;
-            margin-top: 10px;
+            color: #ff5252;
+            background: rgba(255, 82, 82, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
             display: none;
+            font-size: 0.9em;
         }
 
-        /* Área do Conteúdo (Fluxogramas) */
-        body { font-family: sans-serif; background: #f8f9fa; }
-        .main-content { padding: 40px; max-width: 1000px; margin: 0 auto; }
-        .logout-btn {
-            position: fixed;
-            top: 20px; right: 20px;
-            width: auto; padding: 8px 15px;
-            background: #fa5252;
-        }
+        /* Estilo do Site */
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f0f2f5; }
+        .nav { background: #004631; color: white; padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; }
+        .main-content { padding: 30px; max-width: 1200px; margin: 0 auto; }
+        .logout-link { color: #ff8787; cursor: pointer; text-decoration: underline; }
     </style>
 </head>
 <body>
 
     <div id="loginOverlay">
         <div class="login-card">
-            <h2>PPGE Flows</h2>
-            <p>Insira a chave de acesso</p>
-            <input type="password" id="passInput" placeholder="Senha">
-            <button onclick="checkPass()">Aceder</button>
-            <p id="errorMsg"></p>
+            <h2 style="color: #4dabf7;">PPGE Flows</h2>
+            <p style="color: #aaa;">Acesso permitido apenas para e-mails autorizados.</p>
+            
+            <button class="google-btn" onclick="login()">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
+                Entrar com Google
+            </button>
+            
+            <div id="errorMsg"></div>
         </div>
     </div>
 
+    <div class="nav">
+        <span>PPGE - Unifesp</span>
+        <span class="logout-link" onclick="sair()">Sair</span>
+    </div>
+
     <div class="main-content">
-        <button class="logout-btn" onclick="logout()">Sair</button>
-        <h1>Fluxogramas do Programa</h1>
+        <h1>Fluxogramas Autorizados</h1>
         <hr>
-        <div id="fluxo-container">
-            <p>O conteúdo dos fluxogramas será carregado aqui após a autenticação.</p>
+        <div id="conteudo-fluxo">
+            <p>Se você está vendo isso, seu e-mail foi autorizado pelo administrador.</p>
         </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // A sua CONST que você gerou
         const firebaseConfig = {
             apiKey: "AIzaSyAlH7V0HX8qjt9fk70-5dz5benTFsAc8Rk",
             authDomain: "ppge-flows.firebaseapp.com",
@@ -110,36 +109,42 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
 
-        // Função de Login
-        window.checkPass = function() {
-            const password = document.getElementById('passInput').value;
-            const email = "admin@ppge.com"; // Certifique-se que este e-mail existe no console!
-            const errorMsg = document.getElementById('errorMsg');
+        // ==========================================
+        // LISTA DE E-MAILS AUTORIZADOS (A sua "Lista VIP")
+        // ==========================================
+        const listaBranca = [
+            "mauricio.oura@unifesp.br",
+            "mauricio.oura@gmail.com"
+        ];
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    console.log("Acesso autorizado");
-                    errorMsg.style.display = 'none';
-                })
-                .catch((error) => {
-                    errorMsg.style.display = 'block';
-                    errorMsg.innerText = "Chave de acesso inválida.";
-                });
+        window.login = function() {
+            signInWithPopup(auth, provider).catch(err => console.error(err));
         };
 
-        // Função de Sair
-        window.logout = function() {
-            signOut(auth);
+        window.sair = function() {
+            signOut(auth).then(() => window.location.reload());
         };
 
-        // Monitor de Estado (Segurança em Tempo Real)
         onAuthStateChanged(auth, (user) => {
             const overlay = document.getElementById('loginOverlay');
+            const errorDiv = document.getElementById('errorMsg');
+
             if (user) {
-                overlay.style.display = 'none'; // Desbloqueia o site
+                const emailLogado = user.email.toLowerCase();
+
+                // Verifica se o e-mail está na lista
+                if (listaBranca.includes(emailLogado)) {
+                    overlay.style.display = 'none'; // SUCESSO
+                } else {
+                    // E-MAIL NÃO AUTORIZADO
+                    errorDiv.innerText = "O e-mail " + emailLogado + " não possui autorização de acesso.";
+                    errorDiv.style.display = 'block';
+                    signOut(auth);
+                }
             } else {
-                overlay.style.display = 'flex'; // Bloqueia o site
+                overlay.style.display = 'flex';
             }
         });
     </script>
