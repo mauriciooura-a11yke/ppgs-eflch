@@ -92,7 +92,7 @@
   {
     "ppg": "Geral",
     "titulo": "SIGRH",
-    "descricao": "Sistema Integrado de Recursos Humanos",
+    "descricao": "Sistema Integrado de Recursos Humanos (necessita vpn)",
     "link": "https://sigrh.unifesp.br/",
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
@@ -101,7 +101,7 @@
   {
     "ppg": "Geral",
     "titulo": "Polare",
-    "descricao": "Polare",
+    "descricao": "Polare (necessita vpn)",
     "link": "https://polare.unifesp.br/polare/login",
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
