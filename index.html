@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Fluxos | Multi-PPG</title>
+    <title>PPGE | Flows Dinâmico Multi-PPG</title>
     <style>
         :root {
             --bg-dark: #0a0f18;
@@ -45,7 +45,7 @@
 
         .sidebar-title {
             color: var(--text-dim);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin: 20px 0 10px;
@@ -63,7 +63,9 @@
             margin-bottom: 10px;
             outline: none;
             cursor: pointer;
+            transition: border 0.3s;
         }
+        .ppg-selector:focus { border-color: var(--accent); }
 
         .sidebar-link {
             color: var(--text-bright);
@@ -174,21 +176,20 @@
         .card p { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 20px; line-height: 1.5; }
 
         .btn-view {
-            background: rgba(56, 189, 248, 0.08);
-            color: var(--accent);
             text-decoration: none;
             text-align: center;
-            padding: 12px;
+            padding: 10px;
             border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border: 1px solid var(--accent);
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid;
             transition: 0.2s;
+            margin-top: 15px;
         }
 
-        .btn-view:hover { background: var(--accent); color: var(--bg-dark); }
+        .btn-view:hover { filter: brightness(1.2); background: rgba(255,255,255,0.05); }
 
-        footer { padding: 40px 0; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 0.8rem; }
+        footer { padding: 40px 0; text-align: center; color: var(--text-dim); font-size: 0.8rem; border-top: 1px solid var(--border); }
 
         @media (max-width: 1024px) {
             .sidebar { display: none; }
@@ -202,8 +203,6 @@
     <div class="sidebar-title">Filtrar Programa</div>
     <select id="ppgFilter" class="ppg-selector" onchange="filter()">
         <option value="all">Todos os PPGs</option>
-        <option value="ppge">PPGE</option>
-        <option value="ppgas">PPGAS</option>
     </select>
 
     <div class="sidebar-title">Menu Principal</div>
@@ -219,19 +218,19 @@
         <div class="brand-container">
             <img id="logoUnifesp" class="logo-img" src="" alt="Logo">
             <div class="brand">
-                <h1>Flows<span>Dinâmico</span></h1>
+                <h1>PPGE<span>Flows</span></h1>
             </div>
         </div>
-        <div style="font-size: 0.7rem; color: var(--text-dim);">v 3.5 (Multi-PPG)</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim);">v 3.8 (Dinamismo Total)</div>
     </header>
 
     <div class="search-box">
-        <input type="text" id="searchInput" onkeyup="filter()" placeholder="Pesquisar por título, descrição ou palavra-chave...">
+        <input type="text" id="searchInput" onkeyup="filter()" placeholder="Pesquisar título, descrição ou palavra-chave...">
     </div>
 
     <div id="content-area"></div>
 
-    <footer>&copy; 2026 UNIFESP | Maurício Massao Oura</footer>
+    <footer>&copy; 2026 UNIFESP | Desenvolvido por Maurício Massao Oura</footer>
 </div>
 
 <script src="assets.js"></script>
@@ -248,8 +247,19 @@
 
     let currentCategory = 'all';
 
+    // Gerador de cores fixas para PPGs
+    function getPPGColor(ppg) {
+        if (!ppg || ppg.toLowerCase() === 'geral') return 'var(--accent)';
+        const colors = ['#38bdf8', '#10b981', '#8b5cf6', '#f59e0b', '#f43f5e', '#ec4899', '#06b6d4'];
+        let hash = 0;
+        for (let i = 0; i < ppg.length; i++) { hash = ppg.charCodeAt(i) + ((hash << 5) - hash); }
+        return colors[Math.abs(hash) % colors.length];
+    }
+
     function renderCards(lista, tagClass, categoriaTitulo) {
         return lista.map(item => {
+            const ppgNome = (item.ppg || 'Geral').toUpperCase();
+            const ppgCor = getPPGColor(item.ppg);
             const isProcesso = tagClass === 'tag-process';
             const corStatus = item.status === 'ativo' ? '#10b981' : '#f43f5e';
             const textoStatus = item.status === 'ativo' ? 'Ativo' : 'Inativo';
@@ -260,7 +270,7 @@
                 tagsHtml = `
                     <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px;">
                         ${tags.map(tag => `
-                            <span style="background: rgba(255,255,255,0.05); color: var(--text-dim); font-size: 0.65rem; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border);">
+                            <span style="background: rgba(255,255,255,0.03); color: var(--text-dim); font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);">
                                 #${tag.trim()}
                             </span>
                         `).join('')}
@@ -268,27 +278,23 @@
                 `;
             }
 
-            // O data-ppg é crucial para o filtro funcionar
             return `
-                <div class="card" data-ppg="${(item.ppg || '').toLowerCase()}" style="${isProcesso ? `border-left: 4px solid ${corStatus};` : ''}">
+                <div class="card" data-ppg="${(item.ppg || '').toLowerCase()}" style="${isProcesso ? `border-left: 4px solid ${corStatus};` : `border-top: 3px solid ${ppgCor};`}">
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                             <span class="category-tag ${tagClass}">${categoriaTitulo.slice(0,-1)}</span>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <span style="font-size: 0.65rem; color: var(--accent); font-weight: bold; border: 1px solid var(--accent); padding: 1px 5px; border-radius: 3px;">${(item.ppg || 'Geral').toUpperCase()}</span>
-                                ${isProcesso ? 
-                                    `<span style="color: ${corStatus}; font-size: 0.65rem; font-weight: bold; text-transform: uppercase; display: flex; align-items: center; gap: 4px;">
-                                        <span style="width: 8px; height: 8px; background: ${corStatus}; border-radius: 50%; display: inline-block;"></span>
-                                        ${textoStatus}
-                                    </span>` : ''
-                                }
-                            </div>
+                            <span style="font-size: 0.6rem; color: ${ppgCor}; font-weight: bold; border: 1px solid ${ppgCor}; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,0.02);">
+                                ${ppgNome}
+                            </span>
                         </div>
                         <h3>${item.titulo}</h3>
                         <p>${item.descricao}</p>
+                        ${isProcesso ? `<div style="font-size: 0.65rem; font-weight: bold; color: ${corStatus}; text-transform: uppercase; margin-bottom: 10px;">● ${textoStatus}</div>` : ''}
                         ${tagsHtml} 
                     </div>
-                    <a href="${item.link}" class="btn-view" target="_blank">${item.botao || 'ABRIR'}</a>
+                    <a href="${item.link}" class="btn-view" target="_blank" style="border-color: ${ppgCor}; color: ${ppgCor};">
+                        ${item.botao || 'ABRIR'}
+                    </a>
                 </div>
             `;
         }).join('');
@@ -296,31 +302,32 @@
 
     async function carregarDados() {
         const container = document.getElementById('content-area');
-        container.innerHTML = '<p style="color: var(--text-dim)">Sincronizando com a base de dados...</p>';
-
+        const ppgSelect = document.getElementById('ppgFilter');
+        const ppgsEncontrados = new Set();
+        
+        container.innerHTML = '<p style="color: var(--text-dim)">Sincronizando portal...</p>';
         let fullHtml = '';
 
         for (const sec of secoes) {
             try {
                 const response = await fetch(sec.arquivo);
                 if (!response.ok) continue;
-                
                 const dados = await response.json();
-                let conteudoSecao = '';
+                
+                // Mapeia PPGs únicos para o filtro
+                dados.forEach(item => { if(item.ppg) ppgsEncontrados.add(item.ppg.trim().toLowerCase()); });
 
+                let conteudoSecao = `<div class="grid-container">${renderCards(dados, sec.tagClass, sec.titulo)}</div>`;
+                
                 if (sec.id === 'processo') {
                     const ativos = dados.filter(item => item.status === 'ativo');
                     const inativos = dados.filter(item => item.status === 'inativo');
-
                     conteudoSecao = `
-                        <h3 class="process-sub" style="color: var(--tag-flow); font-size: 0.85rem; margin: 20px 0 15px; letter-spacing: 1px;">🟢 ATIVOS</h3>
+                        <h3 class="sub-status" style="color: var(--tag-flow); font-size: 0.8rem; margin: 20px 0 15px;">🟢 PROCESSOS ATIVOS</h3>
                         <div class="grid-container">${renderCards(ativos, sec.tagClass, sec.titulo)}</div>
-                        
-                        <h3 class="process-sub" style="color: var(--text-dim); font-size: 0.85rem; margin: 40px 0 15px; letter-spacing: 1px;">⚪ INATIVOS / ARQUIVADOS</h3>
+                        <h3 class="sub-status" style="color: var(--text-dim); font-size: 0.8rem; margin: 40px 0 15px;">⚪ ARQUIVADOS</h3>
                         <div class="grid-container" style="opacity: 0.6;">${renderCards(inativos, sec.tagClass, sec.titulo)}</div>
                     `;
-                } else {
-                    conteudoSecao = `<div class="grid-container">${renderCards(dados, sec.tagClass, sec.titulo)}</div>`;
                 }
 
                 fullHtml += `
@@ -331,59 +338,59 @@
                 `;
             } catch (e) { console.error(e); }
         }
-        container.innerHTML = fullHtml;
+
+        // Popula o select dinamicamente
+        const saveSelected = ppgSelect.value;
+        ppgSelect.innerHTML = '<option value="all">Todos os PPGs</option>';
+        Array.from(ppgsEncontrados).sort().forEach(ppg => {
+            ppgSelect.innerHTML += `<option value="${ppg}">${ppg.toUpperCase()}</option>`;
+        });
+        ppgSelect.value = saveSelected;
+
+        container.innerHTML = fullHtml || '<p>Erro ao carregar dados.</p>';
         filter(); 
     }
 
     function setCategory(cat) {
         currentCategory = cat;
-        document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-        const btn = document.getElementById('btn-' + cat);
-        if(btn) btn.classList.add('active');
+        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+        document.getElementById('btn-' + cat).classList.add('active');
         if (cat === 'all') document.getElementById('searchInput').value = '';
         filter();
     }
 
     function filter() {
         const val = document.getElementById('searchInput').value.toLowerCase();
-        const selectedPPG = document.getElementById('ppgFilter').value.toLowerCase();
+        const selPPG = document.getElementById('ppgFilter').value.toLowerCase();
         const sections = document.querySelectorAll('.section-block');
         
         sections.forEach(section => {
             const sectionId = section.id.replace('sec-', '');
             const cards = section.querySelectorAll('.card');
-            let hasVisibleCardsInSection = false;
+            let hasVisible = false;
 
-            // Filtro de Categoria (Sidebar)
-            const matchesCategory = (currentCategory === 'all' || currentCategory === sectionId);
-
-            if (matchesCategory) {
+            if (currentCategory === 'all' || currentCategory === sectionId) {
                 cards.forEach(card => {
                     const cardPPG = (card.getAttribute('data-ppg') || '').toLowerCase();
                     const txt = card.innerText.toLowerCase();
-
-                    // Filtro Cruzado: PPG + Pesquisa de Texto
-                    const matchesPPG = (selectedPPG === 'all' || cardPPG === selectedPPG);
+                    const matchesPPG = (selPPG === 'all' || cardPPG === selPPG);
                     const matchesSearch = txt.includes(val);
 
                     if (matchesPPG && matchesSearch) {
                         card.style.display = "";
-                        hasVisibleCardsInSection = true;
+                        hasVisible = true;
                     } else {
                         card.style.display = "none";
                     }
                 });
+                section.style.display = hasVisible ? "" : "none";
 
-                section.style.display = hasVisibleCardsInSection ? "" : "none";
-                
-                // Trata subtítulos de processos (Ativos/Inativos)
-                const subTitles = section.querySelectorAll('.process-sub');
-                subTitles.forEach(sub => {
-                    const nextGrid = sub.nextElementSibling;
-                    const hasVisibleInGrid = Array.from(nextGrid.querySelectorAll('.card')).some(c => c.style.display !== "none");
-                    sub.style.display = hasVisibleInGrid ? "" : "none";
+                // Oculta subtítulos de processos se vazios
+                section.querySelectorAll('.sub-status').forEach(sub => {
+                    const grid = sub.nextElementSibling;
+                    const any = Array.from(grid.querySelectorAll('.card')).some(c => c.style.display !== "none");
+                    sub.style.display = any ? "" : "none";
                 });
-
             } else {
                 section.style.display = "none";
             }
