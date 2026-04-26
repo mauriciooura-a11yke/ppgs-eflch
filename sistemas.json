@@ -106,5 +106,14 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "polare, pgd"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Gerador de mailing list pós",
+    "descricao": "Gerador de Mailing List - Corpo Discente Pós",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbx0vz26OWwOfLKuawrViMYkvXYJuQCC8NTaiWaB0H4zD9zb_R2tYUTdozK2RABZHGVyeQ/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "e-mail, mailing, list"
   }
 ]
