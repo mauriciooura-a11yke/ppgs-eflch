@@ -1,5 +1,6 @@
 [
   {
+    "ppg": "Educação",
     "titulo": "Agendamento de Bancas",
     "descricao": "Fluxo de agendamento e envio de carta-convite para membros.",
     "link": "agendamento_bancas.svg",
@@ -8,6 +9,7 @@
     "palavras_chave": "agendamento, banca, carta, convite"
   },
   {
+    "ppg": "Educação",
     "titulo": "Atas de Bancas",
     "descricao": "Elaboração de atas e envio de carta de agradecimento aos participantes.",
     "link": "atas_bancas.svg",
@@ -16,6 +18,7 @@
     "palavras_chave": "ata, carta, agradecimento"
   },
   {
+    "ppg": "Educação",
     "titulo": "Homologação de Título",
     "descricao": "Trâmites para homologação de título.",
     "link": "homologacao.svg",
