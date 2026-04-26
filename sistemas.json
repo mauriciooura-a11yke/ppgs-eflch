@@ -79,5 +79,32 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "siiu"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Lattes",
+    "descricao": "Buscar currículo",
+    "link": "https://buscatextual.cnpq.br/buscatextual/busca.do?metodo=apresentar",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "lattes"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "SIGRH",
+    "descricao": "Sistema Integrado de Recursos Humanos",
+    "link": "https://sigrh.unifesp.br/",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "sigrh, rh, férias"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Polare",
+    "descricao": "Polare",
+    "link": "https://polare.unifesp.br/polare/login",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "polare, pgd"
   }
 ]
