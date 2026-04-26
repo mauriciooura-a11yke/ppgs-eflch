@@ -15,7 +15,7 @@
             --tag-systems: #8b5cf6;
             --tag-norms: #f59e0b;
             --tag-flow: #10b981;
-            --tag-proc: #3b82f6; /* Azul no lugar de rosa */
+            --tag-proc: #3b82f6;
             --sidebar-width: 280px;
         }
 
@@ -43,9 +43,9 @@
         }
 
         .btn-reset-all {
-            background: rgba(244, 63, 94, 0.1);
-            color: #fb7185;
-            border: 1px solid rgba(244, 63, 94, 0.3);
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.3);
             padding: 12px;
             border-radius: 8px;
             font-weight: 700;
@@ -55,7 +55,7 @@
             transition: 0.2s;
             text-align: center;
         }
-        .btn-reset-all:hover { background: rgba(244, 63, 94, 0.2); }
+        .btn-reset-all:hover { background: var(--accent); color: var(--bg-dark); }
 
         .sidebar-title {
             color: var(--text-dim);
@@ -76,6 +76,7 @@
             font-size: 0.9rem;
             margin-bottom: 20px;
             outline: none;
+            cursor: pointer;
         }
 
         .sidebar-link {
@@ -104,29 +105,6 @@
             box-sizing: border-box;
         }
 
-        /* Indicador de Filtros Ativos */
-        .active-filters-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-            min-height: 30px;
-            align-items: center;
-        }
-        .filter-badge {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .filter-badge span { color: var(--accent); font-weight: bold; }
-        .filter-badge i { cursor: pointer; color: var(--text-dim); font-style: normal; }
-        .filter-badge i:hover { color: #f43f5e; }
-
         header {
             display: flex;
             justify-content: space-between;
@@ -147,8 +125,59 @@
             border-radius: 12px;
             color: white;
             font-size: 1rem;
-            margin-bottom: 40px;
+            margin-bottom: 15px; /* Reduzido para aproximar os badges */
+            outline: none;
         }
+        #searchInput:focus { border-color: var(--accent); }
+
+        /* Painel de Filtros Ativos (Abaixo da busca) */
+        .active-filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+            align-items: center;
+            padding: 10px 5px;
+        }
+        .filter-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-right: 5px;
+        }
+        .filter-badge {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-bright);
+        }
+        .filter-badge span { font-weight: bold; color: white; }
+        .filter-badge i { 
+            cursor: pointer; 
+            color: var(--text-dim); 
+            font-style: normal; 
+            font-weight: bold;
+            font-size: 1rem;
+            line-height: 1;
+        }
+        .filter-badge i:hover { color: #f43f5e; }
+
+        .section-title {
+            color: var(--accent);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-title::after { content: ""; height: 1px; background: var(--border); flex-grow: 1; }
 
         .grid-container {
             display: grid;
@@ -179,7 +208,7 @@
         .tag-normative { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
         .tag-process { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
 
-        .card h3 { margin: 15px 0 10px; font-size: 1.1rem; }
+        .card h3 { margin: 15px 0 10px; font-size: 1.1rem; line-height: 1.3; }
         .card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; flex-grow: 1; }
 
         .btn-view {
@@ -187,18 +216,19 @@
             text-align: center;
             padding: 12px;
             border-radius: 8px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             border: 1px solid;
             margin-top: 20px;
             transition: 0.2s;
         }
+        .btn-view:hover { filter: brightness(1.2); background: rgba(255,255,255,0.05); }
 
-        footer { margin-top: 60px; padding: 20px; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--text-dim); }
+        footer { margin-top: 60px; padding: 40px; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--text-dim); }
 
         @media (max-width: 1024px) {
             .sidebar { display: none; }
-            .main-wrapper { margin-left: 0; }
+            .main-wrapper { margin-left: 0; padding: 20px; }
         }
     </style>
 </head>
@@ -225,22 +255,22 @@
         <div class="brand">
             <h1>PPGE<span>Flows</span></h1>
         </div>
-        <div id="activeFilters" class="active-filters-bar">
-            </div>
+        <div style="font-size: 0.7rem; color: var(--text-dim);">v 4.0 Dinâmico</div>
     </header>
 
     <input type="text" id="searchInput" onkeyup="filter()" placeholder="O que você está procurando hoje?">
+    
+    <div id="activeFilters" class="active-filters-bar">
+        </div>
 
     <div id="content-area"></div>
 
-    <footer>&copy; 2026 UNIFESP | Maurício Massao Oura</footer>
+    <footer>&copy; 2026 UNIFESP | Desenvolvido por Maurício Massao Oura</footer>
 </div>
 
 <script src="assets.js"></script>
 
 <script>
-    if (window.LOGO_PPGE) { /* Lógica de logo se necessário */ }
-
     const secoes = [
         { id: 'fluxo', titulo: 'Fluxos', arquivo: 'fluxos.json', tagClass: 'tag-flow' },
         { id: 'sistema', titulo: 'Sistemas', arquivo: 'sistemas.json', tagClass: 'tag-system' },
@@ -250,10 +280,10 @@
 
     let currentCategory = 'all';
 
-    // Cores Masculinas/Sóbrias (Azul, Verde, Roxo, Âmbar, Ciano)
+    // Paleta Sóbria (Azuis, Verdes, Roxos)
     function getPPGColor(ppg) {
         if (!ppg || ppg.toLowerCase() === 'geral') return 'var(--accent)';
-        const colors = ['#38bdf8', '#10b981', '#8b5cf6', '#f59e0b', '#06b6d4', '#6366f1'];
+        const colors = ['#38bdf8', '#10b981', '#818cf8', '#fbbf24', '#2dd4bf', '#6366f1'];
         let hash = 0;
         for (let i = 0; i < ppg.length; i++) { hash = ppg.charCodeAt(i) + ((hash << 5) - hash); }
         return colors[Math.abs(hash) % colors.length];
@@ -272,14 +302,18 @@
         
         let badges = '';
         
-        if (ppg !== 'all') {
-            badges += `<div class="filter-badge">PPG: <span>${ppg.toUpperCase()}</span> <i onclick="document.getElementById('ppgFilter').value='all'; filter();">✕</i></div>`;
-        }
-        if (currentCategory !== 'all') {
-            badges += `<div class="filter-badge">Tipo: <span>${currentCategory.toUpperCase()}</span> <i onclick="setCategory('all')">✕</i></div>`;
-        }
-        if (search) {
-            badges += `<div class="filter-badge">Busca: <span>"${search}"</span> <i onclick="document.getElementById('searchInput').value=''; filter();">✕</i></div>`;
+        if (ppg !== 'all' || currentCategory !== 'all' || search !== '') {
+            badges = '<span class="filter-label">Filtros aplicados -></span>';
+            
+            if (ppg !== 'all') {
+                badges += `<div class="filter-badge">PPG: <span>${ppg.toUpperCase()}</span> <i onclick="document.getElementById('ppgFilter').value='all'; filter();">×</i></div>`;
+            }
+            if (currentCategory !== 'all') {
+                badges += `<div class="filter-badge">Tipo: <span>${currentCategory.toUpperCase()}</span> <i onclick="setCategory('all')">×</i></div>`;
+            }
+            if (search) {
+                badges += `<div class="filter-badge">Busca: <span>"${search}"</span> <i onclick="document.getElementById('searchInput').value=''; filter();">×</i></div>`;
+            }
         }
         
         badgeContainer.innerHTML = badges;
@@ -305,7 +339,7 @@
                 <div class="card" data-ppg="${(item.ppg || '').toLowerCase()}" style="border-top: 4px solid ${isProc ? corStatus : ppgCor}">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <span class="category-tag ${tagClass}">${categoriaTitulo.slice(0,-1)}</span>
-                        <span style="font-size: 0.6rem; color: ${ppgCor}; border: 1px solid ${ppgCor}; padding: 1px 6px; border-radius: 4px;">${ppgNome}</span>
+                        <span style="font-size: 0.6rem; color: ${ppgCor}; border: 1px solid ${ppgCor}; padding: 1px 6px; border-radius: 4px; font-weight: bold;">${ppgNome}</span>
                     </div>
                     <h3>${item.titulo}</h3>
                     <p>${item.descricao}</p>
@@ -322,7 +356,7 @@
         const ppgSelect = document.getElementById('ppgFilter');
         const ppgsEncontrados = new Set();
         
-        container.innerHTML = '<p style="text-align:center; color: var(--text-dim);">Carregando...</p>';
+        container.innerHTML = '<p style="text-align:center; padding: 50px; color: var(--text-dim);">Sincronizando recursos...</p>';
         let fullHtml = '';
 
         for (const sec of secoes) {
@@ -339,9 +373,9 @@
                     const ativos = dados.filter(i => i.status === 'ativo');
                     const inativos = dados.filter(i => i.status === 'inativo');
                     conteudo = `
-                        <h4 style="color: #10b981; font-size: 0.75rem; margin-bottom: 15px;">● PROCESSOS EM VIGOR</h4>
+                        <h4 style="color: #10b981; font-size: 0.75rem; margin-bottom: 15px; letter-spacing: 1px;">● PROCESSOS EM VIGOR</h4>
                         <div class="grid-container">${renderCards(ativos, sec.tagClass, sec.titulo)}</div>
-                        <h4 style="color: var(--text-dim); font-size: 0.75rem; margin: 30px 0 15px;">○ ARQUIVADOS</h4>
+                        <h4 style="color: var(--text-dim); font-size: 0.75rem; margin: 30px 0 15px; letter-spacing: 1px;">○ ARQUIVADOS / HISTÓRICO</h4>
                         <div class="grid-container" style="opacity: 0.6;">${renderCards(inativos, sec.tagClass, sec.titulo)}</div>
                     `;
                 }
