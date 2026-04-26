@@ -1,7 +1,7 @@
 [
   {
     "ppg": "Educação",
-    "titulo": "Agendamento de Bancas",
+    "titulo": "Agendamento de Bancas - PPGE",
     "descricao": "Fluxo de agendamento e envio de carta-convite para membros.",
     "link": "agendamento_bancas_ppge.svg",
     "botao": "VISUALIZAR FLUXO",
@@ -10,7 +10,7 @@
   },
   {
     "ppg": "Educação",
-    "titulo": "Atas de Bancas",
+    "titulo": "Atas de Bancas - PPGE",
     "descricao": "Elaboração de atas e envio de carta de agradecimento aos participantes.",
     "link": "atas_bancas_ppge.svg",
     "botao": "VISUALIZAR FLUXO",
@@ -19,7 +19,7 @@
   },
   {
     "ppg": "Educação",
-    "titulo": "Homologação de Título",
+    "titulo": "Homologação de Título - PPGE",
     "descricao": "Trâmites para homologação de título.",
     "link": "homologacao_ppge.svg",
     "botao": "VISUALIZAR FLUXO",
