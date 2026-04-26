@@ -214,5 +214,140 @@
     "botao": "ABRIR PROCESSO",
     "status": "ativo",
     "palavras_chave": "proficiência, prova, edital"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.000192/2024-11",
+    "descricao": "CONTR - Lúmen 03/2024",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2156786",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, lúmen"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.000196/2024-91",
+    "descricao": "CONTR - MS Traduções (espanhol) 04/2024",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2156832",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, ms traduções"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.000132/2024-90",
+    "descricao": "CONTR - Tikinet 2/2024  (inglês e francês)",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2155710",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, tikinet"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.034033/2024-10",
+    "descricao": "CONTR Paolo Malorggio - 147/2024 - Ebooks",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2634416",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, paolo"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.034675/2023-20",
+    "descricao": "CONTR TIKINET 143/2023",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2064292",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, tikinet"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.034035/2024-09",
+    "descricao": "EXEC - E-books - Paolo Malorgio 147/2024",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2634428",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, paolo"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.037870/2023-10",
+    "descricao": "EXEC - LÚMEN 03/2024",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2112688",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, lúmen"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.037861/2023-11",
+    "descricao": "EXEC - MS Traduções (espanhol) 04/2024",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2112570",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, ms traduções"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.037850/2023-31",
+    "descricao": "EXEC - Tikinet 02/2024 (inglês",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2112377",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, tikinet"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.000689/2024-21",
+    "descricao": "EXEC Tikinet 143/2023",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2164333",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, tikinet"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.001084/2024-57",
+    "descricao": "FISC - MS Traduções",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2170030",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, ms traduções"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.000688/2024-86",
+    "descricao": "FISC - Tikinet 143/2023",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2164324",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, tikinet"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.034034/2024-56",
+    "descricao": "FISC Paolo Malorggio - 147/2024 - Ebooks",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2634422",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, paolo"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.001079/2024-44",
+    "descricao": "FISC Tikinet 02/2024",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2169993",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, tikinet"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.001082/2024-68",
+    "descricao": "FISCAL Lúmen - 03/2024",
+    "link": "https://sei.unifesp.br/sei/controlador.php?acao=procedimento_trabalhar&id_procedimento=2170020",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "proap, serviço, lúmen"
   }
 ]
