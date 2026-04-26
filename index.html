@@ -114,6 +114,10 @@
             margin-bottom: 30px;
         }
 
+        /* Ajuste do Logo */
+        .brand-container { display: flex; align-items: center; gap: 15px; }
+        .logo-img { height: 50px; width: auto; display: none; } /* Oculto até carregar */
+
         .brand h1 { font-size: 1.3rem; margin: 0; }
         .brand h1 span { color: var(--accent); }
 
@@ -139,33 +143,18 @@
             padding: 10px 5px;
             min-height: 45px;
         }
-        .filter-label {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--accent);
-            margin-right: 5px;
-        }
+        .filter-label { font-size: 0.85rem; font-weight: 700; color: var(--accent); margin-right: 5px; }
         .filter-badge {
             background: rgba(56, 189, 248, 0.1);
             border: 1px solid rgba(56, 189, 248, 0.2);
             padding: 5px 12px;
             border-radius: 6px;
             font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            display: flex; align-items: center; gap: 10px;
             color: var(--text-bright);
         }
         .filter-badge span { font-weight: bold; color: white; }
-        .filter-badge i { 
-            cursor: pointer; 
-            color: var(--text-dim); 
-            font-style: normal; 
-            font-weight: bold;
-            font-size: 1.1rem;
-            line-height: 1;
-        }
-        .filter-badge i:hover { color: #f43f5e; }
+        .filter-badge i { cursor: pointer; color: var(--text-dim); font-style: normal; font-weight: bold; font-size: 1.1rem; line-height: 1; }
 
         .section-title {
             color: var(--accent);
@@ -173,9 +162,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            display: flex; align-items: center; gap: 10px;
         }
         .section-title::after { content: ""; height: 1px; background: var(--border); flex-grow: 1; }
 
@@ -190,19 +177,12 @@
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 24px;
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
             transition: 0.3s;
         }
         .card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
-        .category-tag {
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 3px 10px;
-            border-radius: 50px;
-            text-transform: uppercase;
-        }
+        .category-tag { font-size: 0.6rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; text-transform: uppercase; }
         .tag-flow { background: rgba(16, 185, 129, 0.1); color: #10b981; }
         .tag-system { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
         .tag-normative { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
@@ -212,17 +192,9 @@
         .card p { font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; flex-grow: 1; }
 
         .btn-view {
-            text-decoration: none;
-            text-align: center;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border: 1px solid;
-            margin-top: 20px;
-            transition: 0.2s;
+            text-decoration: none; text-align: center; padding: 12px; border-radius: 8px;
+            font-size: 0.75rem; font-weight: 700; border: 1px solid; margin-top: 20px; transition: 0.2s;
         }
-        .btn-view:hover { filter: brightness(1.2); background: rgba(255,255,255,0.05); }
 
         footer { margin-top: 60px; padding: 40px; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--text-dim); }
 
@@ -252,10 +224,13 @@
 
 <div class="main-wrapper">
     <header>
-        <div class="brand">
-            <h1>Nexus PPGs<span>EFLCH-UNIFESP</span></h1>
+        <div class="brand-container">
+            <img id="mainLogo" class="logo-img" alt="Logo PPG">
+            <div class="brand">
+                <h1>Portal do Conhecimento<span>PPGs - EFLCH</span></h1>
+            </div>
         </div>
-        <div style="font-size: 0.7rem; color: var(--text-dim);">v 4.5 | Repositório: ppgs-eflch</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim);">EFLCH | v 4.8</div>
     </header>
 
     <input type="text" id="searchInput" onkeyup="filter()" placeholder="Pesquise fluxos, sistemas ou processos...">
@@ -264,12 +239,21 @@
 
     <div id="content-area"></div>
 
-    <footer>&copy; 2026 UNIFESP | Desenvolvido por Maurício Massao Oura</footer>
+    <footer>&copy; 2026 UNIFESP | Maurício Massao Oura</footer>
 </div>
 
 <script src="assets.js"></script>
 
 <script>
+    // --- LÓGICA DO LOGOTIPO ---
+    window.onload = function() {
+        const logoImg = document.getElementById('mainLogo');
+        if (typeof LOGO_PPGE !== 'undefined' && LOGO_PPGE !== '') {
+            logoImg.src = LOGO_PPGE;
+            logoImg.style.display = 'block';
+        }
+    };
+
     const secoes = [
         { id: 'fluxo', titulo: 'Fluxos', arquivo: 'fluxos.json', tagClass: 'tag-flow' },
         { id: 'sistema', titulo: 'Sistemas', arquivo: 'sistemas.json', tagClass: 'tag-system' },
@@ -282,7 +266,6 @@
     function getPPGColor(ppg) {
         const ppgLower = (ppg || '').toLowerCase();
         if (!ppg || ppgLower === 'geral' || ppgLower === 'todos') return '#94a3b8'; 
-        
         const colors = ['#38bdf8', '#10b981', '#818cf8', '#fbbf24', '#2dd4bf', '#6366f1'];
         let hash = 0;
         for (let i = 0; i < ppg.length; i++) { hash = ppg.charCodeAt(i) + ((hash << 5) - hash); }
@@ -299,7 +282,6 @@
         const badgeContainer = document.getElementById('activeFilters');
         const ppg = document.getElementById('ppgFilter').value;
         const search = document.getElementById('searchInput').value;
-        
         let badges = '';
         if (ppg !== 'all' || currentCategory !== 'all' || search !== '') {
             badges = '<span class="filter-label">Filtros aplicados -></span>';
@@ -318,15 +300,6 @@
             const isProc = tagClass === 'tag-process';
             const corStatus = item.status === 'ativo' ? '#10b981' : '#64748b';
 
-            let tagsHtml = '';
-            if (item.palavras_chave) {
-                tagsHtml = `<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px;">
-                    ${item.palavras_chave.split(',').map(tag => `
-                        <span style="font-size: 0.6rem; color: var(--text-dim); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px;">#${tag.trim()}</span>
-                    `).join('')}
-                </div>`;
-            }
-
             return `
                 <div class="card" data-ppg="${ppgOriginal.toLowerCase()}" style="border-top: 4px solid ${isProc ? corStatus : ppgCor}">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -336,7 +309,6 @@
                     <h3>${item.titulo}</h3>
                     <p>${item.descricao}</p>
                     ${isProc ? `<div style="font-size: 0.65rem; font-weight: bold; color: ${corStatus}; margin: 10px 0;">● ${item.status.toUpperCase()}</div>` : ''}
-                    ${tagsHtml}
                     <a href="${item.link}" class="btn-view" target="_blank" style="border-color: ${ppgCor}; color: ${ppgCor};">ABRIR</a>
                 </div>
             `;
@@ -347,8 +319,7 @@
         const container = document.getElementById('content-area');
         const ppgSelect = document.getElementById('ppgFilter');
         const ppgsEncontrados = new Set();
-        
-        container.innerHTML = '<p style="text-align:center; padding: 50px; color: var(--text-dim);">Carregando recursos...</p>';
+        container.innerHTML = '<p style="text-align:center; padding: 50px; color: var(--text-dim);">Carregando...</p>';
         let fullHtml = '';
 
         for (const sec of secoes) {
@@ -356,26 +327,21 @@
                 const response = await fetch(sec.arquivo);
                 if (!response.ok) continue;
                 const dados = await response.json();
-                
                 dados.forEach(item => { 
-                    if(item.ppg && item.ppg.toLowerCase() !== 'geral') {
-                        ppgsEncontrados.add(item.ppg.trim().toLowerCase());
-                    }
+                    if(item.ppg && item.ppg.toLowerCase() !== 'geral') ppgsEncontrados.add(item.ppg.trim().toLowerCase());
                 });
 
                 let conteudo = `<div class="grid-container">${renderCards(dados, sec.tagClass, sec.titulo)}</div>`;
-                
                 if (sec.id === 'processo') {
                     const ativos = dados.filter(i => i.status === 'ativo');
                     const inativos = dados.filter(i => i.status === 'inativo');
                     conteudo = `
-                        <h4 style="color: #10b981; font-size: 0.75rem; margin-bottom: 15px; letter-spacing: 1px;">● PROCESSOS EM VIGOR</h4>
+                        <h4 style="color: #10b981; font-size: 0.75rem; margin-bottom: 15px;">● EM VIGOR</h4>
                         <div class="grid-container">${renderCards(ativos, sec.tagClass, sec.titulo)}</div>
-                        <h4 style="color: var(--text-dim); font-size: 0.75rem; margin: 30px 0 15px; letter-spacing: 1px;">○ ARQUIVADOS</h4>
+                        <h4 style="color: var(--text-dim); font-size: 0.75rem; margin: 30px 0 15px;">○ ARQUIVADOS</h4>
                         <div class="grid-container" style="opacity: 0.6;">${renderCards(inativos, sec.tagClass, sec.titulo)}</div>
                     `;
                 }
-
                 fullHtml += `<div class="section-block" id="sec-${sec.id}"><h2 class="section-title">${sec.titulo}</h2>${conteudo}</div>`;
             } catch (e) { console.error(e); }
         }
@@ -399,31 +365,21 @@
         const val = document.getElementById('searchInput').value.toLowerCase();
         const selPPG = document.getElementById('ppgFilter').value.toLowerCase();
         const sections = document.querySelectorAll('.section-block');
-        
         sections.forEach(section => {
             const sectionId = section.id.replace('sec-', '');
             const cards = section.querySelectorAll('.card');
             let hasVisible = false;
-
             if (currentCategory === 'all' || currentCategory === sectionId) {
                 cards.forEach(card => {
                     const cardPPG = (card.getAttribute('data-ppg') || '').toLowerCase();
                     const txt = card.innerText.toLowerCase();
-                    
                     const matchesPPG = (selPPG === 'all' || cardPPG === selPPG || cardPPG === 'geral');
                     const matchesSearch = txt.includes(val);
-
-                    if (matchesPPG && matchesSearch) {
-                        card.style.display = "";
-                        hasVisible = true;
-                    } else {
-                        card.style.display = "none";
-                    }
+                    if (matchesPPG && matchesSearch) { card.style.display = ""; hasVisible = true; } 
+                    else { card.style.display = "none"; }
                 });
                 section.style.display = hasVisible ? "" : "none";
-            } else {
-                section.style.display = "none";
-            }
+            } else { section.style.display = "none"; }
         });
         updateFilterBadges();
     }
