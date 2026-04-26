@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Fluxos | Gestão Dinâmica</title>
+    <title>Portal de Fluxos PPGs | EFLCH</title>
     <style>
         :root {
             --bg-dark: #0a0f18;
@@ -253,18 +253,18 @@
 <div class="main-wrapper">
     <header>
         <div class="brand">
-            <h1>PPGE<span>Flows</span></h1>
+            <h1>Nexus PPGs<span>EFLCH-UNIFESP</span></h1>
         </div>
-        <div style="font-size: 0.7rem; color: var(--text-dim);">v 4.2 | Inteligência Geral</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim);">v 4.5 | Repositório: ppgs-eflch</div>
     </header>
 
-    <input type="text" id="searchInput" onkeyup="filter()" placeholder="O que você está procurando hoje?">
+    <input type="text" id="searchInput" onkeyup="filter()" placeholder="Pesquise fluxos, sistemas ou processos...">
     
     <div id="activeFilters" class="active-filters-bar"></div>
 
     <div id="content-area"></div>
 
-    <footer>&copy; 2026 UNIFESP | Maurício Massao Oura</footer>
+    <footer>&copy; 2026 UNIFESP | Desenvolvido por Maurício Massao Oura</footer>
 </div>
 
 <script src="assets.js"></script>
@@ -279,7 +279,6 @@
 
     let currentCategory = 'all';
 
-    // Cores Sóbrias + Cinza para Geral
     function getPPGColor(ppg) {
         const ppgLower = (ppg || '').toLowerCase();
         if (!ppg || ppgLower === 'geral' || ppgLower === 'todos') return '#94a3b8'; 
@@ -338,7 +337,7 @@
                     <p>${item.descricao}</p>
                     ${isProc ? `<div style="font-size: 0.65rem; font-weight: bold; color: ${corStatus}; margin: 10px 0;">● ${item.status.toUpperCase()}</div>` : ''}
                     ${tagsHtml}
-                    <a href="${item.link}" class="btn-view" target="_blank" style="border-color: ${ppgCor}; color: ${ppgCor};">ABRIR RECURSO</a>
+                    <a href="${item.link}" class="btn-view" target="_blank" style="border-color: ${ppgCor}; color: ${ppgCor};">ABRIR</a>
                 </div>
             `;
         }).join('');
@@ -349,7 +348,7 @@
         const ppgSelect = document.getElementById('ppgFilter');
         const ppgsEncontrados = new Set();
         
-        container.innerHTML = '<p style="text-align:center; padding: 50px; color: var(--text-dim);">Sincronizando recursos...</p>';
+        container.innerHTML = '<p style="text-align:center; padding: 50px; color: var(--text-dim);">Carregando recursos...</p>';
         let fullHtml = '';
 
         for (const sec of secoes) {
@@ -372,7 +371,7 @@
                     conteudo = `
                         <h4 style="color: #10b981; font-size: 0.75rem; margin-bottom: 15px; letter-spacing: 1px;">● PROCESSOS EM VIGOR</h4>
                         <div class="grid-container">${renderCards(ativos, sec.tagClass, sec.titulo)}</div>
-                        <h4 style="color: var(--text-dim); font-size: 0.75rem; margin: 30px 0 15px; letter-spacing: 1px;">○ ARQUIVADOS / HISTÓRICO</h4>
+                        <h4 style="color: var(--text-dim); font-size: 0.75rem; margin: 30px 0 15px; letter-spacing: 1px;">○ ARQUIVADOS</h4>
                         <div class="grid-container" style="opacity: 0.6;">${renderCards(inativos, sec.tagClass, sec.titulo)}</div>
                     `;
                 }
@@ -411,7 +410,6 @@
                     const cardPPG = (card.getAttribute('data-ppg') || '').toLowerCase();
                     const txt = card.innerText.toLowerCase();
                     
-                    // LÓGICA DE HERANÇA: Mostra o específico OU o que for "Geral"
                     const matchesPPG = (selPPG === 'all' || cardPPG === selPPG || cardPPG === 'geral');
                     const matchesSearch = txt.includes(val);
 
