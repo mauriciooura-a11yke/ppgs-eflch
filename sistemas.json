@@ -115,5 +115,14 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "e-mail, mailing, list"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Gestor de Diárias PROAP EDUCAÇÂO",
+    "descricao": "Interface para gerenciamento da verba de diárias com verba PROAP do PPGE.",
+    "link": "https://script.google.com/macros/s/AKfycbxQR0rycq7ibvJgkUxh0DeohBq-rtXMY2gRnt440_JgmHWqITXPQXxKZtTrCNm1Xdo6/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "proap, diárias, ppge"
   }
 ]
