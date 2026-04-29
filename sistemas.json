@@ -124,5 +124,14 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "proap, diárias, ppge"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "SUA UNIFESP",
+    "descricao": "Sistema de Atendimento",
+    "link": "https://atendimento.unifesp.br/",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "atendimento, suaunifesp, ti, pessoal, pessoas, serviços"
   }
 ]
