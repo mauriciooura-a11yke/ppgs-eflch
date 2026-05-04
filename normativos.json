@@ -61,5 +61,23 @@
     "botao": "ABRIR DOCUMENTO",
     "status": "ativo",
     "palavras_chave": "regimento, regulamento, filosofia"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Resolução nº 011/2023/PRÓ-REITORIA DE PÓS-GRADUAÇÃO E PESQUISA - PROPGPQ",
+    "descricao": "Estabelece diretrizes para composição de comissões julgadoras relativas às defesas de dissertações de mestrado e teses de doutorado no âmbito dos programas de pós-graduação stricto sensu da Universidade Federal de São\nPaulo - Unifesp",
+    "link": "https://drive.google.com/file/d/19JGP2Wh3zZf8ocFia9XcmxhtBNbkPYXF/view?usp=drive_link",
+    "botao": "ABRIR DOCUMENTO",
+    "status": "ativo",
+    "palavras_chave": "comissão julgadora, banca, composição mínima"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "RESOLUÇÃO Nº 200/2021/CONSELHO UNIVERSITÁRIO",
+    "descricao": "Dispõe sobre as diretrizes e procedimentos para os projetos de pesquisa no Comitê de Éca em Pesquisa (CEP) e na Comissão de Éca no Uso de Animais (CEUA) no âmbito da Universidade Federal de São Paulo (Unifesp).",
+    "link": "https://drive.google.com/file/d/1lrJNeX-gETGz2x-uFiVC-TvdyrkoNhXJ/view?usp=drive_link",
+    "botao": "ABRIR DOCUMENTO",
+    "status": "ativo",
+    "palavras_chave": "cep, parecer cep, declaração de responsabilidade, ética, pesquisa"
   }
 ]
