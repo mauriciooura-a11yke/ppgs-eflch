@@ -18,10 +18,10 @@
             text-transform: uppercase;
             display: flex;
             min-height: 100vh;
-            flex-direction: row; /* PADRÃO DESKTOP LADO A LADO */
+            flex-direction: row;
         }
         
-        /* SIDEBAR DE CONTROLES (DESKTOP) */
+        /* SIDEBAR DE CONTROLES */
         .sidebar {
             width: 320px;
             background-color: #0F172A;
@@ -53,7 +53,7 @@
             gap: 10px;
         }
 
-        /* ÁREA DE CONTEÚDO PRINCIPAL (DESKTOP) */
+        /* ÁREA DE CONTEÚDO PRINCIPAL */
         .main-content {
             margin-left: 320px;
             flex-grow: 1;
@@ -250,6 +250,20 @@
             gap: 5px;
         }
 
+        /* ESTILO DO MARCADOR DE HORÁRIO DETALHADO */
+        .time-clock-badge {
+            background-color: #E2E8F0;
+            color: #0F172A;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 6px;
+            border: 1px solid #CBD5E1;
+        }
+
         .badge-status-alert {
             background-color: #0F172A;
             color: #FFF;
@@ -301,79 +315,21 @@
 
         .loading { text-align: center; padding: 60px; color: #64748B; font-weight: 700; width: 100%; }
 
-        /* ========================================== */
-        /* REGRAS DE RESPONSIVIDADE          */
-        /* ========================================== */
+        /* REGRAS DE RESPONSIVIDADE */
         @media (max-width: 768px) {
-            body {
-                flex-direction: column; /* EMPILHA SIDEBAR NO TOPO DO CELULAR */
-            }
-
-            /* REPOSICIONA SIDEBAR NO TOPO */
-            .sidebar {
-                width: 100%;
-                position: relative;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-                padding: 20px;
-                gap: 15px;
-            }
-
-            /* REMOVE O RECUO LATERAL DO CONTEÚDO */
-            .main-content {
-                margin-left: 0;
-                width: 100%;
-                padding: 15px;
-            }
-
-            .header {
-                padding: 15px 20px;
-                margin-bottom: 15px;
-            }
+            body { flex-direction: column; }
+            .sidebar { width: 100%; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 20px; gap: 15px; }
+            .main-content { margin-left: 0; width: 100%; padding: 15px; }
+            .header { padding: 15px 20px; margin-bottom: 15px; }
             .header h1 { font-size: 18px; }
-
-            /* REDESENHO DO CRONOGRAMA PARA TELA VERTICAL */
-            .gantt-timeline::before {
-                left: 30px; /* RETRAI A LINHA GUIA PARA A ESQUERDA */
-            }
-
-            .gantt-row {
-                flex-direction: column; /* COMPONENTES DA RAIA FICAM VERTICAIS */
-                align-items: flex-start;
-                padding: 15px 15px 15px 0;
-                min-height: auto;
-                gap: 10px;
-            }
-
-            .gantt-date-side {
-                width: auto;
-                text-align: left;
-                padding-left: 55px; /* DISTANCIA DO MARCADOR CENTRAL */
-                font-size: 12px;
-            }
-
-            .gantt-node {
-                left: 25px; /* REALINHA O NÓ EM CIMA DA NOVA LINHA */
-                top: 17px;
-            }
-
-            .gantt-space {
-                margin-left: 55px;
-                width: calc(100% - 55px);
-            }
-
-            /* FORÇA OS CARDS A COMPORTAREM-SE EM 100% (IGNORA LARGURA DIAS) */
-            .event-card-horizontal {
-                width: 100% !important; 
-                min-width: 0;
-                padding: 12px 15px;
-            }
-            
+            .gantt-timeline::before { left: 30px; }
+            .gantt-row { flex-direction: column; align-items: flex-start; padding: 15px 15px 15px 0; min-height: auto; gap: 10px; }
+            .gantt-date-side { width: auto; text-align: left; padding-left: 55px; font-size: 12px; }
+            .gantt-node { left: 25px; top: 17px; }
+            .gantt-space { margin-left: 55px; width: calc(100% - 55px); }
+            .event-card-horizontal { width: 100% !important; min-width: 0; padding: 12px 15px; }
             .card-title { font-size: 13px; margin-bottom: 8px; }
-            
-            /* DEIXA OS SELETORES DE TAG EM LINHA CASO CAIBA */
-            .tag-selector-container {
-                flex-direction: column; 
-            }
+            .tag-selector-container { flex-direction: column; }
         }
     </style>
 </head>
@@ -412,7 +368,7 @@
 <div class="main-content">
     <div class="header">
         <h1>CRONOGRAMA INTEGRADO PPGE</h1>
-        <p>ARQUITETURA RESPONSIVA INTEGRAL — OTIMIZADO PARA SMARTPHONES E DESKTOPS</p>
+        <p>ARQUITETURA DE PRECISÃO — SUPORTE A RAIA TEMPORAL E DIRECIONAMENTO DE HORÁRIOS MÚLTIPLOS</p>
     </div>
 
     <div id="gantt-container" class="gantt-timeline">
@@ -455,11 +411,22 @@
             const r = await fetch('agenda_ppge.json?t=' + new Date().getTime());
             const dadosBrutos = await r.json();
             
+            // Suporta chaves com ou sem acentos provenientes do Make/Planilha
             datasetCompleto = dadosBrutos.filter(ev => {
-                return String(ev["CONCLUIDO"] || '').toUpperCase().trim() !== "SIM";
+                const concluido = ev["EVENTO CONCLUIDO"] || ev["EVENTO CONCLUÍDO"] || ev["CONCLUIDO"] || '';
+                return String(concluido).toUpperCase().trim() !== "SIM";
             });
             
-            datasetCompleto.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
+            // Ordenação por dia e horário inicial
+            datasetCompleto.sort((a, b) => {
+                const dataA = new Date(a["DIA INICIAL"]);
+                const dataB = new Date(b["DIA INICIAL"]);
+                if (dataA - dataB !== 0) return dataA - dataB;
+                
+                const horaA = a["HORARIO INICIO"] || a["HORÁRIO INÍCIO"] || "";
+                const horaB = b["HORARIO INICIO"] || b["HORÁRIO INÍCIO"] || "";
+                return horaA.localeCompare(horaB);
+            });
             
             extrairCategoriasDaBase();
             filtrarCronograma();
@@ -471,7 +438,7 @@
     function extrairCategoriasDaBase() {
         const list = new Set();
         datasetCompleto.forEach(ev => {
-            const c = String(ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
+            const c = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
             if(c) list.add(c);
         });
         todasCategoriasExistentes = Array.from(list).sort();
@@ -546,8 +513,8 @@
         const hojeTime = obterDataHoje();
 
         const dadosFiltrados = datasetCompleto.filter(ev => {
-            const cEv = String(ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
-            const nEv = normalizarString(ev["EVENTO"]);
+            const cEv = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
+            const nEv = normalizarString(ev["DESCRIÇÃO DO EVENTO"] || ev["EVENTO"]);
             const dataEvInic = new Date(ev["DIA INICIAL"]);
             dataEvInic.setHours(0,0,0,0);
 
@@ -613,11 +580,24 @@
 
             eventosDaRaia.forEach(ev => {
                 const iBR = ev["DIA INICIAL"].split('-').reverse().join('/');
-                const fBR = ev["DIA FINAL"] ? ev["DIA FINAL"].split('-').reverse().join('/') : iBR;
-                const textoPeriodo = iBR === fBR ? iBR : `${iBR} ATÉ ${fBR}`;
+                const diaFinalBruto = ev["DIA FINAL"] || ev["DIA INICIAL"];
+                const fBR = diaFinalBruto.split('-').reverse().join('/');
+                
+                // Extração dos novos campos de horário
+                const hInicio = ev["HORARIO INICIO"] || ev["HORÁRIO INÍCIO"] || "";
+                const hTermino = ev["HORARIO TÉRMINO"] || ev["HORÁRIO TÉRMINO"] || ev["HORARIO TERMINO"] || "";
+                
+                let textoPeriodo = iBR === fBR ? iBR : `${iBR} ATÉ ${fBR}`;
+                let htmlHorario = "";
+                
+                // Constrói o elemento visual de relógio se houver horário preenchido
+                if(hInicio) {
+                    const sufixoTermino = hTermino ? ` ÀS ${hTermino}` : "";
+                    htmlHorario = `<span class="time-clock-badge"><i class="fa-regular fa-clock"></i> ${hInicio}${sufixoTermino}</span>`;
+                }
 
                 const dInic = new Date(ev["DIA INICIAL"]);
-                const dFim = new Date(ev["DIA FINAL"] || ev["DIA INICIAL"]);
+                const dFim = new Date(diaFinalBruto);
                 const diferencaDias = Math.max(1, Math.round((dFim - dInic) / (1000 * 60 * 60 * 24)) + 1);
                 
                 const larguraCalculada = Math.min(100, 25 + (diferencaDias * 3)); 
@@ -626,7 +606,7 @@
                 dInicComparacao.setHours(0,0,0,0);
                 const ehPassadoOuAtual = dInicComparacao <= hojeTime;
 
-                const cat = String(ev["CATEGORIA"] || 'GERAL').toUpperCase();
+                const cat = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase();
                 const coresCard = gerarCorPorTexto(cat);
 
                 const card = document.createElement('div');
@@ -642,13 +622,17 @@
                 }
 
                 const nLinha = ev["LINHA_PLANILHA"] || '...';
+                const descricaoEvento = ev["DESCRIÇÃO DO EVENTO"] || ev["EVENTO"] || "";
 
                 card.innerHTML = `
                     <div class="card-top-time">
-                        <span style="color: ${coresCard.texto}"><i class="fa-regular fa-clock"></i> ${textoPeriodo} (${diferencaDias} DIAS)</span>
+                        <span style="color: ${coresCard.texto}">
+                            <i class="fa-regular fa-calendar"></i> ${textoPeriodo} (${diferencaDias} DIAS)
+                            ${htmlHorario}
+                        </span>
                         ${statusBadgeHTML}
                     </div>
-                    <h2 class="card-title">${ev["EVENTO"]}</h2>
+                    <h2 class="card-title">${descricaoEvento}</h2>
                     <div class="card-footer">
                         <span class="tag-category-label" style="background-color: ${coresCard.borda}"><i class="fa-solid fa-tag"></i> ${cat}</span>
                         <span class="tag-line"><i class="fa-solid fa-table"></i> LINHA: ${nLinha}</span>
