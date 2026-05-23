@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma de Atividades - PPGE</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7fafc;
+            margin: 0;
+            padding: 20px;
+            color: #2d3748;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        h1 {
+            text-align: center;
+            color: #1a365d;
+            margin-bottom: 5px;
+            font-size: 26px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        /* Torna a área do gráfico responsiva com scroll horizontal em ecrãs pequenos */
+        .gantt-scroll-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: #fff;
+        }
+        #gantt_chart {
+            min-width: 1100px;
+            min-height: 650px;
+        }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 16px;
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Cronograma de Atividades PPGE</h1>
+    <div class="subtitle">Gráfico de Gantt dinâmico atualizado via Google Sheets</div>
+    
+    <div class="gantt-scroll-container">
+        <div id="gantt_chart">
+            <div class="loading">A carregar e processar dados da agenda pública...</div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // Inicializa o Google Charts para o formato Gantt
+    google.charts.load('current', {'packages':['gantt'], 'language': 'pt-br'});
+    google.charts.setOnLoadCallback(fetchCSVAndDraw);
+
+    function fetchCSVAndDraw() {
+        // Link de exportação CSV da sua planilha publicada
+        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlYhmbrQDLeT0KGj45EeXRMMwZfyO5vI4lBYB3WK0C_LiTxOsfE0IUwF6UgNrhMgpm-mUvTJNqg4E_/pub?gid=0&single=true&output=csv";
+
+        fetch(csvUrl)
+            .then(response => response.text())
+            .then(csvText => {
+                processData(csvText);
+            })
+            .catch(error => {
+                document.getElementById('gantt_chart').innerHTML = 
+                    `<p style="color:#e53e3e; text-align:center; padding: 40px;">Erro ao carregar dados da planilha.<br><small>${error}</small></p>`;
+            });
+    }
+
+    function processData(csvText) {
+        // Divide o CSV por linhas de forma segura
+        const lines = csvText.split(/\r?\n/);
+        
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Task ID');
+        data.addColumn('string', 'Task Name');
+        data.addColumn('string', 'Resource');
+        data.addColumn('date', 'Start Date');
+        data.addColumn('date', 'End Date');
+        data.addColumn('number', 'Duration');
+        data.addColumn('number', 'Percent Complete');
+        data.addColumn('string', 'Dependencies');
+
+        let taskIdCounter = 1;
+
+        // Avança o cabeçalho (linha 0) e processa as linhas com dados
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+
+            // Expressão regular avançada para separar por vírgulas, ignorando vírgulas dentro de aspas ""
+            const matches = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
+            
+            // Garante que a linha tem os 4 campos necessários (Início, Fim, Categoria, Evento)
+            if (matches.length < 4) continue;
+
+            // Função para limpar aspas remanescentes nas extremidades do texto
+            const cleanStr = (str) => str ? str.replace(/^"|"$/g, '').trim() : '';
+            
+            const dataInicialStr = cleanStr(matches[0]); // Esperado: YYYY-MM-DD
+            const dataFinalStr = cleanStr(matches[1]);   // Esperado: YYYY-MM-DD
+            const categoria = cleanStr(matches[2]);
+            const evento = cleanStr(matches[3]);
+
+            // Divide as datas para criar o objeto Date do JavaScript
+            const pStart = dataInicialStr.split('-');
+            const pEnd = dataFinalStr.split('-');
+
+            if (pStart.length === 3 && pEnd.length === 3) {
+                // Nota: No JavaScript os meses começam em 0 (Janeiro = 0, Dezembro = 11)
+                const startDate = new Date(parseInt(pStart[0]), parseInt(pStart[1]) - 1, parseInt(pStart[2]));
+                const endDate = new Date(parseInt(pEnd[0]), parseInt(pEnd[1]) - 1, parseInt(pEnd[2]));
+
+                data.addRow([
+                    'T' + taskIdCounter, // ID único sequencial (T1, T2, T3...)
+                    evento,              // Nome do evento/tarefa
+                    categoria,           // Usado pelo Google Charts para agrupar e colorir as barras
+                    startDate,           // Data de início
+                    endDate,             // Data de conclusão
+                    null,                // Duração (deixe null para calcular automaticamente pelas datas)
+                    0,                   // Percentagem concluída (0%)
+                    null                 // Sem dependências de encadeamento
+                ]);
+                taskIdCounter++;
+            }
+        }
+
+        // Definições visuais do Gráfico
+        const options = {
+            height: taskIdCounter * 38 + 50, // Ajusta a altura dinamicamente conforme o número de linhas
+            gantt: {
+                trackHeight: 35,
+                barHeight: 22,
+                percentEnabled: false,
+                palette: [
+                    { "color": "#3182ce", "dark": "#2b6cb0", "light": "#ebf8ff" }, // Azul
+                    { "color": "#319795", "dark": "#2c7a7b", "light": "#e6fffa" }, // Teal
+                    { "color": "#d69e2e", "dark": "#b7791f", "light": "#fefcbf" }, // Amarelo
+                    { "color": "#805ad5", "dark": "#6b46c1", "light": "#faf5ff" }, // Roxo
+                    { "color": "#38a169", "dark": "#2f855a", "light": "#f0fff4" }, // Verde
+                    { "color": "#e53e3e", "dark": "#c53030", "light": "#fff5f5" }  // Vermelho
+                ]
+            }
+        };
+
+        const chart = new google.visualization.Gantt(document.getElementById('gantt_chart'));
+        chart.draw(data, options);
+    }
+</script>
+
+</body>
+</html>
