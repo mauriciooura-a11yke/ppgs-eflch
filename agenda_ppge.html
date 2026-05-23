@@ -18,9 +18,10 @@
             text-transform: uppercase;
             display: flex;
             min-height: 100vh;
+            flex-direction: row; /* PADRÃO DESKTOP LADO A LADO */
         }
         
-        /* SIDEBAR DE CONTROLES */
+        /* SIDEBAR DE CONTROLES (DESKTOP) */
         .sidebar {
             width: 320px;
             background-color: #0F172A;
@@ -52,11 +53,12 @@
             gap: 10px;
         }
 
-        /* ÁREA DE CONTEÚDO PRINCIPAL */
+        /* ÁREA DE CONTEÚDO PRINCIPAL (DESKTOP) */
         .main-content {
             margin-left: 320px;
             flex-grow: 1;
             padding: 30px;
+            width: calc(100% - 320px);
         }
         
         .header {
@@ -96,7 +98,7 @@
         }
         .filter-input:focus { outline: none; border-color: #3182CE; }
         
-        /* BOTÕES DE SELEÇÃO INTELIGENTE (TAGS) */
+        /* BOTÕES DE SELEÇÃO POR TAGS */
         .tag-selector-container {
             display: flex;
             flex-direction: column;
@@ -122,10 +124,8 @@
             color: white;
         }
 
-        /* ESTADO ATIVO DO FILTRO DE STATUS TEMPORAL */
         .tag-button.active.status-time { background-color: #3182CE; color: white; border-color: #3182CE; }
         
-        /* NOVO POSICIONAMENTO DO BOTÃO RESET NO TOPO */
         .btn-reset {
             padding: 12px;
             background-color: #334155;
@@ -214,6 +214,7 @@
             gap: 12px;
             position: relative;
             z-index: 2;
+            width: 100%;
         }
 
         /* CONFIGURAÇÃO BASE DOS CARDS */
@@ -230,7 +231,6 @@
             transition: transform 0.2s;
         }
 
-        /* BORDA EXTRA PARA CARDS VIGENTES (<= HOJE) */
         .card-status-past {
             border-top: 2px solid #0F172A !important;
             border-right: 2px solid #0F172A !important;
@@ -246,6 +246,8 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         .badge-status-alert {
@@ -275,6 +277,8 @@
             align-items: center;
             font-size: 10px;
             font-weight: 700;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         .tag-category-label {
@@ -296,6 +300,81 @@
         }
 
         .loading { text-align: center; padding: 60px; color: #64748B; font-weight: 700; width: 100%; }
+
+        /* ========================================== */
+        /* REGRAS DE RESPONSIVIDADE          */
+        /* ========================================== */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column; /* EMPILHA SIDEBAR NO TOPO DO CELULAR */
+            }
+
+            /* REPOSICIONA SIDEBAR NO TOPO */
+            .sidebar {
+                width: 100%;
+                position: relative;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                padding: 20px;
+                gap: 15px;
+            }
+
+            /* REMOVE O RECUO LATERAL DO CONTEÚDO */
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 15px;
+            }
+
+            .header {
+                padding: 15px 20px;
+                margin-bottom: 15px;
+            }
+            .header h1 { font-size: 18px; }
+
+            /* REDESENHO DO CRONOGRAMA PARA TELA VERTICAL */
+            .gantt-timeline::before {
+                left: 30px; /* RETRAI A LINHA GUIA PARA A ESQUERDA */
+            }
+
+            .gantt-row {
+                flex-direction: column; /* COMPONENTES DA RAIA FICAM VERTICAIS */
+                align-items: flex-start;
+                padding: 15px 15px 15px 0;
+                min-height: auto;
+                gap: 10px;
+            }
+
+            .gantt-date-side {
+                width: auto;
+                text-align: left;
+                padding-left: 55px; /* DISTANCIA DO MARCADOR CENTRAL */
+                font-size: 12px;
+            }
+
+            .gantt-node {
+                left: 25px; /* REALINHA O NÓ EM CIMA DA NOVA LINHA */
+                top: 17px;
+            }
+
+            .gantt-space {
+                margin-left: 55px;
+                width: calc(100% - 55px);
+            }
+
+            /* FORÇA OS CARDS A COMPORTAREM-SE EM 100% (IGNORA LARGURA DIAS) */
+            .event-card-horizontal {
+                width: 100% !important; 
+                min-width: 0;
+                padding: 12px 15px;
+            }
+            
+            .card-title { font-size: 13px; margin-bottom: 8px; }
+            
+            /* DEIXA OS SELETORES DE TAG EM LINHA CASO CAIBA */
+            .tag-selector-container {
+                flex-direction: column; 
+            }
+        }
     </style>
 </head>
 <body>
@@ -326,15 +405,14 @@
     
     <div class="filter-group">
         <label><i class="fa-solid fa-tags"></i> FILTRAR POR CATEGORIAS</label>
-        <div id="container-tags-categoria" class="tag-selector-container">
-            </div>
+        <div id="container-tags-categoria" class="tag-selector-container"></div>
     </div>
 </div>
 
 <div class="main-content">
     <div class="header">
         <h1>CRONOGRAMA INTEGRADO PPGE</h1>
-        <p>ARQUITETURA DE DADOS FLUIDA E CORRESPONDÊNCIA CROMÁTICA AUTOMÁTICA POR HASH INFINITO</p>
+        <p>ARQUITETURA RESPONSIVA INTEGRAL — OTIMIZADO PARA SMARTPHONES E DESKTOPS</p>
     </div>
 
     <div id="gantt-container" class="gantt-timeline">
@@ -358,14 +436,12 @@
         return hoje;
     }
 
-    // ALGORITMO DE GERAÇÃO DE COR POR HASH (UMA COR EXCLUSIVA E COMPATÍVEL PARA CADA TEXTO)
     function gerarCorPorTexto(str) {
         let hash = 0;
         const texto = normalizarString(str);
         for (let i = 0; i < texto.length; i++) {
             hash = texto.charCodeAt(i) + ((hash << 5) - hash);
         }
-        // Converte para escala HSL para garantir cores vivas com bom contraste
         const hue = Math.abs(hash) % 360;
         return {
             borda: `hsl(${hue}, 65%, 40%)`,
@@ -409,13 +485,11 @@
         todasCategoriasExistentes.forEach(cat => {
             const btn = document.createElement('button');
             const cores = gerarCorPorTexto(cat);
-            
             const ehAtiva = categoriasFiltradasAtivas.length === 0 || categoriasFiltradasAtivas.includes(cat);
             
             btn.className = 'tag-button';
             btn.innerHTML = `<span>${cat}</span> <i class="fa-solid ${ehAtiva ? 'fa-check' : 'fa-minus'}"></i>`;
             
-            // Aplica a cor gerada dinamicamente caso a categoria esteja ativa no filtro
             if (ehAtiva) {
                 btn.style.backgroundColor = cores.borda;
                 btn.style.borderColor = cores.borda;
@@ -430,7 +504,6 @@
             container.appendChild(btn);
         });
 
-        // Atualiza visual dos botões de Status Temporal
         const statusAtivosVazio = statusFiltradosAtivos.length === 0;
         
         const btnAtivos = document.getElementById('btn-status-ativos');
@@ -554,15 +627,11 @@
                 const ehPassadoOuAtual = dInicComparacao <= hojeTime;
 
                 const cat = String(ev["CATEGORIA"] || 'GERAL').toUpperCase();
-                
-                // GERA AS CORES DO CARD INDIVIDUAMENTE POR HASH DINÂMICO
                 const coresCard = gerarCorPorTexto(cat);
 
                 const card = document.createElement('div');
                 card.className = 'event-card-horizontal';
                 card.style.width = `${larguraCalculada}%`; 
-                
-                // Injeta os estilos cromáticos individuais e automáticos
                 card.style.borderLeft = `10px solid ${coresCard.borda}`;
                 card.style.backgroundColor = coresCard.fundo;
 
