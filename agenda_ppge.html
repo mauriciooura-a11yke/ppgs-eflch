@@ -19,7 +19,7 @@
             text-transform: uppercase;
         }
         
-        /* APROVEITAMENTO MÁXIMO DA TELA */
+        /* CONTAINER DE TELA CHEIA */
         .container {
             max-width: 98%;
             margin: 0 auto;
@@ -31,34 +31,59 @@
             color: white;
             padding: 25px 35px;
             border-radius: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             border-left: 15px solid #FFCC00;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-        .header h1 { margin: 0; font-family: 'Poppins'; font-size: 26px; font-weight: 700; letter-spacing: 0.5px; }
+        .header h1 { margin: 0; font-family: 'Poppins'; font-size: 26px; font-weight: 700; }
         .header p { margin: 5px 0 0 0; color: #FFCC00; font-weight: 600; font-size: 11px; letter-spacing: 1px; }
 
-        /* GRID DINÂMICO DE DUAS COLUNAS PARA GANHO DE ESPAÇO */
+        /* ESTRUTURA EIXO VERTICAL CRONOLÓGICO */
         .timeline-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
-            gap: 25px;
+            position: relative;
+            padding-left: 45px; /* ESPAÇO PARA A LINHA VERTICAL */
+            margin-top: 20px;
         }
 
-        /* BLOCO DO DIA (AGRUPADOR) */
+        /* A LINHA VERTICAL MASTER */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #003366 0%, #FFCC00 50%, #CBD5E1 100%);
+            border-radius: 2px;
+        }
+
+        /* BLOCO DO DIA (AGRUPADOR NA LINHA) */
         .timeline-group {
+            position: relative;
+            margin-bottom: 35px;
             background: #FFF;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             border: 1px solid #E2E8F0;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s;
         }
-        .timeline-group:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+
+        /* BOLA MARCADA NA LINHA VERTICAL */
+        .timeline-badge {
+            position: absolute;
+            left: -42px;
+            top: 22px;
+            width: 26px;
+            height: 26px;
+            background-color: #FFF;
+            border: 4px solid #003366;
+            border-radius: 50%;
+            z-index: 5;
+            transition: all 0.2s ease;
+        }
+        .timeline-group:hover .timeline-badge {
+            background-color: #FFCC00;
+            transform: scale(1.15);
         }
 
         /* ETIQUETA DA DATA DE INÍCIO */
@@ -72,17 +97,17 @@
             border-radius: 6px;
             align-self: flex-start;
             margin-bottom: 15px;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 2px 5px rgba(0,51,102,0.2);
         }
 
-        /* RAMIFICAÇÃO DAS OCORRÊNCIAS SIMULTÂNEAS */
+        /* RAMIFICAÇÃO DAS OCORRÊNCIAS SIMULTÂNEAS (OCUPAM A LARGURA DA TELA) */
         .events-branch {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            width: 100%;
         }
 
         /* CARD DO EVENTO INDIVIDUAL */
@@ -94,6 +119,7 @@
             border-left: 6px solid #003366;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
         }
 
         /* CORES DE IDENTIFICAÇÃO POR CATEGORIA */
@@ -103,12 +129,12 @@
         .cat-eventos { border-left-color: #805AD5; }
         .cat-secretaria { border-left-color: #D69E2E; }
 
-        /* PERÍODO/RELÓGIO POSICIONADO NO TOPO DO CARD */
+        /* RELÓGIO POSICIONADO NO TOPO DO CARD */
         .event-time-top {
             font-size: 11px;
             color: #003366;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -145,7 +171,7 @@
             color: #475569;
         }
 
-        /* LOCALIZADOR DA LINHA DA PLANILHA (EM DESTAQUE VERMELHO) */
+        /* LOCALIZADOR DA LINHA DA PLANILHA */
         .sheet-line-tag {
             background: #FFF5F5;
             color: #C53030;
@@ -172,7 +198,7 @@
             gap: 6px;
         }
 
-        .loading { text-align: center; padding: 100px; color: #64748B; font-weight: 700; width: 100%; grid-column: 1/-1; }
+        .loading { text-align: center; padding: 100px; color: #64748B; font-weight: 700; width: 100%; }
     </style>
 </head>
 <body>
@@ -186,7 +212,7 @@
     </div>
 
     <div id="timeline" class="timeline-container">
-        <div class="loading">SINCROZINANDO PAINEL CRONOLÓGICO...</div>
+        <div class="loading">CONSTRUINDO EIXO CRONOLÓGICO VERTICAL...</div>
     </div>
 </div>
 
@@ -207,7 +233,7 @@
             // Ordenação Cronológica por data de início
             eventos.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
 
-            // Agrupamento automático por data de início para isolar simultaneidades
+            // Agrupamento por data de início para detecção de simultaneidade
             const gruposDeData = {};
             eventos.forEach(evento => {
                 const dataChave = evento["DIA INICIAL"];
@@ -217,7 +243,7 @@
                 gruposDeData[dataChave].push(evento);
             });
 
-            // Geração dos componentes de tela
+            // Renderização no Eixo
             Object.keys(gruposDeData).forEach(dataChave => {
                 const listaEventosDesteDia = gruposDeData[dataChave];
                 const dataInicBR = dataChave.split('-').reverse().join('/');
@@ -225,13 +251,12 @@
                 const grupoDiv = document.createElement('div');
                 grupoDiv.className = 'timeline-group';
 
-                // Aplica o banner de alerta se o mesmo dia contiver mais de uma atividade paralela
                 let alertaSimultaneoHTML = '';
                 if (listaEventosDesteDia.length > 1) {
                     alertaSimultaneoHTML = `
                         <div class="simultaneous-alert">
                             <i class="fa-solid fa-triangle-exclamation"></i> 
-                            ${listaEventosDesteDia.length} ATIVIDADES SIMULTÂNEAS CONCORRENTES
+                            ${listaEventosDesteDia.length} ATIVIDADES SIMULTÂNEAS CONCORRENTES NESTE DIA
                         </div>
                     `;
                 }
@@ -260,13 +285,14 @@
                             
                             <div class="event-meta">
                                 <span class="category-tag"><i class="fa-solid fa-tag"></i> ${catTexto || 'GERAL'}</span>
-                                <span class="sheet-line-tag"><i class="fa-solid fa-table"></i> LINHA PLANILHA: ${numLinha}</span>
+                                <span class="sheet-line-tag"><i class="fa-solid fa-table"></i> LINHA: ${numLinha}</span>
                             </div>
                         </div>
                     `;
                 });
 
                 grupoDiv.innerHTML = `
+                    <div class="timeline-badge"></div>
                     <div class="timeline-date-label"><i class="fa-solid fa-calendar-days"></i> INÍCIO: ${dataInicBR}</div>
                     ${alertaSimultaneoHTML}
                     <div class="events-branch">
