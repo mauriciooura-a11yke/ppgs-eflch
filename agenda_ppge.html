@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINHA DO TEMPO CRONOLÓGICA - PPGE</title>
+    <title>SISTEMA DE AGENDA INTEGRADA - PPGE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -14,272 +14,339 @@
             background-color: #F1F5F9;
             font-family: 'Lato', sans-serif;
             margin: 0;
-            padding: 20px;
-            text-transform: uppercase; /* PADRONIZAÇÃO EM MAIÚSCULAS */
+            padding: 15px;
+            text-transform: uppercase; /* PADRONIZAÇÃO EXECUTIVA EM MAIÚSCULAS */
         }
         
-        /* CONTAINER DE TELA CHEIA - MÁXIMO APROVEITAMENTO DE ESPAÇO */
         .container {
-            max-width: 98%;
+            max-width: 100%;
             margin: 0 auto;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #003366 0%, #001A33 100%);
-            color: white;
-            padding: 25px 40px;
+            background: #FFF;
+            padding: 20px;
             border-radius: 12px;
-            margin-bottom: 25px;
-            border-left: 15px solid #FFCC00;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* BARRA SUPERIOR DE NAVEGAÇÃO ESTILO GOOGLE CALENDAR */
+        .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        .header h1 { margin: 0; font-family: 'Poppins'; font-size: 28px; font-weight: 700; }
-        .header p { margin: 5px 0 0 0; color: #FFCC00; font-weight: 600; font-size: 12px; letter-spacing: 1px; }
-
-        /* LINHA DO TEMPO EM GRID DE DUAS COLUNAS */
-        .timeline-container {
-            position: relative;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
-            gap: 25px;
-            padding-top: 10px;
-        }
-
-        .timeline-group {
-            background: #FFF;
-            border-radius: 12px;
-            padding: 20px;
-            border: 1px solid #E2E8F0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .timeline-date-label {
-            font-family: 'Poppins', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            color: #FFFFFF;
-            background: #003366;
-            padding: 6px 14px;
-            border-radius: 6px;
-            align-self: flex-start;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #E2E8F0;
             margin-bottom: 15px;
+        }
+
+        .calendar-title-side {
             display: flex;
             align-items: center;
+            gap: 15px;
+        }
+
+        .calendar-title-side h1 {
+            margin: 0;
+            font-family: 'Poppins';
+            font-size: 22px;
+            color: #003366;
+            font-weight: 700;
+        }
+
+        .current-month-display {
+            font-family: 'Poppins';
+            font-size: 24px;
+            font-weight: 700;
+            color: #1E293B;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .nav-buttons {
+            display: flex;
             gap: 8px;
         }
 
-        /* FILIAIS DE EVENTOS DENTRO DO MESMO DIA (SIMULTÂNEOS) */
-        .events-branch {
+        .btn-nav {
+            background: #FFF;
+            border: 1px solid #CBD5E1;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            color: #334155;
+            transition: all 0.2s;
+        }
+        .btn-nav:hover {
+            background: #F8FAFC;
+            border-color: #94A3B8;
+        }
+
+        /* ESTRUTURA DO CALENDÁRIO */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background-color: #E2E8F0; /* COR DA DIVISÓRIA DOS DIAS */
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* DIAS DA SEMANA (DOM, SEG, TER...) */
+        .weekday-header {
+            background-color: #F8FAFC;
+            color: #64748B;
+            font-weight: 700;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 12px;
+            border-bottom: 2px solid #E2E8F0;
+        }
+
+        /* CÉLULA DO DIA INDIVIDUAL */
+        .calendar-day {
+            background-color: #FFF;
+            min-height: 120px;
+            padding: 6px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 4px;
+            transition: background-color 0.2s;
+        }
+        .calendar-day:hover {
+            background-color: #F8FAFC;
         }
 
-        /* CARDS COMPACTOS ESTILO BARRA */
-        .event-bar {
-            background: #F8FAFC;
-            border-radius: 8px;
-            padding: 15px;
-            border: 1px solid #E2E8F0;
-            border-left: 6px solid #003366;
-            position: relative;
+        /* DIAS QUE NÃO PERTENCEM AO MÊS ATUAL (CINZENTOS) */
+        .day-outside {
+            background-color: #F1F5F9;
+            color: #94A3B8 !important;
         }
 
-        /* CORES POR CATEGORIA */
-        .cat-geral { border-left-color: #3182CE; }
-        .cat-prazos { border-left-color: #E53E3E; }
-        .cat-aulas { border-left-color: #38A169; }
-        .cat-eventos { border-left-color: #805AD5; }
-        .cat-secretaria { border-left-color: #D69E2E; }
-
-        /* RELÓGIO COM PERÍODO EM CIMA DO NOME */
-        .event-time-top {
-            font-size: 12px;
-            color: #003366;
+        .day-number {
+            font-family: 'Poppins';
             font-weight: 700;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #E2E8F0;
-            padding: 3px 8px;
-            border-radius: 4px;
-            align-self: flex-start;
+            font-size: 14px;
+            color: #475569;
+            margin-bottom: 4px;
+            padding: 2px 6px;
             width: fit-content;
         }
-
-        .event-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 15px;
-            font-weight: 600;
-            color: #1E293B;
-            margin: 0 0 12px 0;
-            line-height: 1.4;
+        
+        /* DESTAQUE PARA O DIA DE HOJE */
+        .day-today .day-number {
+            background-color: #003366;
+            color: #FFF;
+            border-radius: 50%;
         }
 
-        .event-meta {
+        /* BLOCOS DE EVENTOS INTERNOS DO CALENDÁRIO */
+        .cal-event-entry {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 6px;
+            border-radius: 3px;
+            color: #FFF;
+            cursor: pointer;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 11px;
-            font-weight: 700;
+            gap: 2px;
         }
 
-        .category-tag {
-            background: #E2E8F0;
-            padding: 3px 8px;
-            border-radius: 4px;
-            color: #475569;
+        /* CORES PADRONIZADAS GOOGLE AGENDA POR CATEGORIA */
+        .bg-geral { background-color: #1A73E8; }      /* AZUL GOOGLE */
+        .bg-prazos { background-color: #D93025; }     /* VERMELHO GOOGLE */
+        .bg-aulas { background-color: #1E8E3E; }      /* VERDE GOOGLE */
+        .bg-eventos { background-color: #8AB4F8; color: #1A73E8; } 
+        .bg-secretaria { background-color: #F2994A; }  /* LARANJA */
+
+        .sheet-line-indicator {
+            background: rgba(0, 0, 0, 0.15);
+            padding: 1px 3px;
+            border-radius: 2px;
+            font-size: 9px;
+            font-weight: 400;
+            flex-shrink: 0;
         }
 
-        /* IDENTIFICADOR DA LINHA DA PLANILHA */
-        .sheet-line-tag {
-            background: #FFF5F5;
-            color: #C53030;
-            border: 1px solid #FEB2B2;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .simultaneous-alert {
-            background: #FFF9E6;
-            border-left: 4px solid #FFCC00;
-            color: #B7791F;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .loading { text-align: center; padding: 100px; color: #64748B; font-weight: 700; width: 100%; grid-column: 1/-1; }
+        .loading { text-align: center; padding: 100px; color: #64748B; font-weight: 700; background: #FFF; grid-column: 1/-1;}
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <div>
-            <h1>LINHA DO TEMPO CRONOLÓGICA PPGE</h1>
-            <p>PAINEL OPERACIONAL DE ATIVIDADES E OCORRÊNCIAS SIMULTÂNEAS</p>
+    <div class="calendar-header">
+        <div class="calendar-title-side">
+            <i class="fa-solid fa-calendar-days" style="font-size: 28px; color: #003366;"></i>
+            <h1>AGENDA INSTITUCIONAL PPGE</h1>
         </div>
+        
+        <div class="nav-buttons">
+            <button class="btn-nav" onclick="mudarMes(-1)"><i class="fa-solid fa-chevron-left"></i> ANTERIOR</button>
+            <button class="btn-nav" onclick="irParaHoje()">HOJE</button>
+            <button class="btn-nav" onclick="mudarMes(1)">PRÓXIMO <i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <div class="current-month-display" id="month-year-title">MÊS / ANO</div>
     </div>
 
-    <div id="timeline" class="timeline-container">
-        <div class="loading">PROCESSANDO COMPACTAÇÃO DOS DADOS...</div>
+    <div class="calendar-grid" id="calendar-board">
+        <div class="loading">CARREGANDO ENGINE DE CALENDÁRIO...</div>
     </div>
 </div>
 
 <script>
-    async function renderizarLinhaTempo() {
+    let dadosAgenda = [];
+    // Inicializa a navegação com base no ano atual corrente (2026)
+    let dataReferencia = new Date(2026, 2, 1); // Começa em Março/2026 como base padrão acadêmica
+
+    const nomesMeses = [
+        "JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO",
+        "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"
+    ];
+
+    async function inicializarAgenda() {
         try {
             const resposta = await fetch('agenda.json');
-            const eventos = await resposta.json();
+            dadosAgenda = await resposta.json();
             
-            const container = document.getElementById('timeline');
-            container.innerHTML = '';
+            // Força a data de hoje para bater com o ambiente operacional do sistema
+            const hojeReal = new Date();
+            dataReferencia = new Date(hojeReal.getFullYear(), hojeReal.getMonth(), 1);
 
-            if(eventos.length === 0) {
-                container.innerHTML = '<div class="loading">NENHUM DADO ENCONTRADO NO ARQUIVO AGENDA.JSON</div>';
-                return;
-            }
-
-            // Ordenação cronológica
-            eventos.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
-
-            // Agrupamento por data de início (Ocorrências simultâneas)
-            const gruposDeData = {};
-            eventos.forEach(evento => {
-                const dataChave = evento["DIA INICIAL"];
-                if (!gruposDeData[dataChave]) {
-                    gruposDeData[dataChave] = [];
-                }
-                gruposDeData[dataChave].push(evento);
-            });
-
-            // Geração dos blocos visuais em colunas aproveitadas
-            Object.keys(gruposDeData).forEach(dataChave => {
-                const listaEventosDesteDia = gruposDeData[dataChave];
-                const dataInicBR = dataChave.split('-').reverse().join('/');
-                
-                const grupoDiv = document.createElement('div');
-                grupoDiv.className = 'timeline-group';
-
-                let alertaSimultaneoHTML = '';
-                if (listaEventosDesteDia.length > 1) {
-                    alertaSimultaneoHTML = `
-                        <div class="simultaneous-alert">
-                            <i class="fa-solid fa-triangle-exclamation"></i> 
-                            ${listaEventosDesteDia.length} ATIVIDADES SIMULTÂNEAS CONCORRENTES
-                        </div>
-                    `;
-                }
-
-                let cardsHTML = '';
-                listaEventosDesteDia.forEach(ev => {
-                    const fimBR = ev["DIA FINAL"] ? ev["DIA FINAL"].split('-').reverse().join('/') : dataInicBR;
-                    const exibicaoPeriodo = dataInicBR === fimBR ? dataInicBR : `${dataInicBR} ATÉ ${fimBR}`;
-                    
-                    let classeCor = 'cat-geral';
-                    const catTexto = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase();
-                    if (catTexto.includes('AULA') || catTexto.includes('DISCIPLINA')) classeCor = 'cat-aulas';
-                    else if (catTexto.includes('PRAZO') || catTexto.includes('EDITAL')) classeCor = 'cat-prazos';
-                    else if (catTexto.includes('SECRETARIA') || catTexto.includes('MATRICULA')) classeCor = 'cat-secretaria';
-                    else if (catTexto.includes('EVENTO') || catTexto.includes('SEMANA')) classeCor = 'cat-eventos';
-
-                    // Pega o número da linha gerado pelo Apps Script (Padrão de fallback caso não exista)
-                    const numLinha = ev["LINHA_PLANILHA"] || '?';
-
-                    cardsHTML += `
-                        <div class="event-bar ${classeCor}">
-                            <div class="event-time-top">
-                                <i class="fa-regular fa-clock"></i> PERÍODO: ${exibicaoPeriodo}
-                            </div>
-                            
-                            <h2 class="event-title">${ev["EVENTO"]}</h2>
-                            
-                            <div class="event-meta">
-                                <span class="category-tag"><i class="fa-solid fa-tag"></i> ${catTexto || 'GERAL'}</span>
-                                <span class="sheet-line-tag"><i class="fa-solid fa-table"></i> LINHA PLANILHA: ${numLinha}</span>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                grupoDiv.innerHTML = `
-                    <div class="timeline-date-label"><i class="fa-solid fa-calendar-days"></i> INÍCIO: ${dataInicBR}</div>
-                    ${alertaSimultaneoHTML}
-                    <div class="events-branch">
-                        ${cardsHTML}
-                    </div>
-                `;
-
-                container.appendChild(grupoDiv);
-            });
-
+            montarCalendario();
         } catch (erro) {
-            document.getElementById('timeline').innerHTML = `
-                <div class="loading" style="color: #E53E3E;">
-                    ERRO AO PROCESSAR PAINEL CRONOLÓGICO.
+            document.getElementById('calendar-board').innerHTML = `
+                <div class="loading" style="color: #D93025;">
+                    ERRO AO INTERFACES OS DADOS DA AGENDA. CERTIFIQUE-SE DE QUE O ARQUIVO AGENDA.JSON ESTÁ ATIVO.
                 </div>
             `;
             console.error(erro);
         }
     }
 
-    renderizarLinhaTempo();
+    function montarCalendario() {
+        const grid = document.getElementById('calendar-board');
+        const titulo = document.getElementById('month-year-title');
+        
+        grid.innerHTML = '';
+        
+        const ano = dataReferencia.getFullYear();
+        const mes = dataReferencia.getMonth();
+
+        titulo.innerText = `${nomesMeses[mes]} ${ano}`;
+
+        // Escreve os cabeçalhos dos dias da semana
+        const diasSemana = ["DOMINGO", "SEGUNDA", "TERÇA", "QUARTA", "QUINTA", "SEXTA", "SÁBADO"];
+        diasSemana.forEach(dia => {
+            const div = document.createElement('div');
+            div.className = 'weekday-header';
+            div.innerText = dia;
+            grid.appendChild(div);
+        });
+
+        // Mapeamento matemático das datas do mês corrente
+        const primeiroDiaDoMes = new Date(ano, mes, 1).getDay();
+        const totalDiasNoMes = new Date(ano, mes + 1, 0).getDate();
+        const totalDiasNoMesAnterior = new Date(ano, mes, 0).getDate();
+
+        // 1. Preenche os quadrados em branco com os dias do mês anterior (estilo Google Calendar)
+        for (let i = primeiroDiaDoMes - 1; i >= 0; i--) {
+            const diaNum = totalDiasNoMesAnterior - i;
+            const dataObjeto = new Date(ano, mes - 1, diaNum);
+            criarCelulaDia(dataObjeto, true, grid);
+        }
+
+        // 2. Preenche os dias do mês atual
+        const hoje = new Date();
+        for (let diaNum = 1; diaNum <= totalDiasNoMes; diaNum++) {
+            const dataObjeto = new Date(ano, mes, diaNum);
+            const eHoje = dataObjeto.getDate() === hoje.getDate() && 
+                          dataObjeto.getMonth() === hoje.getMonth() && 
+                          dataObjeto.getFullYear() === hoje.getFullYear();
+            
+            criarCelulaDia(dataObjeto, false, grid, eHoje);
+        }
+
+        // 3. Preenche as células restantes para fechar o bloco perfeito do grid (mês posterior)
+        const totalCelulasAteAgora = primeiroDiaDoMes + totalDiasNoMes;
+        const celulasRestantes = (42 - totalCelulasAteAgora) % 7; 
+        const limiteFinal = celulasRestantes > 0 ? celulasRestantes : (42 - totalCelulasAteAgora);
+        
+        for (let diaNum = 1; diaNum <= limiteFinal; diaNum++) {
+            const dataObjeto = new Date(ano, mes + 1, diaNum);
+            criarCelulaDia(dataObjeto, true, grid);
+        }
+    }
+
+    function criarCelulaDia(dataObjeto, foraDoMes, gridElemento, eHoje = false) {
+        const divDia = document.createElement('div');
+        divDia.className = 'calendar-day';
+        if (foraDoMes) divDia.classList.add('day-outside');
+        if (eHoje) divDia.classList.add('day-today');
+
+        const numDiv = document.createElement('div');
+        numDiv.className = 'day-number';
+        numDiv.innerText = dataObjeto.getDate();
+        divDia.appendChild(numDiv);
+
+        // FORMATA STRING PARA PROCURAR IGUALDADE NO ARQUIVO JSON (YYYY-MM-DD)
+        const anoStr = dataObjeto.getFullYear();
+        const mesStr = String(dataObjeto.getMonth() + 1).padStart(2, '0');
+        const diaStr = String(dataObjeto.getDate()).padStart(2, '0');
+        const stringFiltroData = `${anoStr}-${mesStr}-${diaStr}`;
+
+        // Varre a lista procurando atividades que batem com este dia específico
+        const eventosDoDia = dadosAgenda.filter(ev => {
+            const inic = ev["DIA INICIAL"];
+            const fim = ev["DIA FINAL"] || inic;
+            // Valida se o dia do calendário está contido no intervalo do evento
+            return stringFiltroData >= inic && stringFiltroData <= fim;
+        });
+
+        // Renderiza as faixas de evento dentro do dia do calendário
+        eventosDoDia.forEach(ev => {
+            const entradaEvento = document.createElement('div');
+            
+            let classeCor = 'bg-geral';
+            const catTexto = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase();
+            if (catTexto.includes('AULA') || catTexto.includes('DISCIPLINA')) classeCor = 'bg-aulas';
+            else if (catTexto.includes('PRAZO') || catTexto.includes('EDITAL')) classeCor = 'bg-prazos';
+            else if (catTexto.includes('SECRETARIA') || catTexto.includes('MATRICULA')) classeCor = 'bg-secretaria';
+            else if (catTexto.includes('EVENTO') || catTexto.includes('SEMANA')) classeCor = 'bg-eventos';
+
+            entradaEvento.className = `cal-event-entry ${classeCor}`;
+            entradaEvento.title = `${ev["EVENTO"]} (${catTexto})`; // Exibe balão ao passar o mouse em cima
+            
+            const numLinha = ev["LINHA_PLANILHA"] || '?';
+            entradaEvento.innerHTML = `
+                <span>${ev["EVENTO"]}</span>
+                <span class="sheet-line-indicator">L:${numLinha}</span>
+            `;
+            
+            divDia.appendChild(entradaEvento);
+        });
+
+        gridElemento.appendChild(divDia);
+    }
+
+    // FUNÇÕES DE NAVEGAÇÃO INTERATIVA
+    function mudarMes(direcao) {
+        dataReferencia.setMonth(dataReferencia.getMonth() + direcao);
+        montarCalendario();
+    }
+
+    function irParaHoje() {
+        const hojeReal = new Date();
+        dataReferencia = new Date(hojeReal.getFullYear(), hojeReal.getMonth(), 1);
+        montarCalendario();
+    }
+
+    // Inicialização automática do sistema ao carregar a página
+    window.onload = inicializarAgenda;
 </script>
 
 </body>
