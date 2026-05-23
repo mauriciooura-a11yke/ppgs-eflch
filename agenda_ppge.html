@@ -34,7 +34,6 @@
             margin-bottom: 30px;
             font-size: 14px;
         }
-        /* Torna a área do gráfico responsiva com scroll horizontal em ecrãs pequenos */
         .gantt-scroll-container {
             width: 100%;
             overflow-x: auto;
@@ -62,7 +61,7 @@
     
     <div class="gantt-scroll-container">
         <div id="gantt_chart">
-            <div class="loading">A carregar e processar dados da agenda pública...</div>
+            <div class="loading">Carregando e processando dados da agenda pública...</div>
         </div>
     </div>
 </div>
@@ -70,27 +69,37 @@
 <script type="text/javascript">
     // Inicializa o Google Charts para o formato Gantt
     google.charts.load('current', {'packages':['gantt'], 'language': 'pt-br'});
-    google.charts.setOnLoadCallback(fetchCSVAndDraw);
+    google.charts.setOnLoadCallback(fetchData);
 
-    function fetchCSVAndDraw() {
-        // Link de exportação CSV da sua planilha publicada
-        const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlYhmbrQDLeT0KGj45EeXRMMwZfyO5vI4lBYB3WK0C_LiTxOsfE0IUwF6UgNrhMgpm-mUvTJNqg4E_/pub?gid=0&single=true&output=csv";
+    function fetchData() {
+        // ID extraído diretamente do seu link de publicação estável
+        const spreadsheetId = '1vRlYhmbrQDLeT0KGj45EeXRMMwZfyO5vI4lBYB3WK0C_LiTxOsfE0IUwF6UgNrhMgpm-mUvTJNqg4E_';
+        
+        // Usando a API de Visualização do Google (gviz) para evitar erros de CORS (Failed to Fetch)
+        const url = `https://docs.google.com/spreadsheets/d/e/${spreadsheetId}/gviz/tq?tqx=out:csv&gid=0`;
 
-        fetch(csvUrl)
-            .then(response => response.text())
-            .then(csvText => {
-                processData(csvText);
-            })
-            .catch(error => {
-                document.getElementById('gantt_chart').innerHTML = 
-                    `<p style="color:#e53e3e; text-align:center; padding: 40px;">Erro ao carregar dados da planilha.<br><small>${error}</small></p>`;
-            });
+        const query = new google.visualization.Query(url);
+        query.send(handleQueryResponse);
     }
 
-    function processData(csvText) {
-        // Divide o CSV por linhas de forma segura
-        const lines = csvText.split(/\r?\n/);
+    function handleQueryResponse(response) {
+        if (response.isError()) {
+            document.getElementById('gantt_chart').innerHTML = 
+                `<p style="color:#e53e3e; text-align:center; padding: 40px;">
+                    Erro ao carregar dados da planilha.<br>
+                    <small>${response.getMessage()} - ${response.getDetailedMessage()}</small>
+                </p>`;
+            return;
+        }
+
+        // Recupera os dados puros como texto (CSV) que retornaram da query
+        const csvText = response.getDataTable().getFilteredRows([]).length === 0 ? "" : response.getDataTable();
         
+        // Como o gviz retorna um DataTable estruturado mas precisamos mapear colunas customizadas do seu formato, 
+        // vamos ler linha por linha do DataTable gerado nativamente pelo leitor do Google.
+        const dt = response.getDataTable();
+        const totalRows = dt.getNumberOfRows();
+
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Task ID');
         data.addColumn('string', 'Task Name');
@@ -103,51 +112,52 @@
 
         let taskIdCounter = 1;
 
-        // Avança o cabeçalho (linha 0) e processa as linhas com dados
-        for (let i = 1; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (!line) continue;
+        for (let i = 0; i < totalRows; i++) {
+            // Pega os valores das colunas baseado na sua planilha original:
+            // Coluna 0: DIA INICIAL | Coluna 1: DIA FINAL | Coluna 2: Categoria | Coluna 3: EVENTO
+            let valDataInicial = dt.getValue(i, 0);
+            let valDataFinal = dt.getValue(i, 1);
+            let categoria = dt.getValue(i, 2) || 'Geral';
+            let evento = dt.getValue(i, 3) || '';
 
-            // Expressão regular avançada para separar por vírgulas, ignorando vírgulas dentro de aspas ""
-            const matches = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
-            
-            // Garante que a linha tem os 4 campos necessários (Início, Fim, Categoria, Evento)
-            if (matches.length < 4) continue;
+            if (!valDataInicial || !valDataFinal) continue;
 
-            // Função para limpar aspas remanescentes nas extremidades do texto
-            const cleanStr = (str) => str ? str.replace(/^"|"$/g, '').trim() : '';
-            
-            const dataInicialStr = cleanStr(matches[0]); // Esperado: YYYY-MM-DD
-            const dataFinalStr = cleanStr(matches[1]);   // Esperado: YYYY-MM-DD
-            const categoria = cleanStr(matches[2]);
-            const evento = cleanStr(matches[3]);
+            let startDate, endDate;
 
-            // Divide as datas para criar o objeto Date do JavaScript
-            const pStart = dataInicialStr.split('-');
-            const pEnd = dataFinalStr.split('-');
-
-            if (pStart.length === 3 && pEnd.length === 3) {
-                // Nota: No JavaScript os meses começam em 0 (Janeiro = 0, Dezembro = 11)
-                const startDate = new Date(parseInt(pStart[0]), parseInt(pStart[1]) - 1, parseInt(pStart[2]));
-                const endDate = new Date(parseInt(pEnd[0]), parseInt(pEnd[1]) - 1, parseInt(pEnd[2]));
-
-                data.addRow([
-                    'T' + taskIdCounter, // ID único sequencial (T1, T2, T3...)
-                    evento,              // Nome do evento/tarefa
-                    categoria,           // Usado pelo Google Charts para agrupar e colorir as barras
-                    startDate,           // Data de início
-                    endDate,             // Data de conclusão
-                    null,                // Duração (deixe null para calcular automaticamente pelas datas)
-                    0,                   // Percentagem concluída (0%)
-                    null                 // Sem dependências de encadeamento
-                ]);
-                taskIdCounter++;
+            // Tratamento caso o Google já tenha convertido para objeto Date ou retornado como String (YYYY-MM-DD)
+            if (valDataInicial instanceof Date) {
+                startDate = valDataInicial;
+            } else {
+                const pStart = String(valDataInicial).split('-');
+                startDate = new Date(parseInt(pStart[0]), parseInt(pStart[1]) - 1, parseInt(pStart[2]));
             }
+
+            if (valDataFinal instanceof Date) {
+                endDate = valDataFinal;
+            } else {
+                const pEnd = String(valDataFinal).split('-');
+                endDate = new Date(parseInt(pEnd[0]), parseInt(pEnd[1]) - 1, parseInt(pEnd[2]));
+            }
+
+            // Evita adicionar linhas com cabeçalhos textuais duplicados caso ocorra na leitura
+            if (evento === "EVENTO" || categoria === "Categoria") continue;
+
+            data.addRow([
+                'T' + taskIdCounter, 
+                evento,              
+                categoria,           
+                startDate,           
+                endDate,             
+                null,                
+                0,                   
+                null                 
+            ]);
+            taskIdCounter++;
         }
 
         // Definições visuais do Gráfico
         const options = {
-            height: taskIdCounter * 38 + 50, // Ajusta a altura dinamicamente conforme o número de linhas
+            height: taskIdCounter * 38 + 60, // Altura flexível baseada no número de linhas reais
             gantt: {
                 trackHeight: 35,
                 barHeight: 22,
