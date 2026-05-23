@@ -3,156 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGENDA ESTRATÉGICA PPGE</title>
+    <title>LINHA DO TEMPO CRONOLÓGICA - PPGE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        /* ESTILO CONSULTORIA - AZUL MARINHO E OURO */
+        /* CONFIGURAÇÕES GERAIS E IDENTIDADE VISUAL INSTITUCIONAL */
         * { box-sizing: border-box; }
-        body { 
-            background-color: #F1F5F9; 
-            font-family: 'Lato', sans-serif; 
-            margin: 0; 
-            padding: 20px; 
-            text-transform: uppercase; /* PADRONIZA TUDO EM MAIÚSCULO */
+        body {
+            background-color: #F8FAFC;
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 30px;
+            text-transform: uppercase; /* FORÇA PADRONIZAÇÃO EM MAIÚSCULAS */
         }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* CABEÇALHO */
         .header {
-            background-color: #003366;
+            background: linear-gradient(135deg, #003366 0%, #002244 100%);
             color: white;
             padding: 40px;
-            border-radius: 12px;
-            margin-bottom: 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
             border-left: 15px solid #FFCC00;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0, 51, 102, 0.1);
         }
-        .header h1 { margin: 0; font-family: 'Poppins'; font-size: 32px; }
-        .header p { margin: 10px 0 0 0; opacity: 0.8; letter-spacing: 2px; }
+        .header h1 { 
+            margin: 0; 
+            font-family: 'Poppins'; 
+            font-size: 36px; 
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .header p { 
+            margin: 10px 0 0 0; 
+            color: #FFCC00; 
+            font-weight: 600; 
+            letter-spacing: 2px;
+            font-size: 14px;
+        }
 
-        /* GRID DE CARDS */
-        .agenda-grid {
+        /* ESTRUTURA DA LINHA DO TEMPO */
+        .timeline-container {
+            position: relative;
+            padding-left: 50px;
+            margin-top: 20px;
+        }
+
+        /* A LINHA CENTRAL VERTICAL */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #003366, #FFCC00, #E2E8F0);
+            border-radius: 2px;
+        }
+
+        /* GRUPO DE DATAS (CONCENTRA OCORRÊNCIAS SIMULTÂNEAS) */
+        .timeline-group {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        /* MARCADOR DE DATA DA LINHA DO TEMPO */
+        .timeline-badge {
+            position: absolute;
+            left: -50px;
+            top: 5px;
+            width: 34px;
+            height: 34px;
+            background-color: #FFF;
+            border: 4px solid #003366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            color: #003366;
+            transition: all 0.3s ease;
+        }
+        .timeline-group:hover .timeline-badge {
+            background-color: #FFCC00;
+            transform: scale(1.1);
+        }
+
+        /* CONTAINER DO PERÍODO EXIBIDO */
+        .timeline-date-label {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #003366;
+            margin-bottom: 15px;
+            display: inline-block;
+            background: #E2E8F0;
+            padding: 6px 16px;
+            border-radius: 8px;
+        }
+
+        /* RECIPIENTE DAS OCORRÊNCIAS SIMULTÂNEAS (GANTT FLEXÍVEL) */
+        .events-branch {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
+            width: 100%;
         }
 
-        .card {
-            background: white;
+        /* BLOCO DE EVENTO (ESTILO BARRA DE GANTT AMPLA) */
+        .event-bar {
+            background: #FFF;
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             border: 1px solid #E2E8F0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 8px solid #003366;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            position: relative;
             display: flex;
             flex-direction: column;
-            border-top: 5px solid #003366;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .event-bar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
         }
 
-        .card-date {
-            color: #003366;
+        /* CORES POR CATEGORIA PARA ORGANIZAR VISUALMENTE */
+        .cat-geral { border-left-color: #3182CE; }
+        .cat-prazos { border-left-color: #E53E3E; }
+        .cat-aulas { border-left-color: #38A169; }
+        .cat-eventos { border-left-color: #805AD5; }
+        .cat-secretaria { border-left-color: #D69E2E; }
+
+        .event-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #1E293B;
+            margin: 0 0 15px 0;
+            line-height: 1.4;
+        }
+
+        .event-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #64748B;
             font-weight: 700;
-            font-size: 14px;
-            margin-bottom: 10px;
+        }
+
+        .category-tag {
+            background: #F1F5F9;
+            padding: 4px 10px;
+            border-radius: 6px;
+            color: #475569;
+        }
+
+        .simultaneous-alert {
+            background: #FFF9E6;
+            border: 1px solid #FFE0B2;
+            color: #B7791F;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .card-category {
-            display: inline-block;
-            background: #FFCC00;
-            color: #003366;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            align-self: flex-start;
-        }
-
-        .card-event {
-            font-family: 'Poppins';
-            font-size: 18px;
-            color: #1E293B;
-            margin: 0;
-            line-height: 1.4;
-            flex-grow: 1;
-        }
-
-        .simultaneous-badge {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed #CBD5E1;
-            font-size: 12px;
-            color: #64748B;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .loading { text-align: center; padding: 50px; color: #64748B; }
+        .loading { text-align: center; padding: 100px; color: #64748B; font-weight: 700; }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <h1>AGENDA ESTRATÉGICA PPGE</h1>
-    <p>CRONOGRAMA INTEGRADO DE OCORRÊNCIAS ACADÊMICAS</p>
-</div>
+<div class="container">
+    <div class="header">
+        <h1>LINHA DO TEMPO CRONOLÓGICA PPGE</h1>
+        <p>ACOMPANHAMENTO DINÂMICO DE OCORRÊNCIAS E ATIVIDADES SIMULTÂNEAS</p>
+    </div>
 
-<div id="agenda-container" class="agenda-grid">
-    <div class="loading">CARREGANDO OCORRÊNCIAS...</div>
+    <div id="timeline" class="timeline-container">
+        <div class="loading">PROCESSANDO INTEGRALIDADE DOS DADOS DA AGENDA...</div>
+    </div>
 </div>
 
 <script>
-    async function carregarAgenda() {
+    async function renderizarLinhaTempo() {
         try {
-            // LÊ O ARQUIVO JSON QUE O SEU SCRIPT DO GOOGLE GERA
-            const response = await fetch('agenda.json');
-            const dados = await response.json();
+            const resposta = await fetch('agenda.json');
+            const eventos = await resposta.json();
             
-            const container = document.getElementById('agenda-container');
+            const container = document.getElementById('timeline');
             container.innerHTML = '';
 
-            // ORDENA POR DATA PARA GARANTIR A SEQUÊNCIA
-            dados.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
+            if(eventos.length === 0) {
+                container.innerHTML = '<div class="loading">NENHUM DADO ENCONTRADO NO ARQUIVO AGENDA.JSON</div>';
+                return;
+            }
 
-            dados.forEach((item, index) => {
-                // FORMATAÇÃO DE DATA BRASILEIRA
-                const inicio = item["DIA INICIAL"].split('-').reverse().join('/');
-                const fim = item["DIA FINAL"].split('-').reverse().join('/');
-                const periodo = inicio === fim ? inicio : `${inicio} ATÉ ${fim}`;
+            // 1. ORDENAÇÃO CRONOLÓGICA DOS EVENTOS
+            eventos.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
 
-                // VERIFICA SE HÁ OUTROS EVENTOS NA MESMA DATA (SIMULTÂNEOS)
-                const simultaneos = dados.filter((d, i) => i !== index && d["DIA INICIAL"] === item["DIA INICIAL"]);
+            // 2. AGRUPAMENTO INTELIGENTE POR DATA DE INÍCIO (MAPEIA SIMULTANEIDADE)
+            const gruposDeData = {};
+            eventos.forEach(evento => {
+                const dataChave = evento["DIA INICIAL"];
+                if (!gruposDeData[dataChave]) {
+                    gruposDeData[dataChave] = [];
+                }
+                gruposDeData[dataChave].push(evento);
+            });
 
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <div class="card-date">
-                        <i class="fa-regular fa-calendar"></i> ${periodo}
-                    </div>
-                    <div class="card-category">${item["CATEGORIA"] || item["Categoria"] || 'GERAL'}</div>
-                    <h2 class="card-event">${item["EVENTO"]}</h2>
-                    ${simultaneos.length > 0 ? `
-                        <div class="simultaneous-badge">
-                            <i class="fa-solid fa-layer-group"></i> 
-                            ${simultaneos.length} OCORRÊNCIA(S) SIMULTÂNEA(S) NESTE PERÍODO
+            // 3. CONSTRUÇÃO DA INTERFACE GRÁFICA
+            Object.keys(gruposDeData).forEach(dataChave => {
+                const listaEventosDesteDia = gruposDeData[dataChave];
+                
+                // Formatação textual do período do cabeçalho do grupo
+                const dataInicBR = dataChave.split('-').reverse().join('/');
+                
+                const grupoDiv = document.createElement('div');
+                grupoDiv.className = 'timeline-group';
+
+                // Se houver mais de um evento no mesmo dia, exibe um alerta de concorrência de agenda
+                let alertaSimultaneoHTML = '';
+                if (listaEventosDesteDia.length > 1) {
+                    alertaSimultaneoHTML = `
+                        <div class="simultaneous-alert">
+                            <i class="fa-solid fa-triangle-exclamation"></i> 
+                            ATENÇÃO: EXISTEM ${listaEventosDesteDia.length} OCORRÊNCIAS SIMULTÂNEAS INICIANDO NESTE PERÍODO
                         </div>
-                    ` : ''}
+                    `;
+                }
+
+                let cardsHTML = '';
+                listaEventosDesteDia.forEach(ev => {
+                    const fimBR = ev["DIA FINAL"] ? ev["DIA FINAL"].split('-').reverse().join('/') : dataInicBR;
+                    const exibicaoPeriodo = dataInicBR === fimBR ? dataInicBR : `${dataInicBR} ATÉ ${fimBR}`;
+                    
+                    // Define classe de cor baseada no nome da categoria
+                    let classeCor = 'cat-geral';
+                    const catTexto = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase();
+                    if (catTexto.includes('AULA') || catTexto.includes('DISCIPLINA')) classeCor = 'cat-aulas';
+                    else if (catTexto.includes('PRAZO') || catTexto.includes('EDITAL')) classeCor = 'cat-prazos';
+                    else if (catTexto.includes('SECRETARIA') || catTexto.includes('MATRICULA')) classeCor = 'cat-secretaria';
+                    else if (catTexto.includes('EVENTO') || catTexto.includes('SEMANA')) classeCor = 'cat-eventos';
+
+                    cardsHTML += `
+                        <div class="event-bar ${classeCor}">
+                            <h2 class="event-title">${ev["EVENTO"]}</h2>
+                            <div class="event-meta">
+                                <span class="category-tag"><i class="fa-solid fa-tag"></i> ${catTexto || 'GERAL'}</span>
+                                <span><i class="fa-regular fa-clock"></i> ${exibicaoPeriodo}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                grupoDiv.innerHTML = `
+                    <div class="timeline-badge"><i class="fa-solid fa-calendar-day"></i></div>
+                    <div class="timeline-date-label">${dataInicBR}</div>
+                    ${alertaSimultaneoHTML}
+                    <div class="events-branch">
+                        ${cardsHTML}
+                    </div>
                 `;
-                container.appendChild(card);
+
+                container.appendChild(grupoDiv);
             });
 
         } catch (erro) {
-            document.getElementById('agenda-container').innerHTML = `
-                <div class="loading" style="color: red;">
-                    ERRO AO CARREGAR AGENDA. CERTIFIQUE-SE DE QUE O ARQUIVO "AGENDA.JSON" EXISTE NO REPOSITÓRIO.
+            document.getElementById('timeline').innerHTML = `
+                <div class="loading" style="color: #E53E3E;">
+                    <i class="fa-solid fa-circle-xmark" style="font-size: 40px; margin-bottom: 10px;"></i><br>
+                    ERRO AO PROCESSAR LINHA DO TEMPO.<br>
+                    <small>VERIFIQUE SE O SCRIPT JÁ GEROU O ARQUIVO AGENDA.JSON NO REPOSITÓRIO.</small>
                 </div>
             `;
+            console.error(erro);
         }
     }
 
-    carregarAgenda();
+    renderizarLinhaTempo();
 </script>
 
 </body>
