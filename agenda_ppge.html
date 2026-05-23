@@ -3,184 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cronograma de Atividades - PPGE</title>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    
+    <title>AGENDA ESTRATÉGICA PPGE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f7fafc;
-            margin: 0;
-            padding: 20px;
-            color: #2d3748;
+        /* ESTILO CONSULTORIA - AZUL MARINHO E OURO */
+        * { box-sizing: border-box; }
+        body { 
+            background-color: #F1F5F9; 
+            font-family: 'Lato', sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            text-transform: uppercase; /* PADRONIZA TUDO EM MAIÚSCULO */
         }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-        h1 {
-            text-align: center;
-            color: #1a365d;
-            margin-bottom: 5px;
-            font-size: 26px;
-        }
-        .subtitle {
-            text-align: center;
-            color: #718096;
+        .header {
+            background-color: #003366;
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
             margin-bottom: 30px;
+            border-left: 15px solid #FFCC00;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .header h1 { margin: 0; font-family: 'Poppins'; font-size: 32px; }
+        .header p { margin: 10px 0 0 0; opacity: 0.8; letter-spacing: 2px; }
+
+        /* GRID DE CARDS */
+        .agenda-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            border-top: 5px solid #003366;
+        }
+
+        .card-date {
+            color: #003366;
+            font-weight: 700;
             font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .gantt-scroll-container {
-            width: 100%;
-            overflow-x: auto;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            background: #fff;
+
+        .card-category {
+            display: inline-block;
+            background: #FFCC00;
+            color: #003366;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            align-self: flex-start;
         }
-        #gantt_chart {
-            min-width: 1100px;
-            min-height: 400px;
+
+        .card-event {
+            font-family: 'Poppins';
+            font-size: 18px;
+            color: #1E293B;
+            margin: 0;
+            line-height: 1.4;
+            flex-grow: 1;
         }
-        .loading {
-            text-align: center;
-            padding: 50px;
-            font-size: 16px;
-            color: #a0aec0;
+
+        .simultaneous-badge {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #CBD5E1;
+            font-size: 12px;
+            color: #64748B;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
+
+        .loading { text-align: center; padding: 50px; color: #64748B; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Cronograma de Atividades PPGE</h1>
-    <div class="subtitle">Gráfico de Gantt dinâmico atualizado via GitHub JSON</div>
-    
-    <div class="gantt-scroll-container">
-        <div id="gantt_chart">
-            <div class="loading">Carregando dados estruturados do cronograma...</div>
-        </div>
-    </div>
+<div class="header">
+    <h1>AGENDA ESTRATÉGICA PPGE</h1>
+    <p>CRONOGRAMA INTEGRADO DE OCORRÊNCIAS ACADÊMICAS</p>
 </div>
 
-<script type="text/javascript">
-    google.charts.load('current', {'packages':['gantt'], 'language': 'pt-br'});
-    google.charts.setOnLoadCallback(carregarEventosJSON);
+<div id="agenda-container" class="agenda-grid">
+    <div class="loading">CARREGANDO OCORRÊNCIAS...</div>
+</div>
 
-    function carregarEventosJSON() {
-        // Como o JSON estará na mesma pasta do repositório que o HTML, basta ler o arquivo direto
-        const arquivoJSON = "agenda.json";
+<script>
+    async function carregarAgenda() {
+        try {
+            // LÊ O ARQUIVO JSON QUE O SEU SCRIPT DO GOOGLE GERA
+            const response = await fetch('agenda.json');
+            const dados = await response.json();
+            
+            const container = document.getElementById('agenda-container');
+            container.innerHTML = '';
 
-        fetch(arquivoJSON)
-            .then(response => {
-                if (!response.ok) throw new Error('Arquivo de dados não encontrado ou ainda não gerado.');
-                return response.json();
-            })
-            .then(eventos => {
-                renderizarGrafico(eventos);
-            })
-            .catch(error => {
-                document.getElementById('gantt_chart').innerHTML = 
-                    `<p style="color:#e53e3e; text-align:center; padding: 40px;">
-                        Erro ao carregar os dados do cronograma.<br>
-                        <small>Certifique-se de executar a sincronização na planilha pelo menos uma vez para criar o arquivo "agenda.json".</small>
-                    </p>`;
-                console.error(error);
+            // ORDENA POR DATA PARA GARANTIR A SEQUÊNCIA
+            dados.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
+
+            dados.forEach((item, index) => {
+                // FORMATAÇÃO DE DATA BRASILEIRA
+                const inicio = item["DIA INICIAL"].split('-').reverse().join('/');
+                const fim = item["DIA FINAL"].split('-').reverse().join('/');
+                const periodo = inicio === fim ? inicio : `${inicio} ATÉ ${fim}`;
+
+                // VERIFICA SE HÁ OUTROS EVENTOS NA MESMA DATA (SIMULTÂNEOS)
+                const simultaneos = dados.filter((d, i) => i !== index && d["DIA INICIAL"] === item["DIA INICIAL"]);
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-date">
+                        <i class="fa-regular fa-calendar"></i> ${periodo}
+                    </div>
+                    <div class="card-category">${item["CATEGORIA"] || item["Categoria"] || 'GERAL'}</div>
+                    <h2 class="card-event">${item["EVENTO"]}</h2>
+                    ${simultaneos.length > 0 ? `
+                        <div class="simultaneous-badge">
+                            <i class="fa-solid fa-layer-group"></i> 
+                            ${simultaneos.length} OCORRÊNCIA(S) SIMULTÂNEA(S) NESTE PERÍODO
+                        </div>
+                    ` : ''}
+                `;
+                container.appendChild(card);
             });
+
+        } catch (erro) {
+            document.getElementById('agenda-container').innerHTML = `
+                <div class="loading" style="color: red;">
+                    ERRO AO CARREGAR AGENDA. CERTIFIQUE-SE DE QUE O ARQUIVO "AGENDA.JSON" EXISTE NO REPOSITÓRIO.
+                </div>
+            `;
+        }
     }
 
-    function converterParaData(stringData) {
-        if (!stringData) return null;
-        
-        // Trata formato YYYY-MM-DD gerado pelo script
-        if (stringData.includes('-')) {
-            const partes = stringData.split('-');
-            if (partes.length === 3) {
-                return new Date(parseInt(partes[0], 10), parseInt(partes[1], 10) - 1, parseInt(partes[2], 10));
-            }
-        }
-        
-        // Tratamento de segurança caso o dado venha como DD/MM/YYYY
-        if (stringData.includes('/')) {
-            const partes = stringData.split('/');
-            if (partes.length === 3) {
-                return new Date(parseInt(partes[2], 10), parseInt(partes[1], 10) - 1, parseInt(partes[0], 10));
-            }
-        }
-        return null;
-    }
-
-    function renderizarGrafico(eventos) {
-        var dataTable = new google.visualization.DataTable();
-        dataTable.addColumn('string', 'Task ID');
-        dataTable.addColumn('string', 'Task Name');
-        dataTable.addColumn('string', 'Resource');
-        dataTable.addColumn('date', 'Start Date');
-        dataTable.addColumn('date', 'End Date');
-        dataTable.addColumn('number', 'Duration');
-        dataTable.addColumn('number', 'Percent Complete');
-        dataTable.addColumn('string', 'Dependencies');
-
-        let idContador = 1;
-
-        eventos.forEach(item => {
-            const txtDataInic = item["DIA INICIAL"];
-            const txtDataFim = item["DIA FINAL"];
-            const categoria = item["Categoria"] || "Geral";
-            const evento = item["EVENTO"];
-
-            if (!txtDataInic || !evento) return;
-
-            const dataInicio = converterParaData(txtDataInic);
-            const dataFim = converterParaData(txtDataFim);
-
-            if (dataInicio && !isNaN(dataInicio.getTime()) && dataFim && !isNaN(dataFim.getTime())) {
-                dataTable.addRow([
-                    'T' + idContador, 
-                    String(evento).trim(),              
-                    String(categoria).trim(),           
-                    dataInicio,           
-                    dataFim,             
-                    null,                
-                    0,                   
-                    null                 
-                ]);
-                idContador++;
-            }
-        });
-
-        if (idContador === 1) {
-            document.getElementById('gantt_chart').innerHTML = 
-                `<p style="text-align:center; padding:40px; color:#718096;">Nenhum dado válido foi encontrado dentro do arquivo agenda.json.</p>`;
-            return;
-        }
-
-        const alturaCalculada = (idContador * 42) + 60;
-        document.getElementById('gantt_chart').style.height = alturaCalculada + 'px';
-
-        const opcoesVisuais = {
-            height: alturaCalculada,
-            gantt: {
-                trackHeight: 38,
-                barHeight: 24,
-                percentEnabled: false,
-                palette: [
-                    { "color": "#3182ce", "dark": "#2b6cb0", "light": "#ebf8ff" }, // Azul
-                    { "color": "#319795", "dark": "#2c7a7b", "light": "#e6fffa" }, // Teal
-                    { "color": "#d69e2e", "dark": "#b7791f", "light": "#fefcbf" }, // Amarelo
-                    { "color": "#805ad5", "dark": "#6b46c1", "light": "#faf5ff" }, // Roxo
-                    { "color": "#38a169", "dark": "#2f855a", "light": "#f0fff4" }, // Verde
-                    { "color": "#e53e3e", "dark": "#c53030", "light": "#fff5f5" }  // Vermelho
-                ]
-            }
-        };
-
-        const chart = new google.visualization.Gantt(document.getElementById('gantt_chart'));
-        chart.draw(dataTable, opcoesVisuais);
-    }
+    carregarAgenda();
 </script>
 
 </body>
