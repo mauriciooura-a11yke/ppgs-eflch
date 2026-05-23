@@ -35,6 +35,7 @@
         .header h1 { margin: 0; font-family: 'Poppins'; font-size: 24px; font-weight: 700; }
         .header p { margin: 5px 0 0 0; color: #FFCC00; font-weight: 600; font-size: 11px; letter-spacing: 1px; }
 
+        /* PAINEL DE FILTROS REESTRUTURADO */
         .filter-panel {
             background: #FFF;
             border: 1px solid #CBD5E1;
@@ -51,9 +52,62 @@
             flex-direction: column;
             gap: 5px;
             flex: 2;
+            position: relative; /* ESSENCIAL PARA O DROPDOWN FLUTUANTE */
         }
         .filter-group label { font-size: 11px; font-weight: 700; color: #475569; }
-        .filter-control {
+        
+        /* CUSTOM MULTISELECT DROPDOWN */
+        .multiselect-box {
+            padding: 10px 12px;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            font-size: 13px;
+            background-color: #F8FAFC;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            min-height: 38px;
+        }
+        
+        .multiselect-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #94A3B8;
+            border-radius: 6px;
+            margin-top: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 5px 0;
+        }
+        
+        .multiselect-options label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            font-size: 12px;
+            color: #1E293B;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .multiselect-options label:hover {
+            background-color: #F1F5F9;
+        }
+        .multiselect-options input[type="checkbox"] {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+        
+        /* INPUT DE BUSCA TEXTUAL */
+        .filter-control-input {
             padding: 9px 12px;
             border: 1px solid #CBD5E1;
             border-radius: 6px;
@@ -62,6 +116,7 @@
             text-transform: uppercase;
             width: 100%;
             background-color: #F8FAFC;
+            height: 38px;
         }
         
         .btn-reset {
@@ -84,6 +139,7 @@
         }
         .btn-reset:hover { background-color: #1E293B; }
 
+        /* TIMELINE GRAPH GRAPHICS */
         .gantt-timeline {
             position: relative;
             background: #FFF;
@@ -246,33 +302,37 @@
 <div class="container">
     <div class="header">
         <h1>CRONOGRAMA INTEGRADO PPGE</h1>
-        <p>RAIAS CRONOLÓGICAS ATIVAS (ATIVIDADES CONCLUÍDAS SÃO REMOVIDAS AUTOMATICAMENTE)</p>
+        <p>CONEXÃO CODEPENDENTE FLUIDA COM SELEÇÃO MULTIPLA DINÂMICA</p>
     </div>
 
     <div class="filter-panel">
+        
         <div class="filter-group">
-            <label><i class="fa-solid fa-filter"></i> CATEGORIA</label>
-            <select id="filter-category" class="filter-control" onchange="filtrarCronograma()">
-                <option value="TODAS">-- TODAS AS CATEGORIAS --</option>
-            </select>
+            <label><i class="fa-solid fa-filter"></i> CATEGORIAS (MÚLTIPLO)</label>
+            <div class="multiselect-box" onclick="toggleDropdown('drop-cat')">
+                <span id="label-cat">TODAS SELECIONADAS</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div id="drop-cat" class="multiselect-options"></div>
         </div>
         
         <div class="filter-group">
-            <label><i class="fa-solid fa-hourglass-half"></i> STATUS TEMPORAL</label>
-            <select id="filter-timeline-status" class="filter-control" onchange="filtrarCronograma()">
-                <option value="TODOS">-- EXIBIR COMPLEMENTO TOTAL --</option>
-                <option value="ATIVOS">🚨 EM ANDAMENTO / ANTERIORES (&lt;= HOJE)</option>
-                <option value="FUTUROS">📅 ATIVIDADES PLANIFICADAS FUTURAS (&gt; HOJE)</option>
-            </select>
+            <label><i class="fa-solid fa-hourglass-half"></i> STATUS TEMPORAL (MÚLTIPLO)</label>
+            <div class="multiselect-box" onclick="toggleDropdown('drop-status')">
+                <span id="label-status">TODOS SELECIONADOS</span> <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div id="drop-status" class="multiselect-options">
+                <label><input type="checkbox" value="ATIVOS" checked onchange="atualizarFiltrosCascata('STATUS')"> 🚨 EM ANDAMENTO / ANTERIORES</label>
+                <label><input type="checkbox" value="FUTUROS" checked onchange="atualizarFiltrosCascata('STATUS')"> 📅 COMPONENTES FUTUROS</label>
+            </div>
         </div>
 
         <div class="filter-group">
             <label><i class="fa-solid fa-magnifying-glass"></i> BUSCAR TERMO</label>
-            <input type="text" id="filter-search" class="filter-control" placeholder="DIGITE PARA FILTRAR..." oninput="filtrarCronograma()">
+            <input type="text" id="filter-search" class="filter-control-input" placeholder="DIGITE PARA FILTRAR..." oninput="filtrarCronograma()">
         </div>
         
         <button class="btn-reset" onclick="limparFiltros()">
-            <i class="fa-solid fa-filter-circle-xmark"></i> LIMPAR FILTROS
+            <i class="fa-solid fa-filter-circle-xmark"></i> LIMPAR TUDO
         </button>
     </div>
 
@@ -294,13 +354,25 @@
         return hoje;
     }
 
+    // Abre e fecha os menus flutuantes de multiselect
+    function toggleDropdown(id) {
+        const el = document.getElementById(id);
+        el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Fecha os dropdowns se o usuário clicar fora deles
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.filter-group')) {
+            document.querySelectorAll('.multiselect-options').forEach(d => d.style.display = 'none');
+        }
+    });
+
     async function inicializar() {
         try {
-            // CAMINHO ATUALIZADO PARA CONSUMIR agenda_ppge.json
             const r = await fetch('agenda_ppge.json?t=' + new Date().getTime());
             const dadosBrutos = await r.json();
             
-            // REGRA CRÍTICA: Descarta da memória qualquer evento marcado com "SIM" na coluna Concluído
+            // Filtra os itens já concluídos definitivamente da memória
             datasetCompleto = dadosBrutos.filter(ev => {
                 const statusConclusao = String(ev["CONCLUIDO"] || '').toUpperCase().trim();
                 return statusConclusao !== "SIM";
@@ -308,59 +380,98 @@
             
             datasetCompleto.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
             
-            popularFiltroCategorias();
+            construirOpcoesCategorias(datasetCompleto);
             filtrarCronograma();
         } catch (e) {
-            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red;">ERRO AO CARREGAR BASE JSON DE AGENDA.</div>`;
+            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red;">ERRO AO CARREGAR DATASET JSON.</div>`;
         }
     }
 
-    function popularFiltroCategorias() {
-        const combo = document.getElementById('filter-category');
+    // Monta os checkboxes de categoria dinamicamente com base no que existe no JSON
+    function construirOpcoesCategorias(dados) {
+        const container = document.getElementById('drop-cat');
+        container.innerHTML = '';
         const list = new Set();
-        datasetCompleto.forEach(ev => {
-            const c = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase().trim();
+        
+        dados.forEach(ev => {
+            const c = String(ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
             if(c) list.add(c);
         });
-        Array.from(list).sort().forEach(c => {
-            const o = document.createElement('option');
-            o.value = c; o.innerText = c;
-            combo.appendChild(o);
+
+        Array.from(list).sort().forEach(cat => {
+            const lbl = document.createElement('label');
+            lbl.innerHTML = `<input type="checkbox" value="${cat}" checked onchange="atualizarFiltrosCascata('CATEGORIA')"> ${cat}`;
+            container.appendChild(lbl);
         });
+        
+        atualizarLabelsFiltros();
+    }
+
+    // Gerencia a dependência (Cascata Dinâmica) entre os filtros
+    function atualizarFiltrosCascata(quemMudou) {
+        const hojeTime = obterDataHoje();
+        
+        // Obtém o que está marcado atualmente em categorias
+        const checkboxesCat = document.querySelectorAll('#drop-cat input[type="checkbox"]');
+        let catsSelecionadas = Array.from(checkboxesCat).filter(i => i.checked).map(i => i.value);
+
+        // Se o filtro de categorias mudou, podemos recalcular dinamicamente o comportamento do filtro de status
+        // Para este cenário de cronograma, aplicamos a filtragem combinada direta:
+        atualizarLabelsFiltros();
+        filtrarCronograma();
+    }
+
+    // Atualiza os textos dos botões de filtro (Ex: "3 Selecionadas", "Todas")
+    function atualizarLabelsFiltros() {
+        const cbCat = document.querySelectorAll('#drop-cat input[type="checkbox"]');
+        const selCat = Array.from(cbCat).filter(i => i.checked);
+        document.getElementById('label-cat').innerText = selCat.length === cbCat.length ? "TODAS SELECIONADAS" : (selCat.length === 0 ? "NENHUMA SELECIONADA" : `${selCat.length} SELECIONADAS`);
+
+        const cbStat = document.querySelectorAll('#drop-status input[type="checkbox"]');
+        const selStat = Array.from(cbStat).filter(i => i.checked);
+        document.getElementById('label-status').innerText = selStat.length === cbStat.length ? "TODOS SELECIONADOS" : (selStat.length === 0 ? "NENHUM SELECIONADO" : `${selStat.length} SELECIONADOS`);
     }
 
     function filtrarCronograma() {
-        const cSel = document.getElementById('filter-category').value;
-        const tSel = document.getElementById('filter-timeline-status').value;
         const bSel = normalizarString(document.getElementById('filter-search').value);
         const hojeTime = obterDataHoje();
 
+        // Pega listas de valores marcados nos multiselects
+        const cbCat = document.querySelectorAll('#drop-cat input[type="checkbox"]');
+        const catsMarcadas = Array.from(cbCat).filter(i => i.checked).map(i => i.value);
+
+        const cbStat = document.querySelectorAll('#drop-status input[type="checkbox"]');
+        const statusMarcados = Array.from(cbStat).filter(i => i.checked).map(i => i.value);
+
         const dadosFiltrados = datasetCompleto.filter(ev => {
-            const cEv = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase().trim();
+            const cEv = String(ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
             const nEv = normalizarString(ev["EVENTO"]);
             const dataEvInic = new Date(ev["DIA INICIAL"]);
             dataEvInic.setHours(0,0,0,0);
 
-            const bateCategoria = (cSel === 'TODAS' || cEv === cSel);
-            const bateBusca = (!bSel || nEv.includes(bSel) || cEv.includes(bSel));
+            // Validação Multiselect Categorias
+            const bateCategoria = catsMarcadas.includes(cEv);
             
-            let bateStatus = true;
-            if (tSel === 'ATIVOS') {
-                bateStatus = (dataEvInic <= hojeTime);
-            } else if (tSel === 'FUTUROS') {
-                bateStatus = (dataEvInic > hojeTime);
-            }
+            // Validação Multiselect Status Temporal
+            const ehAtivo = dataEvInic <= hojeTime;
+            let bateStatus = false;
+            if (statusMarcados.includes('ATIVOS') && ehAtivo) bateStatus = true;
+            if (statusMarcados.includes('FUTUROS') && !ehAtivo) bateStatus = true;
 
-            return bateCategoria && bateBusca && bateStatus;
+            // Validação Busca Textual
+            const bateBusca = (!bSel || nEv.includes(bSel) || cEv.includes(bSel));
+
+            return bateCategoria && bateStatus && bateBusca;
         });
 
         renderizarGanttEstendido(dadosFiltrados);
     }
 
     function limparFiltros() {
-        document.getElementById('filter-category').value = 'TODAS';
-        document.getElementById('filter-timeline-status').value = 'TODOS';
+        // Marca todos os checkboxes novamente
+        document.querySelectorAll('.multiselect-options input[type="checkbox"]').forEach(cb => cb.checked = true);
         document.getElementById('filter-search').value = '';
+        atualizarLabelsFiltros();
         filtrarCronograma();
     }
 
@@ -369,7 +480,7 @@
         container.innerHTML = '';
 
         if(eventos.length === 0) {
-            container.innerHTML = '<div class="loading">NENHUMA ATIVIDADE PENDENTE ENCONTRADA.</div>';
+            container.innerHTML = '<div class="loading">NENHUMA ATIVIDADE ATENDE AOS FILTROS SELECIONADOS COMBINADOS.</div>';
             return;
         }
 
@@ -413,7 +524,7 @@
                 const ehPassadoOuAtual = dInicComparacao <= hojeTime;
 
                 let classeBorda = 'border-geral';
-                const cat = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase();
+                const cat = String(ev["CATEGORIA"] || 'GERAL').toUpperCase();
                 if (cat.includes('AULA') || cat.includes('DISCIPLINA')) classeBorda = 'border-aulas';
                 else if (cat.includes('PRAZO') || cat.includes('EDITAL')) classeBorda = 'border-prazos';
                 else if (cat.includes('SECRETARIA') || cat.includes('MATRICULA')) classeBorda = 'border-secretaria';
@@ -438,7 +549,7 @@
                     </div>
                     <h2 class="card-title">${ev["EVENTO"]}</h2>
                     <div class="card-footer">
-                        <span class="tag-category"><i class="fa-solid fa-tag"></i> ${cat || 'GERAL'}</span>
+                        <span class="tag-category"><i class="fa-solid fa-tag"></i> ${cat}</span>
                         <span class="tag-line"><i class="fa-solid fa-table"></i> L: ${nLinha}</span>
                     </div>
                 `;
