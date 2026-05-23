@@ -57,46 +57,63 @@
 
 <div class="container">
     <h1>Cronograma de Atividades PPGE</h1>
-    <div class="subtitle">Gráfico de Gantt dinâmico atualizado via Google Sheets</div>
+    <div class="subtitle">Gráfico de Gantt dinâmico atualizado via GitHub JSON</div>
     
     <div class="gantt-scroll-container">
         <div id="gantt_chart">
-            <div class="loading">Carregando e processando dados da agenda pública...</div>
+            <div class="loading">Carregando dados estruturados do cronograma...</div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    // Inicializa a biblioteca de gráficos do Google
     google.charts.load('current', {'packages':['gantt'], 'language': 'pt-br'});
-    google.charts.setOnLoadCallback(baixarDadosPlanilha);
+    google.charts.setOnLoadCallback(carregarEventosJSON);
 
-    function baixarDadosPlanilha() {
-        // ID definitivo da sua planilha
-        const spreadsheetId = "11gYJqlhSULjWt6hAExmIyWKprE43uB7fybmx7osr-z8";
-        
-        // Usamos o endpoint gviz que o próprio motor do Google Charts usa para tabelas nativas
-        const urlGviz = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&gid=0`;
+    function carregarEventosJSON() {
+        // Como o JSON estará na mesma pasta do repositório que o HTML, basta ler o arquivo direto
+        const arquivoJSON = "agenda.json";
 
-        // Executa a requisição usando o objeto seguro do Google, contornando erros de CORS
-        const query = new google.visualization.Query(urlGviz);
-        query.send(handleQueryResponse);
+        fetch(arquivoJSON)
+            .then(response => {
+                if (!response.ok) throw new Error('Arquivo de dados não encontrado ou ainda não gerado.');
+                return response.json();
+            })
+            .then(eventos => {
+                renderizarGrafico(eventos);
+            })
+            .catch(error => {
+                document.getElementById('gantt_chart').innerHTML = 
+                    `<p style="color:#e53e3e; text-align:center; padding: 40px;">
+                        Erro ao carregar os dados do cronograma.<br>
+                        <small>Certifique-se de executar a sincronização na planilha pelo menos uma vez para criar o arquivo "agenda.json".</small>
+                    </p>`;
+                console.error(error);
+            });
     }
 
-    function handleQueryResponse(response) {
-        if (response.isError()) {
-            document.getElementById('gantt_chart').innerHTML = 
-                `<p style="color:#e53e3e; text-align:center; padding: 40px;">
-                    Erro ao se comunicar com o Google Sheets.<br>
-                    <small>${response.getMessage()} - ${response.getDetailedMessage()}</small>
-                </p>`;
-            return;
+    function converterParaData(stringData) {
+        if (!stringData) return null;
+        
+        // Trata formato YYYY-MM-DD gerado pelo script
+        if (stringData.includes('-')) {
+            const partes = stringData.split('-');
+            if (partes.length === 3) {
+                return new Date(parseInt(partes[0], 10), parseInt(partes[1], 10) - 1, parseInt(partes[2], 10));
+            }
         }
+        
+        // Tratamento de segurança caso o dado venha como DD/MM/YYYY
+        if (stringData.includes('/')) {
+            const partes = stringData.split('/');
+            if (partes.length === 3) {
+                return new Date(parseInt(partes[2], 10), parseInt(partes[1], 10) - 1, parseInt(partes[0], 10));
+            }
+        }
+        return null;
+    }
 
-        // Se a requisição deu certo, pegamos o objeto de dados nativo estruturado pelo Google
-        const dt = response.getDataTable();
-        const totalLinhas = dt.getNumberOfRows();
-
+    function renderizarGrafico(eventos) {
         var dataTable = new google.visualization.DataTable();
         dataTable.addColumn('string', 'Task ID');
         dataTable.addColumn('string', 'Task Name');
@@ -109,42 +126,38 @@
 
         let idContador = 1;
 
-        for (let i = 0; i < totalLinhas; i++) {
-            // Mapeamento direto das células do Google Sheets:
-            // Coluna 0 (A): DIA INICIAL | Coluna 1 (B): DIA FINAL | Coluna 2 (C): Categoria | Coluna 3 (D): EVENTO
-            let valDataInicial = dt.getValue(i, 0);
-            let valDataFinal = dt.getValue(i, 1);
-            let categoria = dt.getValue(i, 2);
-            let evento = dt.getValue(i, 3);
+        eventos.forEach(item => {
+            const txtDataInic = item["DIA INICIAL"];
+            const txtDataFim = item["DIA FINAL"];
+            const categoria = item["Categoria"] || "Geral";
+            const evento = item["EVENTO"];
 
-            if (!valDataInicial || !valDataFinal) continue;
+            if (!txtDataInic || !evento) return;
 
-            let dataInicio = converterParaData(valDataInicial);
-            let dataFim = converterParaData(valDataFinal);
+            const dataInicio = converterParaData(txtDataInic);
+            const dataFim = converterParaData(txtDataFim);
 
-            // Ignora o cabeçalho se ele for lido textualmente
-            if (!dataInicio || !dataFim || String(evento).toUpperCase().includes("EVENTO")) continue;
-
-            dataTable.addRow([
-                'T' + idContador, 
-                String(evento).trim(),              
-                categoria ? String(categoria).trim() : 'Geral',           
-                dataInicio,           
-                dataFim,             
-                null,                
-                0,                   
-                null                 
-            ]);
-            idContador++;
-        }
+            if (dataInicio && !isNaN(dataInicio.getTime()) && dataFim && !isNaN(dataFim.getTime())) {
+                dataTable.addRow([
+                    'T' + idContador, 
+                    String(evento).trim(),              
+                    String(categoria).trim(),           
+                    dataInicio,           
+                    dataFim,             
+                    null,                
+                    0,                   
+                    null                 
+                ]);
+                idContador++;
+            }
+        });
 
         if (idContador === 1) {
             document.getElementById('gantt_chart').innerHTML = 
-                `<p style="text-align:center; padding:40px; color:#718096;">Nenhum dado pôde ser processado. Verifique as datas na planilha.</p>`;
+                `<p style="text-align:center; padding:40px; color:#718096;">Nenhum dado válido foi encontrado dentro do arquivo agenda.json.</p>`;
             return;
         }
 
-        // Calcula a altura ideal do container do gráfico
         const alturaCalculada = (idContador * 42) + 60;
         document.getElementById('gantt_chart').style.height = alturaCalculada + 'px';
 
@@ -167,30 +180,6 @@
 
         const chart = new google.visualization.Gantt(document.getElementById('gantt_chart'));
         chart.draw(dataTable, opcoesVisuais);
-    }
-
-    // Conversor capaz de lidar tanto com objetos de data nativos do Google quanto com strings textuais (BR ou ISO)
-    function converterParaData(valor) {
-        if (!valor) return null;
-        if (valor instanceof Date) return valor;
-
-        let stringData = String(valor).replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
-
-        if (stringData.includes('/')) {
-            const partes = stringData.split('/');
-            if (partes.length === 3) {
-                return new Date(parseInt(partes[2], 10), parseInt(partes[1], 10) - 1, parseInt(partes[0], 10));
-            }
-        }
-        
-        if (stringData.includes('-')) {
-            const partes = stringData.split('-');
-            if (partes.length === 3) {
-                return new Date(parseInt(partes[0], 10), parseInt(partes[1], 10) - 1, parseInt(partes[2], 10));
-            }
-        }
-
-        return null;
     }
 </script>
 
