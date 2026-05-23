@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LINHA DO TEMPO CRONOLÓGICA - PPGE</title>
+    <title>CRONOGRAMA ESTRATÉGICO - PPGE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -11,41 +11,41 @@
     <style>
         * { box-sizing: border-box; }
         body {
-            background-color: #F8FAFC;
+            background-color: #F1F5F9;
             font-family: 'Lato', sans-serif;
             margin: 0;
-            padding: 25px;
-            text-transform: uppercase;
+            padding: 20px;
+            text-transform: uppercase; /* PADRONIZAÇÃO COMPLETA EM MAIÚSCULAS */
         }
         
         .container {
-            max-width: 98%;
+            max-width: 100%;
             margin: 0 auto;
         }
         
+        /* CABEÇALHO */
         .header {
             background: linear-gradient(135deg, #003366 0%, #001A33 100%);
             color: white;
-            padding: 25px 35px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            border-left: 15px solid #FFCC00;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 20px 30px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 12px solid #FFCC00;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
-        .header h1 { margin: 0; font-family: 'Poppins'; font-size: 26px; font-weight: 700; }
+        .header h1 { margin: 0; font-family: 'Poppins'; font-size: 24px; font-weight: 700; }
         .header p { margin: 5px 0 0 0; color: #FFCC00; font-weight: 600; font-size: 11px; letter-spacing: 1px; }
 
-        /* PAINEL DE FILTROS SUPERIOR */
+        /* PAINEL DE FILTROS */
         .filter-panel {
             background: #FFF;
             border: 1px solid #E2E8F0;
-            padding: 15px 25px;
-            border-radius: 12px;
-            margin-bottom: 30px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
             display: flex;
             gap: 20px;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
         }
         .filter-group {
             display: flex;
@@ -53,13 +53,9 @@
             gap: 5px;
             flex: 1;
         }
-        .filter-group label {
-            font-size: 11px;
-            font-weight: 700;
-            color: #475569;
-        }
+        .filter-group label { font-size: 11px; font-weight: 700; color: #475569; }
         .filter-control {
-            padding: 10px;
+            padding: 8px 12px;
             border: 1px solid #CBD5E1;
             border-radius: 6px;
             font-family: 'Lato';
@@ -68,338 +64,310 @@
             width: 100%;
         }
 
-        /* ESTRUTURA EIXO VERTICAL CRONOLÓGICO */
-        .timeline-container {
+        /* CONTAINER DA TIMELINE TRACKS (GANTT) */
+        .gantt-timeline {
             position: relative;
-            padding-left: 45px;
-            margin-top: 20px;
+            background: #FFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            padding: 30px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
-        .timeline-container::before {
+
+        /* LINHA VERTICAL GUIA */
+        .gantt-timeline::before {
             content: '';
             position: absolute;
-            left: 15px;
+            left: 140px; /* ALINHADO APÓS AS DATAS DA ESQUERDA */
             top: 0;
             bottom: 0;
-            width: 4px;
-            background: linear-gradient(to bottom, #003366 0%, #FFCC00 50%, #E2E8F0 100%);
-            border-radius: 2px;
+            width: 3px;
+            background: #CBD5E1;
+            z-index: 1;
         }
 
-        .timeline-group {
-            position: relative;
-            margin-bottom: 35px;
-            background: #FFF;
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid #E2E8F0;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
-        }
-
-        .timeline-badge {
-            position: absolute;
-            left: -42px;
-            top: 22px;
-            width: 26px;
-            height: 26px;
-            background-color: #FFF;
-            border: 4px solid #003366;
-            border-radius: 50%;
-            z-index: 5;
-        }
-
-        .timeline-date-label {
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            color: #FFFFFF;
-            background: #003366;
-            padding: 6px 14px;
-            border-radius: 6px;
-            align-self: flex-start;
-            margin-bottom: 15px;
-            display: inline-flex;
+        /* LINHA HORIZONTAL (RAIA DO EVENTO) */
+        .gantt-row {
+            display: flex;
             align-items: center;
+            position: relative;
+            min-height: 75px;
+            padding: 5px 0;
+            border-bottom: 1px dashed #F1F5F9;
+        }
+
+        /* BLOCO DA DATA (FIXO À ESQUERDA) */
+        .gantt-date-side {
+            width: 120px;
+            font-family: 'Poppins';
+            font-size: 12px;
+            font-weight: 700;
+            color: #003366;
+            text-align: right;
+            padding-right: 15px;
+            flex-shrink: 0;
+        }
+
+        /* NÓ DA LINHA VERTICAL */
+        .gantt-node {
+            position: absolute;
+            left: 114px; /* CENTRALIZADO NA LINHA VERTICAL */
+            width: 14px;
+            height: 14px;
+            background: #FFF;
+            border: 3px solid #003366;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        /* CONTAINER DOS CARDS DINÂMICOS (ZONA DE PLOTAGEM HORIZONTAL) */
+        .gantt-space {
+            margin-left: 35px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
             gap: 8px;
+            position: relative;
         }
 
-        /* GRUPO CASCATEADO LADO A LADO */
-        .events-branch {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 20px;
-            width: 100%;
-        }
-
-        .event-bar {
+        /* CARD HORIZONTAL PROPORCIONAL */
+        .event-card-horizontal {
             background: #F8FAFC;
-            border-radius: 8px;
-            padding: 18px;
             border: 1px solid #E2E8F0;
-            border-left: 6px solid #003366;
+            border-left: 6px solid #1A73E8;
+            border-radius: 6px;
+            padding: 12px 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            min-width: 280px; /* TAMANHO MÍNIMO COMPACTO */
+            transition: all 0.2s;
+        }
+        .event-card-horizontal:hover {
+            border-color: #94A3B8;
+            background: #FFF;
+            transform: translateX(3px);
         }
 
-        .cat-geral { border-left-color: #3182CE; }
-        .cat-prazos { border-left-color: #E53E3E; }
-        .cat-aulas { border-left-color: #38A169; }
-        .cat-eventos { border-left-color: #805AD5; }
-        .cat-secretaria { border-left-color: #D69E2E; }
+        /* DINÂMICA DE CORES DA BORDA */
+        .border-geral { border-left-color: #3182CE; }
+        .border-prazos { border-left-color: #E53E3E; }
+        .border-aulas { border-left-color: #38A169; }
+        .border-eventos { border-left-color: #805AD5; }
+        .border-secretaria { border-left-color: #D69E2E; }
 
-        .event-time-top {
-            font-size: 11px;
+        /* PROPRIEDADES INTERNAS DO CARD */
+        .card-top-time {
+            font-size: 10px;
             color: #003366;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: #E2E8F0;
-            padding: 4px 10px;
-            border-radius: 4px;
-            width: fit-content;
+            gap: 5px;
         }
 
-        .event-title {
+        .card-title {
             font-family: 'Poppins', sans-serif;
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 600;
             color: #1E293B;
-            margin: 0 0 15px 0;
-            line-height: 1.45;
+            margin: 0 0 8px 0;
+            line-height: 1.4;
         }
 
-        .event-meta {
+        .card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            margin-top: auto;
         }
 
-        .category-tag {
+        .tag-category {
             background: #E2E8F0;
-            padding: 3px 8px;
-            border-radius: 4px;
+            padding: 2px 6px;
+            border-radius: 3px;
             color: #475569;
         }
 
-        .sheet-line-tag {
+        .tag-line {
             background: #FFF5F5;
             color: #C53030;
             border: 1px solid #FEB2B2;
-            padding: 3px 8px;
-            border-radius: 4px;
+            padding: 2px 6px;
+            border-radius: 3px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
-        .simultaneous-alert {
-            background: #FFF9E6;
-            border-left: 4px solid #FFCC00;
-            color: #B7791F;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .loading { text-align: center; padding: 100px; color: #64748B; font-weight: 700; width: 100%; }
+        .loading { text-align: center; padding: 60px; color: #64748B; font-weight: 700; width: 100%; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <div>
-            <h1>LINHA DO TEMPO CRONOLÓGICA PPGE</h1>
-            <p>PAINEL OPERACIONAL DE ATIVIDADES E OCORRÊNCIAS SIMULTÂNEAS INTERLIGADAS</p>
-        </div>
+        <h1>CRONOGRAMA INTEGRADO PPGE</h1>
+        <p>LINHA DO TEMPO EM CASCATA COM DURAÇÃO OPERACIONAL PROPORCIONAL</p>
     </div>
 
     <div class="filter-panel">
         <div class="filter-group">
-            <label><i class="fa-solid fa-filter"></i> FILTRAR POR CATEGORIA</label>
-            <select id="filter-category" class="filter-control" onchange="filtrarAgenda()">
-                <option value="TODAS">-- EXIBIR TODAS AS CATEGORIAS --</option>
+            <label><i class="fa-solid fa-filter"></i> CATEGORIA</label>
+            <select id="filter-category" class="filter-control" onchange="filtrarCronograma()">
+                <option value="TODAS">-- TODAS AS CATEGORIAS --</option>
             </select>
         </div>
         <div class="filter-group">
-            <label><i class="fa-solid fa-magnifying-glass"></i> BUSCAR PALAVRA-CHAVE</label>
-            <input type="text" id="filter-search" class="filter-control" placeholder="DIGITE O TERMO PARA PESQUISAR..." oninput="filtrarAgenda()">
+            <label><i class="fa-solid fa-magnifying-glass"></i> BUSCAR TERMO</label>
+            <input type="text" id="filter-search" class="filter-control" placeholder="DIGITE PARA FILTRAR..." oninput="filtrarCronograma()">
         </div>
     </div>
 
-    <div id="timeline" class="timeline-container">
-        <div class="loading">CONSTRUINDO EIXO CRONOLÓGICO...</div>
+    <div id="gantt-container" class="gantt-timeline">
+        <div class="loading">CONSTRUINDO RAIA CRONOLÓGICA PROPORCIONAL...</div>
     </div>
 </div>
 
 <script>
-    let todosEventos = [];
+    let datasetCompleto = [];
 
-    // Função auxiliar para normalizar e limpar strings para busca precisa
-    function normalizarTexto(texto) {
-        return String(texto || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    function normalizarString(txt) {
+        return String(txt || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
     }
 
-    async function carregarDados() {
+    async function inicializar() {
         try {
-            // Adiciona timestamp para quebrar o cache agressivo do GitHub e exibir as linhas imediatamente
-            const resposta = await fetch('agenda.json?t=' + new Date().getTime());
-            todosEventos = await resposta.json();
+            const r = await fetch('agenda.json?t=' + new Date().getTime());
+            datasetCompleto = await r.json();
             
-            popularCategorias();
-            filtrarAgenda();
-        } catch (erro) {
-            document.getElementById('timeline').innerHTML = `<div class="loading" style="color: #E53E3E;">ERRO AO SINCROZINAR ARQUIVO DATASET.</div>`;
+            // Ordenação cronológica inicial obrigatória
+            datasetCompleto.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
+            
+            popularFiltroCategorias();
+            filtrarCronograma();
+        } catch (e) {
+            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red;">ERRO AO CARREGAR BASE JSON.</div>`;
         }
     }
 
-    function popularCategorias() {
-        const select = document.getElementById('filter-category');
-        const categoriasUnicas = new Set();
-        
-        todosEventos.forEach(ev => {
-            const cat = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase().trim();
-            if(cat) categoriasUnicas.add(cat);
+    function popularFiltroCategorias() {
+        const combo = document.getElementById('filter-category');
+        const list = new Set();
+        datasetCompleto.forEach(ev => {
+            const c = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase().trim();
+            if(c) list.add(c);
         });
-
-        Array.from(categoriasUnicas).sort().forEach(cat => {
-            const opt = document.createElement('option');
-            opt.value = cat;
-            opt.innerText = cat;
-            select.appendChild(opt);
+        Array.from(list).sort().forEach(c => {
+            const o = document.createElement('option');
+            o.value = c; o.innerText = c;
+            combo.appendChild(o);
         });
     }
 
-    function filtrarAgenda() {
-        const filtroCat = document.getElementById('filter-category').value;
-        const filtroBusca = normalizarTexto(document.getElementById('filter-search').value);
+    function filtrarCronograma() {
+        const cSel = document.getElementById('filter-category').value;
+        const bSel = normalizarString(document.getElementById('filter-search').value);
 
-        // Aplica os filtros na lista bruta
-        let eventosFiltrados = todosEventos.filter(ev => {
-            const catEv = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase().trim();
-            const nomeEv = normalizarTexto(ev["EVENTO"]);
-            
-            const bateCategoria = (filtroCat === 'TODAS' || catEv === filtroCat);
-            const bateBusca = (!filtroBusca || nomeEv.includes(filtroBusca) || catEv.includes(filtroBusca));
-            
-            return bateCategoria && bateBusca;
+        const dadosFiltrados = datasetCompleto.filter(ev => {
+            const cEv = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase().trim();
+            const nEv = normalizarString(ev["EVENTO"]);
+            return (cSel === 'TODAS' || cEv === cSel) && (!bSel || nEv.includes(bSel) || cEv.includes(bSel));
         });
 
-        renderizarLinha(eventosFiltrados);
+        renderizarGanttEstendido(dadosFiltrados);
     }
 
-    function renderizarLinha(eventos) {
-        const container = document.getElementById('timeline');
+    function renderizarGanttEstendido(eventos) {
+        const container = document.getElementById('gantt-container');
         container.innerHTML = '';
 
         if(eventos.length === 0) {
-            container.innerHTML = '<div class="loading">NENHUM EVENTO ENCONTRADO PARA OS FILTROS SELECIONADOS.</div>';
+            container.innerHTML = '<div class="loading">NENHUMA ATIVIDADE CORRESPONDE AOS CRITÉRIOS.</div>';
             return;
         }
 
-        // Ordenação Cronológica Estrita
-        eventos.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
+        // Mapeia todas as datas de início únicas para criar os degraus da linha vertical
+        const datasChave = Array.from(new Set(eventos.map(e => e["DIA INICIAL"]))).sort();
 
-        // LÓGICA DE SOBREPOSIÇÃO/CASCATEAMENTO DINÂMICO
-        const blocosAgrupados = [];
+        datasChave.forEach(dataFoco => {
+            const dataExibicaoBR = dataFoco.split('-').reverse().join('/');
+            
+            // Captura todos os eventos que dão início ou que estão rodando nessa data foco
+            const eventosDaRaia = eventos.filter(e => e["DIA INICIAL"] === dataFoco);
 
-        eventos.forEach(ev => {
-            let alocado = false;
-            const evInic = new Date(ev["DIA INICIAL"]);
-            const evFim = new Date(ev["DIA FINAL"] || ev["DIA INICIAL"]);
+            if(eventosDaRaia.length === 0) return;
 
-            // Verifica se este evento colide com algum bloco existente
-            for (let bloco of blocosAgrupados) {
-                // Se a data inicial do evento for menor ou IGUAL à data final máxima do bloco, eles são simultâneos
-                if (evInic <= bloco.dataFimMax) {
-                    bloco.eventos.push(ev);
-                    if (evFim > bloco.dataFimMax) bloco.dataFimMax = evFim; // Atualiza o teto do bloco
-                    alocado = true;
-                    break;
-                }
-            }
+            // Cria a linha estrutural (Raia horizontal)
+            const row = document.createElement('div');
+            row.className = 'gantt-row';
 
-            if (!alocado) {
-                blocosAgrupados.push({
-                    dataInicMin: evInic,
-                    dataFimMax: evFim,
-                    dataLabel: ev["DIA INICIAL"],
-                    eventos: [ev]
-                });
-            }
-        });
+            // Adiciona a data fixa à esquerda da régua vertical
+            const dateSide = document.createElement('div');
+            dateSide.className = 'gantt-date-side';
+            dateSide.innerText = dataExibicaoBR;
+            row.appendChild(dateSide);
 
-        // Montagem visual no HTML
-        blocosAgrupados.forEach(bloco => {
-            const dataInicBR = bloco.dataLabel.split('-').reverse().join('/');
-            const grupoDiv = document.createElement('div');
-            grupoDiv.className = 'timeline-group';
+            // Adiciona a bolinha guia em cima do eixo vertical
+            const node = document.createElement('div');
+            node.className = 'gantt-node';
+            row.appendChild(node);
 
-            let alertaSimultaneoHTML = '';
-            if (bloco.eventos.length > 1) {
-                alertaSimultaneoHTML = `
-                    <div class="simultaneous-alert">
-                        <i class="fa-solid fa-triangle-exclamation"></i> 
-                        CONCORRÊNCIA: ${bloco.eventos.length} ATIVIDADES EM CONFLUÊNCIA SÍNCRONA NESTE PERÍODO
-                    </div>
-                `;
-            }
+            // Cria a zona de plotagem dos cards expandidos
+            const space = document.createElement('div');
+            space.className = 'gantt-space';
 
-            let cardsHTML = '';
-            bloco.eventos.forEach(ev => {
-                const fBR = ev["DIA FINAL"] ? ev["DIA FINAL"].split('-').reverse().join('/') : dataInicBR;
+            eventosDaRaia.forEach(ev => {
                 const iBR = ev["DIA INICIAL"].split('-').reverse().join('/');
-                const exibicaoPeriodo = iBR === fBR ? iBR : `${iBR} ATÉ ${fBR}`;
+                const fBR = ev["DIA FINAL"] ? ev["DIA FINAL"].split('-').reverse().join('/') : iBR;
+                const textoPeriodo = iBR === fBR ? iBR : `${iBR} ATÉ ${fBR}`;
+
+                // CÁLCULO DE LARGURA PROPORCIAL AO PERÍODO
+                const dInic = new Date(ev["DIA INICIAL"]);
+                const dFim = new Date(ev["DIA FINAL"] || ev["DIA INICIAL"]);
+                const diferencaDias = Math.max(1, Math.round((dFim - dInic) / (1000 * 60 * 60 * 24)) + 1);
                 
-                let classeCor = 'cat-geral';
-                const catTexto = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase();
-                if (catTexto.includes('AULA') || catTexto.includes('DISCIPLINA')) classeCor = 'cat-aulas';
-                else if (catTexto.includes('PRAZO') || catTexto.includes('EDITAL')) classeCor = 'cat-prazos';
-                else if (catTexto.includes('SECRETARIA') || catTexto.includes('MATRICULA')) classeCor = 'cat-secretaria';
-                else if (catTexto.includes('EVENTO') || catTexto.includes('SEMANA')) classeCor = 'cat-eventos';
+                // Multiplicador geométrico de tamanho (Ex: 1 dia = 300px, 10 dias = 600px, etc.)
+                const larguraCalculada = Math.min(100, 25 + (diferencaDias * 3)); 
 
-                // Se o JSON ainda estiver antigo no cache do GitHub, o fallback exibe o número calculado provisório
-                const numLinha = ev["LINHA_PLANILHA"] || 'PROCESSANDO...';
+                let classeBorda = 'border-geral';
+                const cat = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase();
+                if (cat.includes('AULA') || cat.includes('DISCIPLINA')) classeBorda = 'border-aulas';
+                else if (cat.includes('PRAZO') || cat.includes('EDITAL')) classeBorda = 'border-prazos';
+                else if (cat.includes('SECRETARIA') || cat.includes('MATRICULA')) classeBorda = 'border-secretaria';
+                else if (cat.includes('EVENTO') || cat.includes('SEMANA')) classeBorda = 'border-eventos';
 
-                cardsHTML += `
-                    <div class="event-bar ${classeCor}">
-                        <div class="event-time-top">
-                            <i class="fa-regular fa-clock"></i> PERÍODO: ${exibicaoPeriodo}
-                        </div>
-                        
-                        <h2 class="event-title">${ev["EVENTO"]}</h2>
-                        
-                        <div class="event-meta">
-                            <span class="category-tag"><i class="fa-solid fa-tag"></i> ${catTexto || 'GERAL'}</span>
-                            <span class="sheet-line-tag"><i class="fa-solid fa-table"></i> LINHA: ${numLinha}</span>
-                        </div>
+                const card = document.createElement('div');
+                card.className = `event-card-horizontal ${classeBorda}`;
+                card.style.width = `${larguraCalculada}%`; // ESTICA O CARD BASEADO NOS DIAS DE DURAÇÃO
+
+                const nLinha = ev["LINHA_PLANILHA"] || '...';
+
+                card.innerHTML = `
+                    <div class="card-top-time">
+                        <i class="fa-regular fa-clock"></i> ${textoPeriodo} (${diferencaDias}D)
+                    </div>
+                    <h2 class="card-title">${ev["EVENTO"]}</h2>
+                    <div class="card-footer">
+                        <span class="tag-category"><i class="fa-solid fa-tag"></i> ${cat || 'GERAL'}</span>
+                        <span class="tag-line"><i class="fa-solid fa-table"></i> L: ${nLinha}</span>
                     </div>
                 `;
+                space.appendChild(card);
             });
 
-            grupoDiv.innerHTML = `
-                <div class="timeline-badge"></div>
-                <div class="timeline-date-label"><i class="fa-solid fa-calendar-days"></i> FLUXO A PARTIR DE: ${dataInicBR}</div>
-                ${alertaSimultaneoHTML}
-                <div class="events-branch">
-                    ${cardsHTML}
-                </div>
-            `;
-            container.appendChild(grupoDiv);
+            row.appendChild(space);
+            container.appendChild(row);
         });
     }
 
-    window.onload = carregarDados;
+    window.onload = inicializar;
 </script>
 
 </body>
