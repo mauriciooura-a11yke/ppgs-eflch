@@ -28,7 +28,7 @@
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            gap: 25px;
+            gap: 22px;
             box-shadow: 4px 0 15px rgba(0,0,0,0.15);
             position: fixed;
             top: 0;
@@ -122,36 +122,34 @@
             color: white;
         }
 
-        /* ESTADOS ATIVOS EXCLUSIVOS POR PALAVRA-CHAVE COM ALTO CONTRASTE */
-        .tag-button.active.cat-aula { background-color: #2F855A; color: white; border-color: #2F855A; }
-        .tag-button.active.cat-prazo { background-color: #C53030; color: white; border-color: #C53030; }
-        .tag-button.active.cat-secretaria { background-color: #C05621; color: white; border-color: #C05621; }
-        .tag-button.active.cat-evento { background-color: #6B46C1; color: white; border-color: #6B46C1; }
-        .tag-button.active.cat-geral { background-color: #2B6CB0; color: white; border-color: #2B6CB0; }
-        
-        /* TAG STATUS TEMPORAL */
+        /* ESTADO ATIVO DO FILTRO DE STATUS TEMPORAL */
         .tag-button.active.status-time { background-color: #3182CE; color: white; border-color: #3182CE; }
-
+        
+        /* NOVO POSICIONAMENTO DO BOTÃO RESET NO TOPO */
         .btn-reset {
-            margin-top: 10px;
             padding: 12px;
-            background-color: #475569;
-            color: white;
-            border: none;
+            background-color: #334155;
+            color: #F1F5F9;
+            border: 1px solid #475569;
             border-radius: 6px;
             font-family: 'Poppins';
             font-size: 11px;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+            width: 100%;
         }
-        .btn-reset:hover { background-color: #334155; }
+        .btn-reset:hover { 
+            background-color: #FFCC00; 
+            color: #0F172A;
+            border-color: #FFCC00;
+        }
 
-        /* TIMELINE GANTT COM TRILHAS */
+        /* TIMELINE GANTT */
         .gantt-timeline {
             position: relative;
             background: #FFF;
@@ -218,7 +216,7 @@
             z-index: 2;
         }
 
-        /* CONTRAPOSIÇÃO COMPLETA DE CORES NOS CARDS HORIZONTAIS */
+        /* CONFIGURAÇÃO BASE DOS CARDS */
         .event-card-horizontal {
             background: #FFF;
             border: 2px solid #CBD5E1;
@@ -232,14 +230,7 @@
             transition: transform 0.2s;
         }
 
-        /* ESTILIZAÇÃO COMPLETA DE BACKGROUND E BORDA BASEADO NA CATEGORIA */
-        .card-aula { border-left: 10px solid #2F855A; background-color: #F0FDF4; }
-        .card-prazo { border-left: 10px solid #C53030; background-color: #FFF5F5; }
-        .card-secretaria { border-left: 10px solid #C05621; background-color: #FFFAF0; }
-        .card-evento { border-left: 10px solid #6B46C1; background-color: #FAF5FF; }
-        .card-geral { border-left: 10px solid #2B6CB0; background-color: #F7FAFC; }
-
-        /* CASO SEJA PASSADO/ATUAL (<= HOJE) - GANHA UMA BORDA MAIS FORTE */
+        /* BORDA EXTRA PARA CARDS VIGENTES (<= HOJE) */
         .card-status-past {
             border-top: 2px solid #0F172A !important;
             border-right: 2px solid #0F172A !important;
@@ -286,18 +277,13 @@
             font-weight: 700;
         }
 
-        /* IDENTIFICADORES COLORIDOS DE CATEGORIA DENTRO DO CARD */
         .tag-category-label {
-            padding: 3px 8px;
+            padding: 4px 9px;
             border-radius: 4px;
             color: white;
             font-size: 9px;
+            font-weight: 700;
         }
-        .lbl-aula { background-color: #2F855A; }
-        .lbl-prazo { background-color: #C53030; }
-        .lbl-secretaria { background-color: #C05621; }
-        .lbl-evento { background-color: #6B46C1; }
-        .lbl-geral { background-color: #2B6CB0; }
 
         .tag-line {
             background: #E2E8F0;
@@ -317,16 +303,9 @@
 <div class="sidebar">
     <h2 class="sidebar-title"><i class="fa-solid fa-sliders"></i> PAINEL CRONOGRAMA</h2>
     
-    <div class="filter-group">
-        <label><i class="fa-solid fa-magnifying-glass"></i> FILTRAR TEXTO</label>
-        <input type="text" id="filter-search" class="filter-input" placeholder="BUSCAR PALAVRA..." oninput="filtrarCronograma()">
-    </div>
-    
-    <div class="filter-group">
-        <label><i class="fa-solid fa-tags"></i> FILTRAR POR CATEGORIAS</label>
-        <div id="container-tags-categoria" class="tag-selector-container">
-            </div>
-    </div>
+    <button class="btn-reset" onclick="limparFiltros()">
+        <i class="fa-solid fa-arrows-rotate"></i> PADRONIZAR VISÃO (VER TUDO)
+    </button>
     
     <div class="filter-group">
         <label><i class="fa-solid fa-hourglass-half"></i> STATUS TEMPORAL</label>
@@ -339,16 +318,23 @@
             </button>
         </div>
     </div>
+
+    <div class="filter-group">
+        <label><i class="fa-solid fa-magnifying-glass"></i> FILTRAR TEXTO</label>
+        <input type="text" id="filter-search" class="filter-input" placeholder="BUSCAR PALAVRA..." oninput="filtrarCronograma()">
+    </div>
     
-    <button class="btn-reset" onclick="limparFiltros()">
-        <i class="fa-solid fa-arrows-rotate"></i> PADRONIZAR VISÃO
-    </button>
+    <div class="filter-group">
+        <label><i class="fa-solid fa-tags"></i> FILTRAR POR CATEGORIAS</label>
+        <div id="container-tags-categoria" class="tag-selector-container">
+            </div>
+    </div>
 </div>
 
 <div class="main-content">
     <div class="header">
         <h1>CRONOGRAMA INTEGRADO PPGE</h1>
-        <p>ISOLAMENTO COGNITIVO DE INFORMAÇÕES POR CLIQUE ÚNICO E DIFERENCIAÇÃO CROMÁTICA</p>
+        <p>ARQUITETURA DE DADOS FLUIDA E CORRESPONDÊNCIA CROMÁTICA AUTOMÁTICA POR HASH INFINITO</p>
     </div>
 
     <div id="gantt-container" class="gantt-timeline">
@@ -359,8 +345,8 @@
 <script>
     let datasetCompleto = [];
     let todasCategoriasExistentes = [];
-    let categoriasFiltradasAtivas = []; // Se vazia, indica padrão (exibir tudo)
-    let statusFiltradosAtivos = [];     // Se vazia, indica padrão (exibir tudo)
+    let categoriasFiltradasAtivas = []; 
+    let statusFiltradosAtivos = [];     
 
     function normalizarString(txt) {
         return String(txt || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -372,14 +358,20 @@
         return hoje;
     }
 
-    // Identifica o tipo de classe estilizada com base no nome da categoria
-    function descobrirClasseCor(categoria) {
-        const c = normalizarString(categoria);
-        if (c.includes('AULA') || c.includes('DISCIPLINA')) return 'aula';
-        if (c.includes('PRAZO') || c.includes('EDITAL') || c.includes('FINAL')) return 'prazo';
-        if (c.includes('SECRETARIA') || c.includes('MATRICULA')) return 'secretaria';
-        if (c.includes('EVENTO') || c.includes('SEMANA')) return 'evento';
-        return 'geral';
+    // ALGORITMO DE GERAÇÃO DE COR POR HASH (UMA COR EXCLUSIVA E COMPATÍVEL PARA CADA TEXTO)
+    function gerarCorPorTexto(str) {
+        let hash = 0;
+        const texto = normalizarString(str);
+        for (let i = 0; i < texto.length; i++) {
+            hash = texto.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        // Converte para escala HSL para garantir cores vivas com bom contraste
+        const hue = Math.abs(hash) % 360;
+        return {
+            borda: `hsl(${hue}, 65%, 40%)`,
+            fundo: `hsl(${hue}, 60%, 97%)`,
+            texto: `hsl(${hue}, 70%, 20%)`
+        };
     }
 
     async function inicializar() {
@@ -416,13 +408,23 @@
 
         todasCategoriasExistentes.forEach(cat => {
             const btn = document.createElement('button');
-            const classeCor = descobrirClasseCor(cat);
+            const cores = gerarCorPorTexto(cat);
             
-            // Lógica Visual: Se não tem nenhum filtro ativo, todos ficam acesos (Modo Padrão)
             const ehAtiva = categoriasFiltradasAtivas.length === 0 || categoriasFiltradasAtivas.includes(cat);
             
-            btn.className = `tag-button ${ehAtiva ? 'active cat-' + classeCor : ''}`;
+            btn.className = 'tag-button';
             btn.innerHTML = `<span>${cat}</span> <i class="fa-solid ${ehAtiva ? 'fa-check' : 'fa-minus'}"></i>`;
+            
+            // Aplica a cor gerada dinamicamente caso a categoria esteja ativa no filtro
+            if (ehAtiva) {
+                btn.style.backgroundColor = cores.borda;
+                btn.style.borderColor = cores.borda;
+                btn.style.color = '#FFF';
+            } else {
+                btn.style.backgroundColor = '#1E293B';
+                btn.style.borderColor = '#334155';
+                btn.style.color = '#94A3B8';
+            }
             
             btn.onclick = () => gerenciarCliqueCategoria(cat);
             container.appendChild(btn);
@@ -442,19 +444,14 @@
         btnFuturos.querySelector('i').className = `fa-solid ${futurosLigado ? 'fa-check' : 'fa-minus'}`;
     }
 
-    // REGRA DE ISOLAMENTO INTELIGENTE (SEM CONFIGURAÇÃO CHATA DE CONTRÔLE/DESMARCAÇÃO)
     function gerenciarCliqueCategoria(cat) {
         if (categoriasFiltradasAtivas.length === 0) {
-            // Estava no modo "Exibir Tudo". Isola apenas a categoria clicada.
             categoriasFiltradasAtivas = [cat];
         } else if (categoriasFiltradasAtivas.includes(cat)) {
-            // Clicou em uma que já estava isolada. Remove ela da lista.
             categoriasFiltradasAtivas = Array.from(categoriasFiltradasAtivas).filter(c => c !== cat);
         } else {
-            // Adiciona mais uma categoria para visualização combinada.
             categoriasFiltradasAtivas.push(cat);
         }
-        
         renderizarBotoesSidebar();
         filtrarCronograma();
     }
@@ -467,7 +464,6 @@
         } else {
             statusFiltradosAtivos.push(status);
         }
-        
         renderizarBotoesSidebar();
         filtrarCronograma();
     }
@@ -482,7 +478,6 @@
             const dataEvInic = new Date(ev["DIA INICIAL"]);
             dataEvInic.setHours(0,0,0,0);
 
-            // Se o array de filtros estiver vazio, o padrão é TRUE (Exibe tudo)
             const bateCategoria = categoriasFiltradasAtivas.length === 0 || categoriasFiltradasAtivas.includes(cEv);
             
             const ehAtivo = dataEvInic <= hojeTime;
@@ -559,11 +554,17 @@
                 const ehPassadoOuAtual = dInicComparacao <= hojeTime;
 
                 const cat = String(ev["CATEGORIA"] || 'GERAL').toUpperCase();
-                const sufixoClasse = descobrirClasseCor(cat);
+                
+                // GERA AS CORES DO CARD INDIVIDUAMENTE POR HASH DINÂMICO
+                const coresCard = gerarCorPorTexto(cat);
 
                 const card = document.createElement('div');
-                card.className = `event-card-horizontal card-${sufixoClasse}`;
+                card.className = 'event-card-horizontal';
                 card.style.width = `${larguraCalculada}%`; 
+                
+                // Injeta os estilos cromáticos individuais e automáticos
+                card.style.borderLeft = `10px solid ${coresCard.borda}`;
+                card.style.backgroundColor = coresCard.fundo;
 
                 let statusBadgeHTML = '';
                 if(ehPassadoOuAtual) {
@@ -575,12 +576,12 @@
 
                 card.innerHTML = `
                     <div class="card-top-time">
-                        <span><i class="fa-regular fa-clock"></i> ${textoPeriodo} (${diferencaDias} DIAS)</span>
+                        <span style="color: ${coresCard.texto}"><i class="fa-regular fa-clock"></i> ${textoPeriodo} (${diferencaDias} DIAS)</span>
                         ${statusBadgeHTML}
                     </div>
                     <h2 class="card-title">${ev["EVENTO"]}</h2>
                     <div class="card-footer">
-                        <span class="tag-category-label lbl-${sufixoClasse}"><i class="fa-solid fa-tag"></i> ${cat}</span>
+                        <span class="tag-category-label" style="background-color: ${coresCard.borda}"><i class="fa-solid fa-tag"></i> ${cat}</span>
                         <span class="tag-line"><i class="fa-solid fa-table"></i> LINHA: ${nLinha}</span>
                     </div>
                 `;
