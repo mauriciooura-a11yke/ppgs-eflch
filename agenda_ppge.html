@@ -11,7 +11,7 @@
     <style>
         * { box-sizing: border-box; }
         body {
-            background-color: #F1F5F9;
+            background-color: #E2E8F0;
             font-family: 'Lato', sans-serif;
             margin: 0;
             padding: 20px;
@@ -36,7 +36,7 @@
         .header h1 { margin: 0; font-family: 'Poppins'; font-size: 24px; font-weight: 700; }
         .header p { margin: 5px 0 0 0; color: #FFCC00; font-weight: 600; font-size: 11px; letter-spacing: 1px; }
 
-        /* PAINEL DE FILTROS */
+        /* PAINEL DE FILTROS SUPERIOR */
         .filter-panel {
             background: #FFF;
             border: 1px solid #CBD5E1;
@@ -44,8 +44,8 @@
             border-radius: 8px;
             margin-bottom: 25px;
             display: flex;
-            gap: 20px;
-            align-items: flex-end; /* ALINHA O BOTÃO COM OS CAMPOS */
+            gap: 15px;
+            align-items: flex-end;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
         .filter-group {
@@ -66,16 +66,15 @@
             background-color: #F8FAFC;
         }
         
-        /* BOTÃO DE REDEFINIR FILTROS */
         .btn-reset {
             flex: 1;
             padding: 10px 15px;
-            background-color: #64748B;
+            background-color: #475569;
             color: white;
             border: none;
             border-radius: 6px;
             font-family: 'Poppins';
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             transition: background 0.2s;
@@ -85,46 +84,43 @@
             gap: 8px;
             height: 38px;
         }
-        .btn-reset:hover {
-            background-color: #475569;
-        }
+        .btn-reset:hover { background-color: #1E293B; }
 
         /* CONTAINER DA TIMELINE TRACKS (GANTT) */
         .gantt-timeline {
             position: relative;
             background: #FFF;
-            border: 1px solid #CBD5E1;
+            border: 2px solid #1E293B;
             border-radius: 12px;
-            padding: 20px 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            padding: 10px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
         }
 
-        /* LINHA VERTICAL GUIA */
+        /* LINHA VERTICAL GUIA MASTER */
         .gantt-timeline::before {
             content: '';
             position: absolute;
-            left: 140px; /* ALINHADO APÓS AS DATAS DA ESQUERDA */
+            left: 140px;
             top: 0;
             bottom: 0;
-            width: 3px;
-            background: #94A3B8;
+            width: 4px;
+            background: #003366;
             z-index: 1;
         }
 
-        /* RAIA HORIZONTAL FORTE E BEM SEPARADA */
+        /* SEPARAÇÃO RADICAL DE RAIAS HORIZONTAIS */
         .gantt-row {
             display: flex;
             align-items: center;
             position: relative;
-            min-height: 90px;
-            padding: 15px 20px 15px 0;
-            border-bottom: 2px solid #E2E8F0; /* LINHA DE SEPARAÇÃO FORTE */
+            min-height: 105px;
+            padding: 20px 20px 20px 0;
+            border-bottom: 4px solid #1E293B; /* DIVISÓRIA PRETA E ESPESSA ENTRE OS BLOCOS */
         }
-        /* EFEITO DE COR ALTERNADA NAS RAIAS PARA FACILITAR A LEITURA */
         .gantt-row:nth-child(even) {
-            background-color: #F8FAFC;
+            background-color: #F8FAFC; /* CONTRASTE DE FUNDO ADICIONAL */
         }
         .gantt-row:last-child {
             border-bottom: none;
@@ -134,7 +130,7 @@
         .gantt-date-side {
             width: 120px;
             font-family: 'Poppins';
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             color: #003366;
             text-align: right;
@@ -146,10 +142,10 @@
         /* NÓ DA LINHA VERTICAL */
         .gantt-node {
             position: absolute;
-            left: 135px; /* CENTRALIZADO NA LINHA VERTICAL (140px - metade do nó) */
+            left: 135px;
             width: 14px;
             height: 14px;
-            background: #FFF;
+            background: #FFCC00;
             border: 3px solid #003366;
             border-radius: 50%;
             z-index: 3;
@@ -161,55 +157,70 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             position: relative;
             z-index: 2;
         }
 
-        /* CARD HORIZONTAL PROPORCIONAL */
+        /* CARD HORIZONTAL PROPORCIONAL BASE */
         .event-card-horizontal {
             background: #FFF;
             border: 1px solid #CBD5E1;
-            border-left: 6px solid #1A73E8;
+            border-left: 8px solid #3182CE;
             border-radius: 6px;
-            padding: 12px 16px;
+            padding: 14px 18px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.04);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-width: 280px; 
+            min-width: 290px; 
             transition: all 0.2s;
         }
-        .event-card-horizontal:hover {
-            border-color: #94A3B8;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            transform: translateX(4px);
+
+        /* SUPER DESTAQUE PARA EVENTOS DA DATA ATUAL OU PASSADOS (<= HOJE) */
+        .card-status-past {
+            border: 2px solid #C53030 !important;
+            border-left: 12px solid #C53030 !important;
+            background: #FFF5F5 !important;
+            box-shadow: 0 4px 12px rgba(197, 48, 48, 0.15) !important;
         }
 
-        /* CORES DA BORDA POR CATEGORIA */
+        /* CORES DA BORDA POR CATEGORIA PARA COMPONENTES FUTUROS */
         .border-geral { border-left-color: #3182CE; }
         .border-prazos { border-left-color: #E53E3E; }
         .border-aulas { border-left-color: #38A169; }
         .border-eventos { border-left-color: #805AD5; }
         .border-secretaria { border-left-color: #D69E2E; }
 
-        /* PROPRIEDADES INTERNAS DO CARD */
         .card-top-time {
-            font-size: 10px;
+            font-size: 11px;
             color: #003366;
             font-weight: 700;
             margin-bottom: 6px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: space-between;
+        }
+
+        /* TAG CRÍTICA DE ALERTA DE VIGÊNCIA (<= HOJE) */
+        .badge-status-alert {
+            background-color: #C53030;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 9px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 3px;
         }
 
         .card-title {
             font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             color: #1E293B;
-            margin: 0 0 8px 0;
+            margin: 0 0 10px 0;
             line-height: 1.4;
         }
 
@@ -247,7 +258,7 @@
 <div class="container">
     <div class="header">
         <h1>CRONOGRAMA INTEGRADO PPGE</h1>
-        <p>LINHA DO TEMPO EM CASCATA COM DURAÇÃO OPERACIONAL PROPORCIONAL</p>
+        <p>CONTRAPOSIÇÃO DE RAIAS CRONOLÓGICAS COM IDENTIFICAÇÃO DE VIGÊNCIA HISTÓRICA DO EXERCÍCIO</p>
     </div>
 
     <div class="filter-panel">
@@ -257,6 +268,16 @@
                 <option value="TODAS">-- TODAS AS CATEGORIAS --</option>
             </select>
         </div>
+        
+        <div class="filter-group">
+            <label><i class="fa-solid fa-hourglass-half"></i> FILTRAR POR STATUS TEMPORAL</label>
+            <select id="filter-timeline-status" class="filter-control" onchange="filtrarCronograma()">
+                <option value="TODOS">-- EXIBIR COMPLEMENTO TOTAL --</option>
+                <option value="ATIVOS">🚨 EM ANDAMENTO / ANTERIORES (<= HOJE)</option>
+                <option value="FUTUROS">📅 ATIVIDADES PLANIFICADAS FUTURAS (> HOJE)</option>
+            </select>
+        </div>
+
         <div class="filter-group">
             <label><i class="fa-solid fa-magnifying-glass"></i> BUSCAR TERMO</label>
             <input type="text" id="filter-search" class="filter-control" placeholder="DIGITE PARA FILTRAR..." oninput="filtrarCronograma()">
@@ -279,12 +300,18 @@
         return String(txt || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
     }
 
+    // Retorna a data atual zerando as horas para cálculo preciso
+    function obterDataHoje() {
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        return hoje;
+    }
+
     async function inicializar() {
         try {
             const r = await fetch('agenda.json?t=' + new Date().getTime());
             datasetCompleto = await r.json();
             
-            // Ordenação cronológica estrita
             datasetCompleto.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
             
             popularFiltroCategorias();
@@ -310,20 +337,36 @@
 
     function filtrarCronograma() {
         const cSel = document.getElementById('filter-category').value;
+        const tSel = document.getElementById('filter-timeline-status').value;
         const bSel = normalizarString(document.getElementById('filter-search').value);
+        const hojeTime = obterDataHoje();
 
         const dadosFiltrados = datasetCompleto.filter(ev => {
             const cEv = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase().trim();
             const nEv = normalizarString(ev["EVENTO"]);
-            return (cSel === 'TODAS' || cEv === cSel) && (!bSel || nEv.includes(bSel) || cEv.includes(bSel));
+            const dataEvInic = new Date(ev["DIA INICIAL"]);
+            dataEvInic.setHours(0,0,0,0);
+
+            const bateCategoria = (cSel === 'TODAS' || cEv === cSel);
+            const bateBusca = (!bSel || nEv.includes(bSel) || cEv.includes(bSel));
+            
+            // Lógica do filtro de status temporal
+            let bateStatus = true;
+            if (tSel === 'ATIVOS') {
+                bateStatus = (dataEvInic <= hojeTime);
+            } else if (tSel === 'FUTUROS') {
+                bateStatus = (dataEvInic > hojeTime);
+            }
+
+            return bateCategoria && bateBusca && bateStatus;
         });
 
         renderizarGanttEstendido(dadosFiltrados);
     }
 
-    // FUNÇÃO QUE LIMPA OS CAMPOS E RESETA O CRONOGRAMA
     function limparFiltros() {
         document.getElementById('filter-category').value = 'TODAS';
+        document.getElementById('filter-timeline-status').value = 'TODOS';
         document.getElementById('filter-search').value = '';
         filtrarCronograma();
     }
@@ -333,12 +376,12 @@
         container.innerHTML = '';
 
         if(eventos.length === 0) {
-            container.innerHTML = '<div class="loading">NENHUMA ATIVIDADE CORRESPONDE AOS CRITÉRIOS.</div>';
+            container.innerHTML = '<div class="loading">NENHUMA ATIVIDADE CORRESPONDE AOS CRITÉRIOS SELECIONADOS.</div>';
             return;
         }
 
-        // Mapeia todas as datas de início únicas
         const datasChave = Array.from(new Set(eventos.map(e => e["DIA INICIAL"]))).sort();
+        const hojeTime = obterDataHoje();
 
         datasChave.forEach(dataFoco => {
             const dataExibicaoBR = dataFoco.split('-').reverse().join('/');
@@ -370,8 +413,12 @@
                 const dFim = new Date(ev["DIA FINAL"] || ev["DIA INICIAL"]);
                 const diferencaDias = Math.max(1, Math.round((dFim - dInic) / (1000 * 60 * 60 * 24)) + 1);
                 
-                // Multiplicador geométrico de tamanho
                 const larguraCalculada = Math.min(100, 25 + (diferencaDias * 3)); 
+
+                // Valida matematicamente se o evento está no passado ou acontecendo hoje
+                const dInicComparacao = new Date(ev["DIA INICIAL"]);
+                dInicComparacao.setHours(0,0,0,0);
+                const ehPassadoOuAtual = dInicComparacao <= hojeTime;
 
                 let classeBorda = 'border-geral';
                 const cat = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase();
@@ -384,11 +431,19 @@
                 card.className = `event-card-horizontal ${classeBorda}`;
                 card.style.width = `${larguraCalculada}%`; 
 
+                // Se for atual ou antigo, injeta a folha de estilo vermelha de prioridade
+                let statusBadgeHTML = '';
+                if(ehPassadoOuAtual) {
+                    card.classList.add('card-status-past');
+                    statusBadgeHTML = `<span class="badge-status-alert"><i class="fa-solid fa-triangle-exclamation"></i> VIGENTE / ANTERIOR</span>`;
+                }
+
                 const nLinha = ev["LINHA_PLANILHA"] || '...';
 
                 card.innerHTML = `
                     <div class="card-top-time">
-                        <i class="fa-regular fa-clock"></i> ${textoPeriodo} (${diferencaDias}D)
+                        <span><i class="fa-regular fa-clock"></i> ${textoPeriodo} (${diferencaDias}D)</span>
+                        ${statusBadgeHTML}
                     </div>
                     <h2 class="card-title">${ev["EVENTO"]}</h2>
                     <div class="card-footer">
