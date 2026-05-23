@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* CONFIGURAÇÕES GERAIS - PADRONIZAÇÃO EM MAIÚSCULAS */
         * { box-sizing: border-box; }
         body {
             background-color: #F8FAFC;
@@ -19,33 +18,62 @@
             text-transform: uppercase;
         }
         
-        /* CONTAINER DE TELA CHEIA */
         .container {
             max-width: 98%;
             margin: 0 auto;
         }
         
-        /* CABEÇALHO INTEGRADO */
         .header {
             background: linear-gradient(135deg, #003366 0%, #001A33 100%);
             color: white;
             padding: 25px 35px;
             border-radius: 12px;
-            margin-bottom: 40px;
+            margin-bottom: 25px;
             border-left: 15px solid #FFCC00;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
         .header h1 { margin: 0; font-family: 'Poppins'; font-size: 26px; font-weight: 700; }
         .header p { margin: 5px 0 0 0; color: #FFCC00; font-weight: 600; font-size: 11px; letter-spacing: 1px; }
 
+        /* PAINEL DE FILTROS SUPERIOR */
+        .filter-panel {
+            background: #FFF;
+            border: 1px solid #E2E8F0;
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+        }
+        .filter-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #475569;
+        }
+        .filter-control {
+            padding: 10px;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            font-family: 'Lato';
+            font-size: 13px;
+            text-transform: uppercase;
+            width: 100%;
+        }
+
         /* ESTRUTURA EIXO VERTICAL CRONOLÓGICO */
         .timeline-container {
             position: relative;
-            padding-left: 45px; /* ESPAÇO PARA A LINHA VERTICAL */
+            padding-left: 45px;
             margin-top: 20px;
         }
-
-        /* A LINHA VERTICAL MASTER */
         .timeline-container::before {
             content: '';
             position: absolute;
@@ -53,11 +81,10 @@
             top: 0;
             bottom: 0;
             width: 4px;
-            background: linear-gradient(to bottom, #003366 0%, #FFCC00 50%, #CBD5E1 100%);
+            background: linear-gradient(to bottom, #003366 0%, #FFCC00 50%, #E2E8F0 100%);
             border-radius: 2px;
         }
 
-        /* BLOCO DO DIA (AGRUPADOR NA LINHA) */
         .timeline-group {
             position: relative;
             margin-bottom: 35px;
@@ -68,7 +95,6 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
         }
 
-        /* BOLA MARCADA NA LINHA VERTICAL */
         .timeline-badge {
             position: absolute;
             left: -42px;
@@ -79,14 +105,8 @@
             border: 4px solid #003366;
             border-radius: 50%;
             z-index: 5;
-            transition: all 0.2s ease;
-        }
-        .timeline-group:hover .timeline-badge {
-            background-color: #FFCC00;
-            transform: scale(1.15);
         }
 
-        /* ETIQUETA DA DATA DE INÍCIO */
         .timeline-date-label {
             font-family: 'Poppins', sans-serif;
             font-size: 14px;
@@ -102,15 +122,14 @@
             gap: 8px;
         }
 
-        /* RAMIFICAÇÃO DAS OCORRÊNCIAS SIMULTÂNEAS (OCUPAM A LARGURA DA TELA) */
+        /* GRUPO CASCATEADO LADO A LADO */
         .events-branch {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
             gap: 20px;
             width: 100%;
         }
 
-        /* CARD DO EVENTO INDIVIDUAL */
         .event-bar {
             background: #F8FAFC;
             border-radius: 8px;
@@ -122,14 +141,12 @@
             justify-content: space-between;
         }
 
-        /* CORES DE IDENTIFICAÇÃO POR CATEGORIA */
         .cat-geral { border-left-color: #3182CE; }
         .cat-prazos { border-left-color: #E53E3E; }
         .cat-aulas { border-left-color: #38A169; }
         .cat-eventos { border-left-color: #805AD5; }
         .cat-secretaria { border-left-color: #D69E2E; }
 
-        /* RELÓGIO POSICIONADO NO TOPO DO CARD */
         .event-time-top {
             font-size: 11px;
             color: #003366;
@@ -144,7 +161,6 @@
             width: fit-content;
         }
 
-        /* TÍTULO DO EVENTO */
         .event-title {
             font-family: 'Poppins', sans-serif;
             font-size: 15px;
@@ -154,7 +170,6 @@
             line-height: 1.45;
         }
 
-        /* METADADOS (RODAPÉ DO CARD) */
         .event-meta {
             display: flex;
             justify-content: space-between;
@@ -171,7 +186,6 @@
             color: #475569;
         }
 
-        /* LOCALIZADOR DA LINHA DA PLANILHA */
         .sheet-line-tag {
             background: #FFF5F5;
             color: #C53030;
@@ -183,7 +197,6 @@
             gap: 4px;
         }
 
-        /* ALERTA DE OCORRÊNCIAS SIMULTÂNEAS */
         .simultaneous-alert {
             background: #FFF9E6;
             border-left: 4px solid #FFCC00;
@@ -207,113 +220,186 @@
     <div class="header">
         <div>
             <h1>LINHA DO TEMPO CRONOLÓGICA PPGE</h1>
-            <p>PAINEL OPERACIONAL DE ATIVIDADES E OCORRÊNCIAS SIMULTÂNEAS</p>
+            <p>PAINEL OPERACIONAL DE ATIVIDADES E OCORRÊNCIAS SIMULTÂNEAS INTERLIGADAS</p>
+        </div>
+    </div>
+
+    <div class="filter-panel">
+        <div class="filter-group">
+            <label><i class="fa-solid fa-filter"></i> FILTRAR POR CATEGORIA</label>
+            <select id="filter-category" class="filter-control" onchange="filtrarAgenda()">
+                <option value="TODAS">-- EXIBIR TODAS AS CATEGORIAS --</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label><i class="fa-solid fa-magnifying-glass"></i> BUSCAR PALAVRA-CHAVE</label>
+            <input type="text" id="filter-search" class="filter-control" placeholder="DIGITE O TERMO PARA PESQUISAR..." oninput="filtrarAgenda()">
         </div>
     </div>
 
     <div id="timeline" class="timeline-container">
-        <div class="loading">CONSTRUINDO EIXO CRONOLÓGICO VERTICAL...</div>
+        <div class="loading">CONSTRUINDO EIXO CRONOLÓGICO...</div>
     </div>
 </div>
 
 <script>
-    async function renderizarLinhaTempo() {
+    let todosEventos = [];
+
+    // Função auxiliar para normalizar e limpar strings para busca precisa
+    function normalizarTexto(texto) {
+        return String(texto || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+    }
+
+    async function carregarDados() {
         try {
-            const resposta = await fetch('agenda.json');
-            const eventos = await resposta.json();
+            // Adiciona timestamp para quebrar o cache agressivo do GitHub e exibir as linhas imediatamente
+            const resposta = await fetch('agenda.json?t=' + new Date().getTime());
+            todosEventos = await resposta.json();
             
-            const container = document.getElementById('timeline');
-            container.innerHTML = '';
-
-            if(eventos.length === 0) {
-                container.innerHTML = '<div class="loading">NENHUM DADO ENCONTRADO NO ARQUIVO AGENDA.JSON</div>';
-                return;
-            }
-
-            // Ordenação Cronológica por data de início
-            eventos.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
-
-            // Agrupamento por data de início para detecção de simultaneidade
-            const gruposDeData = {};
-            eventos.forEach(evento => {
-                const dataChave = evento["DIA INICIAL"];
-                if (!gruposDeData[dataChave]) {
-                    gruposDeData[dataChave] = [];
-                }
-                gruposDeData[dataChave].push(evento);
-            });
-
-            // Renderização no Eixo
-            Object.keys(gruposDeData).forEach(dataChave => {
-                const listaEventosDesteDia = gruposDeData[dataChave];
-                const dataInicBR = dataChave.split('-').reverse().join('/');
-                
-                const grupoDiv = document.createElement('div');
-                grupoDiv.className = 'timeline-group';
-
-                let alertaSimultaneoHTML = '';
-                if (listaEventosDesteDia.length > 1) {
-                    alertaSimultaneoHTML = `
-                        <div class="simultaneous-alert">
-                            <i class="fa-solid fa-triangle-exclamation"></i> 
-                            ${listaEventosDesteDia.length} ATIVIDADES SIMULTÂNEAS CONCORRENTES NESTE DIA
-                        </div>
-                    `;
-                }
-
-                let cardsHTML = '';
-                listaEventosDesteDia.forEach(ev => {
-                    const fimBR = ev["DIA FINAL"] ? ev["DIA FINAL"].split('-').reverse().join('/') : dataInicBR;
-                    const exibicaoPeriodo = dataInicBR === fimBR ? dataInicBR : `${dataInicBR} ATÉ ${fimBR}`;
-                    
-                    let classeCor = 'cat-geral';
-                    const catTexto = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase();
-                    if (catTexto.includes('AULA') || catTexto.includes('DISCIPLINA')) classeCor = 'cat-aulas';
-                    else if (catTexto.includes('PRAZO') || catTexto.includes('EDITAL')) classeCor = 'cat-prazos';
-                    else if (catTexto.includes('SECRETARIA') || catTexto.includes('MATRICULA')) classeCor = 'cat-secretaria';
-                    else if (catTexto.includes('EVENTO') || catTexto.includes('SEMANA')) classeCor = 'cat-eventos';
-
-                    const numLinha = ev["LINHA_PLANILHA"] || '?';
-
-                    cardsHTML += `
-                        <div class="event-bar ${classeCor}">
-                            <div class="event-time-top">
-                                <i class="fa-regular fa-clock"></i> PERÍODO: ${exibicaoPeriodo}
-                            </div>
-                            
-                            <h2 class="event-title">${ev["EVENTO"]}</h2>
-                            
-                            <div class="event-meta">
-                                <span class="category-tag"><i class="fa-solid fa-tag"></i> ${catTexto || 'GERAL'}</span>
-                                <span class="sheet-line-tag"><i class="fa-solid fa-table"></i> LINHA: ${numLinha}</span>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                grupoDiv.innerHTML = `
-                    <div class="timeline-badge"></div>
-                    <div class="timeline-date-label"><i class="fa-solid fa-calendar-days"></i> INÍCIO: ${dataInicBR}</div>
-                    ${alertaSimultaneoHTML}
-                    <div class="events-branch">
-                        ${cardsHTML}
-                    </div>
-                `;
-
-                container.appendChild(grupoDiv);
-            });
-
+            popularCategorias();
+            filtrarAgenda();
         } catch (erro) {
-            document.getElementById('timeline').innerHTML = `
-                <div class="loading" style="color: #E53E3E;">
-                    ERRO AO PROCESSAR PAINEL CRONOLÓGICO.
-                </div>
-            `;
-            console.error(erro);
+            document.getElementById('timeline').innerHTML = `<div class="loading" style="color: #E53E3E;">ERRO AO SINCROZINAR ARQUIVO DATASET.</div>`;
         }
     }
 
-    renderizarLinhaTempo();
+    function popularCategorias() {
+        const select = document.getElementById('filter-category');
+        const categoriasUnicas = new Set();
+        
+        todosEventos.forEach(ev => {
+            const cat = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase().trim();
+            if(cat) categoriasUnicas.add(cat);
+        });
+
+        Array.from(categoriasUnicas).sort().forEach(cat => {
+            const opt = document.createElement('option');
+            opt.value = cat;
+            opt.innerText = cat;
+            select.appendChild(opt);
+        });
+    }
+
+    function filtrarAgenda() {
+        const filtroCat = document.getElementById('filter-category').value;
+        const filtroBusca = normalizarTexto(document.getElementById('filter-search').value);
+
+        // Aplica os filtros na lista bruta
+        let eventosFiltrados = todosEventos.filter(ev => {
+            const catEv = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase().trim();
+            const nomeEv = normalizarTexto(ev["EVENTO"]);
+            
+            const bateCategoria = (filtroCat === 'TODAS' || catEv === filtroCat);
+            const bateBusca = (!filtroBusca || nomeEv.includes(filtroBusca) || catEv.includes(filtroBusca));
+            
+            return bateCategoria && bateBusca;
+        });
+
+        renderizarLinha(eventosFiltrados);
+    }
+
+    function renderizarLinha(eventos) {
+        const container = document.getElementById('timeline');
+        container.innerHTML = '';
+
+        if(eventos.length === 0) {
+            container.innerHTML = '<div class="loading">NENHUM EVENTO ENCONTRADO PARA OS FILTROS SELECIONADOS.</div>';
+            return;
+        }
+
+        // Ordenação Cronológica Estrita
+        eventos.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
+
+        // LÓGICA DE SOBREPOSIÇÃO/CASCATEAMENTO DINÂMICO
+        const blocosAgrupados = [];
+
+        eventos.forEach(ev => {
+            let alocado = false;
+            const evInic = new Date(ev["DIA INICIAL"]);
+            const evFim = new Date(ev["DIA FINAL"] || ev["DIA INICIAL"]);
+
+            // Verifica se este evento colide com algum bloco existente
+            for (let bloco of blocosAgrupados) {
+                // Se a data inicial do evento for menor ou IGUAL à data final máxima do bloco, eles são simultâneos
+                if (evInic <= bloco.dataFimMax) {
+                    bloco.eventos.push(ev);
+                    if (evFim > bloco.dataFimMax) bloco.dataFimMax = evFim; // Atualiza o teto do bloco
+                    alocado = true;
+                    break;
+                }
+            }
+
+            if (!alocado) {
+                blocosAgrupados.push({
+                    dataInicMin: evInic,
+                    dataFimMax: evFim,
+                    dataLabel: ev["DIA INICIAL"],
+                    eventos: [ev]
+                });
+            }
+        });
+
+        // Montagem visual no HTML
+        blocosAgrupados.forEach(bloco => {
+            const dataInicBR = bloco.dataLabel.split('-').reverse().join('/');
+            const grupoDiv = document.createElement('div');
+            grupoDiv.className = 'timeline-group';
+
+            let alertaSimultaneoHTML = '';
+            if (bloco.eventos.length > 1) {
+                alertaSimultaneoHTML = `
+                    <div class="simultaneous-alert">
+                        <i class="fa-solid fa-triangle-exclamation"></i> 
+                        CONCORRÊNCIA: ${bloco.eventos.length} ATIVIDADES EM CONFLUÊNCIA SÍNCRONA NESTE PERÍODO
+                    </div>
+                `;
+            }
+
+            let cardsHTML = '';
+            bloco.eventos.forEach(ev => {
+                const fBR = ev["DIA FINAL"] ? ev["DIA FINAL"].split('-').reverse().join('/') : dataInicBR;
+                const iBR = ev["DIA INICIAL"].split('-').reverse().join('/');
+                const exibicaoPeriodo = iBR === fBR ? iBR : `${iBR} ATÉ ${fBR}`;
+                
+                let classeCor = 'cat-geral';
+                const catTexto = String(ev["CATEGORIA"] || ev["Categoria"] || '').toUpperCase();
+                if (catTexto.includes('AULA') || catTexto.includes('DISCIPLINA')) classeCor = 'cat-aulas';
+                else if (catTexto.includes('PRAZO') || catTexto.includes('EDITAL')) classeCor = 'cat-prazos';
+                else if (catTexto.includes('SECRETARIA') || catTexto.includes('MATRICULA')) classeCor = 'cat-secretaria';
+                else if (catTexto.includes('EVENTO') || catTexto.includes('SEMANA')) classeCor = 'cat-eventos';
+
+                // Se o JSON ainda estiver antigo no cache do GitHub, o fallback exibe o número calculado provisório
+                const numLinha = ev["LINHA_PLANILHA"] || 'PROCESSANDO...';
+
+                cardsHTML += `
+                    <div class="event-bar ${classeCor}">
+                        <div class="event-time-top">
+                            <i class="fa-regular fa-clock"></i> PERÍODO: ${exibicaoPeriodo}
+                        </div>
+                        
+                        <h2 class="event-title">${ev["EVENTO"]}</h2>
+                        
+                        <div class="event-meta">
+                            <span class="category-tag"><i class="fa-solid fa-tag"></i> ${catTexto || 'GERAL'}</span>
+                            <span class="sheet-line-tag"><i class="fa-solid fa-table"></i> LINHA: ${numLinha}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grupoDiv.innerHTML = `
+                <div class="timeline-badge"></div>
+                <div class="timeline-date-label"><i class="fa-solid fa-calendar-days"></i> FLUXO A PARTIR DE: ${dataInicBR}</div>
+                ${alertaSimultaneoHTML}
+                <div class="events-branch">
+                    ${cardsHTML}
+                </div>
+            `;
+            container.appendChild(grupoDiv);
+        });
+    }
+
+    window.onload = carregarDados;
 </script>
 
 </body>
