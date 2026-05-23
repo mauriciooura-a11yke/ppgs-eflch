@@ -71,13 +71,15 @@
     google.charts.setOnLoadCallback(baixarDadosCSV);
 
     function baixarDadosCSV() {
-        // Link público oficial em CSV livre de restrições
-        const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlYhmbrQDLeT0KGj45EeXRMMwZfyO5vI4lBYB3WK0C_LiTxOsfE0IUwF6UgNrhMgpm-mUvTJNqg4E_/pub?gid=0&single=true&output=csv";
+        // ID público e definitivo da sua planilha da agenda
+        const spreadsheetId = "11gYJqlhSULjWt6hAExmIyWKprE43uB7fybmx7osr-z8";
+        
+        // Link de exportação direta que ignora o delay do painel "Publicar na Web"
+        const urlCSV = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=0`;
 
-        // Busca o CSV diretamente da URL pública do Google
         fetch(urlCSV)
             .then(response => {
-                if (!response.ok) throw new Error('Erro ao baixar o arquivo da planilha.');
+                if (!response.ok) throw new Error('Erro ao baixar a planilha.');
                 return response.text();
             })
             .then(csvText => {
@@ -87,24 +89,29 @@
                 document.getElementById('gantt_chart').innerHTML = 
                     `<p style="color:#e53e3e; text-align:center; padding: 40px;">
                         Erro ao carregar dados da planilha pública.<br>
-                        <small>Verifique se o link continua ativo ou se há problemas de conexão.</small>
+                        <small>Certifique-se de que a planilha está configurada como "Qualquer pessoa com o link pode ler".</small>
                     </p>`;
                 console.error(error);
             });
     }
 
-    // Função para interpretar linhas de CSV complexas (com textos longos contendo aspas e vírgulas)
+    // Separa as colunas respeitando aspas e vírgulas gramaticais
     function parseCSV(text) {
         let lines = [];
         let row = [""];
         let inQuotes = false;
+
+        // Remove o caractere BOM invisível se o Google Sheets tiver adicionado
+        if (text.startsWith('\ufeff')) {
+            text = text.substring(1);
+        }
 
         for (let i = 0; i < text.length; i++) {
             let c = text[i];
             let next = text[i+1];
 
             if (c === '"') {
-                if (inQuotes && next === '"') { row[row.length - 1] += '"'; i++; } // Aspas escapadas
+                if (inQuotes && next === '"') { row[row.length - 1] += '"'; i++; }
                 else { inQuotes = !inQuotes; }
             } else if (c === ',' && !inQuotes) {
                 row.push('');
@@ -118,6 +125,29 @@
         }
         if (row.length > 1 || row[0] !== '') lines.push(row);
         return lines;
+    }
+
+    function converterParaData(stringData) {
+        if (!stringData) return null;
+        
+        // Remove caracteres invisíveis (como espaços sem quebra ou \h) e aspas residuais
+        stringData = stringData.replace(/[\u200B-\u200D\uFEFF]/g, "").replace(/^"|"$/g, '').trim();
+
+        if (stringData.includes('-')) {
+            const p = stringData.split('-');
+            if (p.length === 3) {
+                return new Date(parseInt(p[0]), parseInt(p[1]) - 1, parseInt(p[2]));
+            }
+        }
+        
+        if (stringData.includes('/')) {
+            const p = stringData.split('/');
+            if (p.length === 3) {
+                return new Date(parseInt(p[2]), parseInt(p[1]) - 1, parseInt(p[0]));
+            }
+        }
+
+        return null;
     }
 
     function processarCSV(csvText) {
@@ -135,28 +165,23 @@
 
         let idContador = 1;
 
-        // Ignora a linha 0 (cabeçalho)
         for (let i = 1; i < matrizDados.length; i++) {
             const colunas = matrizDados[i];
             if (colunas.length < 4) continue;
 
             const limpar = (texto) => texto ? texto.trim() : '';
             
-            const txtDataInic = limpar(colunas[0]); // YYYY-MM-DD
-            const txtDataFim = limpar(colunas[1]);  // YYYY-MM-DD
+            const txtDataInic = limpar(colunas[0]);
+            const txtDataFim = limpar(colunas[1]);
             const categoria = limpar(colunas[2]);
             const evento = limpar(colunas[3]);
 
-            if (txtDataInic.includes("DIA") || evento === "EVENTO" || !txtDataInic.includes("-")) continue;
+            if (txtDataInic.toUpperCase().includes("DIA") || evento.toUpperCase().includes("EVENTO") || !txtDataInic) continue;
 
-            const pStart = txtDataInic.split('-');
-            const pEnd = txtDataFim.split('-');
+            const dataInicio = converterParaData(txtDataInic);
+            const dataFim = converterParaData(txtDataFim);
 
-            if (pStart.length === 3 && pEnd.length === 3) {
-                // Ajuste de mês (Janeiro = 0 em JavaScript)
-                const dataInicio = new Date(parseInt(pStart[0]), parseInt(pStart[1]) - 1, parseInt(pStart[2]));
-                const dataFim = new Date(parseInt(pEnd[0]), parseInt(pEnd[1]) - 1, parseInt(pEnd[2]));
-
+            if (dataInicio && !isNaN(dataInicio.getTime()) && dataFim && !isNaN(dataFim.getTime())) {
                 dataTable.addRow([
                     'T' + idContador, 
                     evento,              
@@ -173,11 +198,10 @@
 
         if (idContador === 1) {
             document.getElementById('gantt_chart').innerHTML = 
-                `<p style="text-align:center; padding:40px; color:#718096;">Nenhum dado pôde ser processado. Verifique as datas na planilha.</p>`;
+                `<p style="text-align:center; padding:40px; color:#718096;">Nenhum dado pôde ser processado. Certifique-se de que a aba da planilha possui dados válidos.</p>`;
             return;
         }
 
-        // Define a altura proporcional ao número de eventos encontrados
         const alturaCalculada = (idContador * 42) + 60;
         document.getElementById('gantt_chart').style.height = alturaCalculada + 'px';
 
