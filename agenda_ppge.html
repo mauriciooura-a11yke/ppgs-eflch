@@ -72,11 +72,13 @@
     google.charts.setOnLoadCallback(fetchData);
 
     function fetchData() {
-        // ID extraído diretamente do seu link de publicação estável
-        const spreadsheetId = '1vRlYhmbrQDLeT0KGj45EeXRMMwZfyO5vI4lBYB3WK0C_LiTxOsfE0IUwF6UgNrhMgpm-mUvTJNqg4E_';
+        // ID original da planilha que você separou para a agenda
+        const spreadsheetId = '11gYJqlhSULjWt6hAExmIyWKprE43uB7fybmx7osr-z8';
+        // Nome exato da aba
+        const sheetName = encodeURIComponent('agenda_ppge');
         
-        // Usando a API de Visualização do Google (gviz) para evitar erros de CORS (Failed to Fetch)
-        const url = `https://docs.google.com/spreadsheets/d/e/${spreadsheetId}/gviz/tq?tqx=out:csv&gid=0`;
+        // Endpoint oficial para puxar dados estruturados diretamente da planilha aberta
+        const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?sheet=${sheetName}`;
 
         const query = new google.visualization.Query(url);
         query.send(handleQueryResponse);
@@ -92,11 +94,6 @@
             return;
         }
 
-        // Recupera os dados puros como texto (CSV) que retornaram da query
-        const csvText = response.getDataTable().getFilteredRows([]).length === 0 ? "" : response.getDataTable();
-        
-        // Como o gviz retorna um DataTable estruturado mas precisamos mapear colunas customizadas do seu formato, 
-        // vamos ler linha por linha do DataTable gerado nativamente pelo leitor do Google.
         const dt = response.getDataTable();
         const totalRows = dt.getNumberOfRows();
 
@@ -113,8 +110,8 @@
         let taskIdCounter = 1;
 
         for (let i = 0; i < totalRows; i++) {
-            // Pega os valores das colunas baseado na sua planilha original:
-            // Coluna 0: DIA INICIAL | Coluna 1: DIA FINAL | Coluna 2: Categoria | Coluna 3: EVENTO
+            // Mapeamento automático das colunas do Google Sheets:
+            // Coluna 0 (A): DIA INICIAL | Coluna 1 (B): DIA FINAL | Coluna 2 (C): Categoria | Coluna 3 (D): EVENTO
             let valDataInicial = dt.getValue(i, 0);
             let valDataFinal = dt.getValue(i, 1);
             let categoria = dt.getValue(i, 2) || 'Geral';
@@ -124,11 +121,12 @@
 
             let startDate, endDate;
 
-            // Tratamento caso o Google já tenha convertido para objeto Date ou retornado como String (YYYY-MM-DD)
+            // Garante a conversão correta seja ela string ou objeto Date nativo do Google
             if (valDataInicial instanceof Date) {
                 startDate = valDataInicial;
             } else {
                 const pStart = String(valDataInicial).split('-');
+                if(pStart.length !== 3) continue;
                 startDate = new Date(parseInt(pStart[0]), parseInt(pStart[1]) - 1, parseInt(pStart[2]));
             }
 
@@ -136,11 +134,12 @@
                 endDate = valDataFinal;
             } else {
                 const pEnd = String(valDataFinal).split('-');
+                if(pEnd.length !== 3) continue;
                 endDate = new Date(parseInt(pEnd[0]), parseInt(pEnd[1]) - 1, parseInt(pEnd[2]));
             }
 
-            // Evita adicionar linhas com cabeçalhos textuais duplicados caso ocorra na leitura
-            if (evento === "EVENTO" || categoria === "Categoria") continue;
+            // Ignora a linha de cabeçalho se ela for lida textualmente
+            if (evento === "EVENTO" || categoria === "Categoria" || String(valDataInicial).includes("DIA")) continue;
 
             data.addRow([
                 'T' + taskIdCounter, 
@@ -155,9 +154,8 @@
             taskIdCounter++;
         }
 
-        // Definições visuais do Gráfico
         const options = {
-            height: taskIdCounter * 38 + 60, // Altura flexível baseada no número de linhas reais
+            height: taskIdCounter * 38 + 60, // Ajusta a altura perfeitamente ao número de tarefas existentes
             gantt: {
                 trackHeight: 35,
                 barHeight: 22,
