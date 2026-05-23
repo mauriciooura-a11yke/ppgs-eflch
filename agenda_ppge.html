@@ -14,13 +14,46 @@
             background-color: #E2E8F0;
             font-family: 'Lato', sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             text-transform: uppercase;
+            display: flex; /* ATIVA O LAYOUT LADO A LADO */
+            min-height: 100vh;
         }
         
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
+        /* SIDEBAR FIXA À ESQUERDA */
+        .sidebar {
+            width: 320px;
+            background-color: #001A33;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .sidebar-title {
+            font-family: 'Poppins';
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFCC00;
+            margin: 0;
+            border-bottom: 2px solid #FFCC00;
+            padding-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* ÁREA PRINCIPAL DE CONTEÚDO (DIREITA) */
+        .main-content {
+            margin-left: 320px; /* ABRE ESPAÇO PARA A SIDEBAR DO LADO */
+            flex-grow: 1;
+            padding: 30px;
         }
         
         .header {
@@ -28,101 +61,83 @@
             color: white;
             padding: 20px 30px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             border-left: 12px solid #FFCC00;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
         .header h1 { margin: 0; font-family: 'Poppins'; font-size: 24px; font-weight: 700; }
         .header p { margin: 5px 0 0 0; color: #FFCC00; font-weight: 600; font-size: 11px; letter-spacing: 1px; }
 
-        /* PAINEL DE FILTROS REESTRUTURADO */
-        .filter-panel {
-            background: #FFF;
-            border: 1px solid #CBD5E1;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            display: flex;
-            gap: 15px;
-            align-items: flex-end;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
+        /* GRUPOS DE FILTROS NA SIDEBAR */
         .filter-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            flex: 2;
-            position: relative; /* ESSENCIAL PARA O DROPDOWN FLUTUANTE */
-        }
-        .filter-group label { font-size: 11px; font-weight: 700; color: #475569; }
-        
-        /* CUSTOM MULTISELECT DROPDOWN */
-        .multiselect-box {
-            padding: 10px 12px;
-            border: 1px solid #CBD5E1;
-            border-radius: 6px;
-            font-size: 13px;
-            background-color: #F8FAFC;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-            min-height: 38px;
-        }
-        
-        .multiselect-options {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border: 1px solid #94A3B8;
-            border-radius: 6px;
-            margin-top: 5px;
-            max-height: 200px;
-            overflow-y: auto;
-            z-index: 100;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 5px 0;
-        }
-        
-        .multiselect-options label {
-            display: flex;
-            align-items: center;
             gap: 10px;
-            padding: 8px 12px;
-            font-size: 12px;
-            color: #1E293B;
-            cursor: pointer;
-            text-transform: uppercase;
         }
-        .multiselect-options label:hover {
-            background-color: #F1F5F9;
+        .filter-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94A3B8;
+            letter-spacing: 0.5px;
         }
-        .multiselect-options input[type="checkbox"] {
-            transform: scale(1.1);
-            cursor: pointer;
-        }
-        
-        /* INPUT DE BUSCA TEXTUAL */
-        .filter-control-input {
-            padding: 9px 12px;
-            border: 1px solid #CBD5E1;
+
+        /* CAIXA DE TEXTO DA SIDEBAR */
+        .filter-input {
+            padding: 12px;
+            border: 1px solid #334155;
             border-radius: 6px;
             font-family: 'Lato';
             font-size: 13px;
             text-transform: uppercase;
             width: 100%;
-            background-color: #F8FAFC;
-            height: 38px;
+            background-color: #0f172a;
+            color: white;
+        }
+        .filter-input:focus {
+            outline: none;
+            border-color: #FFCC00;
         }
         
+        /* BOTÕES ESTILO TAG SELECIONÁVEL (SAI O CTRL + MOUSE) */
+        .tag-selector-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .tag-button {
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            color: #94A3B8;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .tag-button:hover {
+            background-color: #334155;
+            color: white;
+        }
+        /* ESTADO QUANDO A TAG ESTÁ ATIVA/SELECIONADA */
+        .tag-button.active {
+            background-color: #FFCC00;
+            color: #001A33;
+            border-color: #FFCC00;
+        }
+        .tag-button i {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
         .btn-reset {
-            flex: 1;
-            padding: 10px 15px;
-            background-color: #475569;
+            margin-top: 10px;
+            padding: 12px;
+            background-color: #EF4444;
             color: white;
             border: none;
             border-radius: 6px;
@@ -135,11 +150,10 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            height: 38px;
         }
-        .btn-reset:hover { background-color: #1E293B; }
+        .btn-reset:hover { background-color: #DC2626; }
 
-        /* TIMELINE GRAPH GRAPHICS */
+        /* TIMELINE GRÁFICA GANTT */
         .gantt-timeline {
             position: relative;
             background: #FFF;
@@ -299,41 +313,41 @@
 </head>
 <body>
 
-<div class="container">
+<div class="sidebar">
+    <h2 class="sidebar-title"><i class="fa-solid fa-sliders"></i> PAINEL FILTROS</h2>
+    
+    <div class="filter-group">
+        <label><i class="fa-solid fa-magnifying-glass"></i> BUSCAR PALAVRA-CHAVE</label>
+        <input type="text" id="filter-search" class="filter-input" placeholder="DIGITE O TERMO..." oninput="filtrarCronograma()">
+    </div>
+    
+    <div class="filter-group">
+        <label><i class="fa-solid fa-tags"></i> FILTRAR CATEGORIAS</label>
+        <div id="container-tags-categoria" class="tag-selector-container">
+            </div>
+    </div>
+    
+    <div class="filter-group">
+        <label><i class="fa-solid fa-hourglass-half"></i> STATUS TEMPORAL</label>
+        <div class="tag-selector-container">
+            <button id="btn-status-ativos" class="tag-button active" onclick="toggleStatusTag('ATIVOS')">
+                <span>🚨 ANDAMENTO / ANTERIORES</span> <i class="fa-solid fa-check"></i>
+            </button>
+            <button id="btn-status-futuros" class="tag-button active" onclick="toggleStatusTag('FUTUROS')">
+                <span>📅 ATIVIDADES FUTURAS</span> <i class="fa-solid fa-check"></i>
+            </button>
+        </div>
+    </div>
+    
+    <button class="btn-reset" onclick="limparFiltros()">
+        <i class="fa-solid fa-filter-circle-xmark"></i> LIMPAR TODOS OS FILTROS
+    </button>
+</div>
+
+<div class="main-content">
     <div class="header">
         <h1>CRONOGRAMA INTEGRADO PPGE</h1>
-        <p>CONEXÃO CODEPENDENTE FLUIDA COM SELEÇÃO MULTIPLA DINÂMICA</p>
-    </div>
-
-    <div class="filter-panel">
-        
-        <div class="filter-group">
-            <label><i class="fa-solid fa-filter"></i> CATEGORIAS (MÚLTIPLO)</label>
-            <div class="multiselect-box" onclick="toggleDropdown('drop-cat')">
-                <span id="label-cat">TODAS SELECIONADAS</span> <i class="fa-solid fa-chevron-down"></i>
-            </div>
-            <div id="drop-cat" class="multiselect-options"></div>
-        </div>
-        
-        <div class="filter-group">
-            <label><i class="fa-solid fa-hourglass-half"></i> STATUS TEMPORAL (MÚLTIPLO)</label>
-            <div class="multiselect-box" onclick="toggleDropdown('drop-status')">
-                <span id="label-status">TODOS SELECIONADOS</span> <i class="fa-solid fa-chevron-down"></i>
-            </div>
-            <div id="drop-status" class="multiselect-options">
-                <label><input type="checkbox" value="ATIVOS" checked onchange="atualizarFiltrosCascata('STATUS')"> 🚨 EM ANDAMENTO / ANTERIORES</label>
-                <label><input type="checkbox" value="FUTUROS" checked onchange="atualizarFiltrosCascata('STATUS')"> 📅 COMPONENTES FUTUROS</label>
-            </div>
-        </div>
-
-        <div class="filter-group">
-            <label><i class="fa-solid fa-magnifying-glass"></i> BUSCAR TERMO</label>
-            <input type="text" id="filter-search" class="filter-control-input" placeholder="DIGITE PARA FILTRAR..." oninput="filtrarCronograma()">
-        </div>
-        
-        <button class="btn-reset" onclick="limparFiltros()">
-            <i class="fa-solid fa-filter-circle-xmark"></i> LIMPAR TUDO
-        </button>
+        <p>ARQUITETURA EM SIDEBAR AVANÇADA COM GERENCIAMENTO MULTISELECT POR TAGS DINÂMICAS</p>
     </div>
 
     <div id="gantt-container" class="gantt-timeline">
@@ -343,6 +357,8 @@
 
 <script>
     let datasetCompleto = [];
+    let categoriasSelecionadas = [];
+    let statusSelecionados = ['ATIVOS', 'FUTUROS'];
 
     function normalizarString(txt) {
         return String(txt || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -354,25 +370,12 @@
         return hoje;
     }
 
-    // Abre e fecha os menus flutuantes de multiselect
-    function toggleDropdown(id) {
-        const el = document.getElementById(id);
-        el.style.display = el.style.display === 'block' ? 'none' : 'block';
-    }
-
-    // Fecha os dropdowns se o usuário clicar fora deles
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.filter-group')) {
-            document.querySelectorAll('.multiselect-options').forEach(d => d.style.display = 'none');
-        }
-    });
-
     async function inicializar() {
         try {
             const r = await fetch('agenda_ppge.json?t=' + new Date().getTime());
             const dadosBrutos = await r.json();
             
-            // Filtra os itens já concluídos definitivamente da memória
+            // Remove itens concluídos
             datasetCompleto = dadosBrutos.filter(ev => {
                 const statusConclusao = String(ev["CONCLUIDO"] || '').toUpperCase().trim();
                 return statusConclusao !== "SIM";
@@ -380,68 +383,69 @@
             
             datasetCompleto.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
             
-            construirOpcoesCategorias(datasetCompleto);
+            mapearCategoriasIniciais();
             filtrarCronograma();
         } catch (e) {
-            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red;">ERRO AO CARREGAR DATASET JSON.</div>`;
+            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red;">ERRO AO CARREGAR BASE JSON DA AGENDA.</div>`;
         }
     }
 
-    // Monta os checkboxes de categoria dinamicamente com base no que existe no JSON
-    function construirOpcoesCategorias(dados) {
-        const container = document.getElementById('drop-cat');
+    // Cria as tags de categoria na sidebar com base nas ocorrências do JSON
+    function mapearCategoriasIniciais() {
+        const container = document.getElementById('container-tags-categoria');
         container.innerHTML = '';
         const list = new Set();
         
-        dados.forEach(ev => {
+        datasetCompleto.forEach(ev => {
             const c = String(ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
             if(c) list.add(c);
         });
 
-        Array.from(list).sort().forEach(cat => {
-            const lbl = document.createElement('label');
-            lbl.innerHTML = `<input type="checkbox" value="${cat}" checked onchange="atualizarFiltrosCascata('CATEGORIA')"> ${cat}`;
-            container.appendChild(lbl);
+        categoriasSelecionadas = Array.from(list).sort();
+
+        categoriasSelecionadas.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'tag-button active';
+            btn.id = `btn-cat-${cat.replace(/\s+/g, '-')}`;
+            btn.innerHTML = `<span>${cat}</span> <i class="fa-solid fa-check"></i>`;
+            btn.onclick = () => toggleCategoriaTag(cat, btn.id);
+            container.appendChild(btn);
         });
-        
-        atualizarLabelsFiltros();
     }
 
-    // Gerencia a dependência (Cascata Dinâmica) entre os filtros
-    function atualizarFiltrosCascata(quemMudou) {
-        const hojeTime = obterDataHoje();
-        
-        // Obtém o que está marcado atualmente em categorias
-        const checkboxesCat = document.querySelectorAll('#drop-cat input[type="checkbox"]');
-        let catsSelecionadas = Array.from(checkboxesCat).filter(i => i.checked).map(i => i.value);
-
-        // Se o filtro de categorias mudou, podemos recalcular dinamicamente o comportamento do filtro de status
-        // Para este cenário de cronograma, aplicamos a filtragem combinada direta:
-        atualizarLabelsFiltros();
+    // Gerencia o clique simples nas tags de Categoria
+    function toggleCategoriaTag(cat, elementId) {
+        const btn = document.getElementById(elementId);
+        if (categoriasSelecionadas.includes(cat)) {
+            categoriasSelecionadas = categoriasSelecionadas.filter(c => c !== cat);
+            btn.classList.remove('active');
+            btn.querySelector('i').className = 'fa-solid fa-minus';
+        } else {
+            categoriasSelecionadas.push(cat);
+            btn.classList.add('active');
+            btn.querySelector('i').className = 'fa-solid fa-check';
+        }
         filtrarCronograma();
     }
 
-    // Atualiza os textos dos botões de filtro (Ex: "3 Selecionadas", "Todas")
-    function atualizarLabelsFiltros() {
-        const cbCat = document.querySelectorAll('#drop-cat input[type="checkbox"]');
-        const selCat = Array.from(cbCat).filter(i => i.checked);
-        document.getElementById('label-cat').innerText = selCat.length === cbCat.length ? "TODAS SELECIONADAS" : (selCat.length === 0 ? "NENHUMA SELECIONADA" : `${selCat.length} SELECIONADAS`);
-
-        const cbStat = document.querySelectorAll('#drop-status input[type="checkbox"]');
-        const selStat = Array.from(cbStat).filter(i => i.checked);
-        document.getElementById('label-status').innerText = selStat.length === cbStat.length ? "TODOS SELECIONADOS" : (selStat.length === 0 ? "NENHUM SELECIONADO" : `${selStat.length} SELECIONADOS`);
+    // Gerencia o clique simples nas tags de Status Temporal
+    function toggleStatusTag(status) {
+        const btn = document.getElementById(`btn-status-${status.toLowerCase()}`);
+        if (statusSelecionados.includes(status)) {
+            statusSelecionados = statusSelecionados.filter(s => s !== status);
+            btn.classList.remove('active');
+            btn.querySelector('i').className = 'fa-solid fa-minus';
+        } else {
+            statusSelecionados.push(status);
+            btn.classList.add('active');
+            btn.querySelector('i').className = 'fa-solid fa-check';
+        }
+        filtrarCronograma();
     }
 
     function filtrarCronograma() {
         const bSel = normalizarString(document.getElementById('filter-search').value);
         const hojeTime = obterDataHoje();
-
-        // Pega listas de valores marcados nos multiselects
-        const cbCat = document.querySelectorAll('#drop-cat input[type="checkbox"]');
-        const catsMarcadas = Array.from(cbCat).filter(i => i.checked).map(i => i.value);
-
-        const cbStat = document.querySelectorAll('#drop-status input[type="checkbox"]');
-        const statusMarcados = Array.from(cbStat).filter(i => i.checked).map(i => i.value);
 
         const dadosFiltrados = datasetCompleto.filter(ev => {
             const cEv = String(ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
@@ -449,16 +453,16 @@
             const dataEvInic = new Date(ev["DIA INICIAL"]);
             dataEvInic.setHours(0,0,0,0);
 
-            // Validação Multiselect Categorias
-            const bateCategoria = catsMarcadas.includes(cEv);
+            // Filtro por Tags de Categoria
+            const bateCategoria = categoriasSelecionadas.includes(cEv);
             
-            // Validação Multiselect Status Temporal
+            // Filtro por Tags de Status Temporal
             const ehAtivo = dataEvInic <= hojeTime;
             let bateStatus = false;
-            if (statusMarcados.includes('ATIVOS') && ehAtivo) bateStatus = true;
-            if (statusMarcados.includes('FUTUROS') && !ehAtivo) bateStatus = true;
+            if (statusSelecionados.includes('ATIVOS') && ehAtivo) bateStatus = true;
+            if (statusSelecionados.includes('FUTUROS') && !ehAtivo) bateStatus = true;
 
-            // Validação Busca Textual
+            // Filtro por Busca Textual
             const bateBusca = (!bSel || nEv.includes(bSel) || cEv.includes(bSel));
 
             return bateCategoria && bateStatus && bateBusca;
@@ -468,10 +472,24 @@
     }
 
     function limparFiltros() {
-        // Marca todos os checkboxes novamente
-        document.querySelectorAll('.multiselect-options input[type="checkbox"]').forEach(cb => cb.checked = true);
         document.getElementById('filter-search').value = '';
-        atualizarLabelsFiltros();
+        
+        // Reativa todas as tags de Categoria
+        categoriasSelecionadas = [];
+        document.querySelectorAll('#container-tags-categoria .tag-button').forEach(btn => {
+            btn.classList.add('active');
+            btn.querySelector('i').className = 'fa-solid fa-check';
+            const catText = btn.querySelector('span').innerText;
+            categoriasSelecionadas.push(catText);
+        });
+
+        // Reativa todas as tags de Status
+        statusSelecionados = ['ATIVOS', 'FUTUROS'];
+        document.querySelectorAll('[id^="btn-status-"]').forEach(btn => {
+            btn.classList.add('active');
+            btn.querySelector('i').className = 'fa-solid fa-check';
+        });
+
         filtrarCronograma();
     }
 
@@ -480,7 +498,7 @@
         container.innerHTML = '';
 
         if(eventos.length === 0) {
-            container.innerHTML = '<div class="loading">NENHUMA ATIVIDADE ATENDE AOS FILTROS SELECIONADOS COMBINADOS.</div>';
+            container.innerHTML = '<div class="loading">NENHUMA ATIVIDADE ATENDE AOS CRITÉRIOS DE SELEÇÃO ATIVOS.</div>';
             return;
         }
 
