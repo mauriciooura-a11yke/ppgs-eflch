@@ -1,0 +1,308 @@
+[
+  {
+    "DIA INICIAL": "2026-05-20",
+    "DIA FINAL": "2026-05-25",
+    "Categoria": "BOLSAS CAPES DS",
+    "EVENTO": "Envio de documentação para cadastramento de bolsista para o e-mail ppge.educacao@unifesp.br"
+  },
+  {
+    "DIA INICIAL": "2026-05-25",
+    "DIA FINAL": "2026-06-06",
+    "Categoria": "CRONOGRAMA - SIIU",
+    "EVENTO": "1_CADASTRO DISCIPLINA"
+  },
+  {
+    "DIA INICIAL": "2026-05-26",
+    "DIA FINAL": "2026-05-26",
+    "Categoria": "CEPG",
+    "EVENTO": "CEPG - REUNIÃO"
+  },
+  {
+    "DIA INICIAL": "2026-05-28",
+    "DIA FINAL": "2026-05-28",
+    "Categoria": "CONSELHO DE PÓS",
+    "EVENTO": "REUNIÃO DO CONSELHO DE PÓS"
+  },
+  {
+    "DIA INICIAL": "2026-05-29",
+    "DIA FINAL": "2026-05-29",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação das inscrições homologadas."
+  },
+  {
+    "DIA INICIAL": "2026-05-29",
+    "DIA FINAL": "2026-06-01",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Período para interposição de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-06-01",
+    "DIA FINAL": "2026-07-31",
+    "Categoria": "CRONOGRAMA - SIIU",
+    "EVENTO": "7_LANÇAMENTO DE NOTAS - 1º SEMESTRE DE 2026"
+  },
+  {
+    "DIA INICIAL": "2026-06-02",
+    "DIA FINAL": "2026-06-02",
+    "Categoria": "PROFICIÊNCIA",
+    "EVENTO": "PROVA DE PROFICIÊNCIA - SALA 310"
+  },
+  {
+    "DIA INICIAL": "2026-06-05",
+    "DIA FINAL": "2026-06-05",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação do resultado de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-06-07",
+    "DIA FINAL": "2026-06-10",
+    "Categoria": "CRONOGRAMA - SIIU",
+    "EVENTO": "2_VALIDAÇÃO DE DISCIPLINAS"
+  },
+  {
+    "DIA INICIAL": "2026-06-08",
+    "DIA FINAL": "2026-06-08",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Convocação para a Fase I (prova escrita)."
+  },
+  {
+    "DIA INICIAL": "2026-06-11",
+    "DIA FINAL": "2026-06-17",
+    "Categoria": "CRONOGRAMA - SIIU",
+    "EVENTO": "3_OFERTA DE DISCIPLINA"
+  },
+  {
+    "DIA INICIAL": "2026-06-16",
+    "DIA FINAL": "2026-06-16",
+    "Categoria": "PROFICIÊNCIA",
+    "EVENTO": "PUBLICAÇÃO DO RESULTADO"
+  },
+  {
+    "DIA INICIAL": "2026-06-18",
+    "DIA FINAL": "2026-06-19",
+    "Categoria": "CRONOGRAMA - SIIU",
+    "EVENTO": "4_VALIDAÇÃO OFERTA DE DISCIPLINA"
+  },
+  {
+    "DIA INICIAL": "2026-06-23",
+    "DIA FINAL": "2026-06-23",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "PROVA ESCRITA PPGE"
+  },
+  {
+    "DIA INICIAL": "2026-06-23",
+    "DIA FINAL": "2026-07-07",
+    "Categoria": "CRONOGRAMA - SIIU",
+    "EVENTO": "5_MATRICULA EM DISCIPLINA"
+  },
+  {
+    "DIA INICIAL": "2026-06-23",
+    "DIA FINAL": "2026-07-10",
+    "Categoria": "CRONOGRAMA - SIIU",
+    "EVENTO": "6_VALIDAÇÃO DE MATRICULA"
+  },
+  {
+    "DIA INICIAL": "2026-06-24",
+    "DIA FINAL": "2026-06-24",
+    "Categoria": "CAPGPQ",
+    "EVENTO": "DATA-LIMITE PARA ENVIO DE PROCESSOS PARA CAPGPQ."
+  },
+  {
+    "DIA INICIAL": "2026-07-22",
+    "DIA FINAL": "2026-07-31",
+    "Categoria": "FÉRIAS",
+    "EVENTO": "Férias Mauricio"
+  },
+  {
+    "DIA INICIAL": "2026-07-28",
+    "DIA FINAL": "2026-07-28",
+    "Categoria": "CEPG",
+    "EVENTO": "CEPG - REUNIÃO"
+  },
+  {
+    "DIA INICIAL": "2026-07-30",
+    "DIA FINAL": "2026-07-30",
+    "Categoria": "CONSELHO DE PÓS",
+    "EVENTO": "REUNIÃO DO CONSELHO DE PÓS"
+  },
+  {
+    "DIA INICIAL": "2026-08-01",
+    "DIA FINAL": "2026-08-31",
+    "Categoria": "RECREDENCIAMENTO",
+    "EVENTO": "ALERTAR SOBRE VENCIMENTO DE PRAZOS"
+  },
+  {
+    "DIA INICIAL": "2026-08-07",
+    "DIA FINAL": "2026-08-07",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação dos resultados da Fase I."
+  },
+  {
+    "DIA INICIAL": "2026-08-07",
+    "DIA FINAL": "2026-08-10",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Período para interposição de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-08-17",
+    "DIA FINAL": "2026-08-17",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação do resultado de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-08-18",
+    "DIA FINAL": "2026-09-09",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Fase II – Análise de projetos de pesquisa, sem a presença do candidato."
+  },
+  {
+    "DIA INICIAL": "2026-08-25",
+    "DIA FINAL": "2026-08-25",
+    "Categoria": "CEPG",
+    "EVENTO": "CEPG - REUNIÃO"
+  },
+  {
+    "DIA INICIAL": "2026-09-10",
+    "DIA FINAL": "2026-09-10",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação do resultado da análise do projeto de pesquisa e convocação para a Fase III (entrevista)."
+  },
+  {
+    "DIA INICIAL": "2026-09-10",
+    "DIA FINAL": "2026-09-12",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Período para interposição de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-09-15",
+    "DIA FINAL": "2026-09-15",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação do resultado de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-09-16",
+    "DIA FINAL": "2026-09-30",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Fase III – Realização de Entrevistas."
+  },
+  {
+    "DIA INICIAL": "2026-09-22",
+    "DIA FINAL": "2026-09-22",
+    "Categoria": "CEPG",
+    "EVENTO": "CEPG - REUNIÃO"
+  },
+  {
+    "DIA INICIAL": "2026-10-02",
+    "DIA FINAL": "2026-10-02",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação do resultado das entrevistas e convocação para a Fase IV (submissão e conferência de documentos)."
+  },
+  {
+    "DIA INICIAL": "2026-10-02",
+    "DIA FINAL": "2026-10-05",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Período para interposição de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-10-09",
+    "DIA FINAL": "2026-10-09",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação do resultado de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-10-12",
+    "DIA FINAL": "2026-10-19",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Fase IV – Submissão e conferência de documentos."
+  },
+  {
+    "DIA INICIAL": "2026-10-27",
+    "DIA FINAL": "2026-10-27",
+    "Categoria": "CEPG",
+    "EVENTO": "CEPG - REUNIÃO"
+  },
+  {
+    "DIA INICIAL": "2026-10-30",
+    "DIA FINAL": "2026-10-30",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação do resultado da Fase IV."
+  },
+  {
+    "DIA INICIAL": "2026-10-30",
+    "DIA FINAL": "2026-11-03",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Período para interposição de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-11-01",
+    "DIA FINAL": "2026-11-16",
+    "Categoria": "INTRANET",
+    "EVENTO": "PRORROGAR AUTORIZADOS NA INTRANET"
+  },
+  {
+    "DIA INICIAL": "2026-11-09",
+    "DIA FINAL": "2026-11-09",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação do resultado de recursos."
+  },
+  {
+    "DIA INICIAL": "2026-11-10",
+    "DIA FINAL": "2026-11-10",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Divulgação do Resultado Final para os inscritos na modalidade “ampla concorrência”."
+  },
+  {
+    "DIA INICIAL": "2026-11-10",
+    "DIA FINAL": "2026-11-10",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Convocação para a Fase V (avaliação por banca de heteroidentificação e de análise documental), exclusivamente para candidatos inscritos na modalidade “ações afirmativas”."
+  },
+  {
+    "DIA INICIAL": "2026-11-16",
+    "DIA FINAL": "2027-02-15",
+    "Categoria": "CRONOGRAMA - SIIU",
+    "EVENTO": "7_LANÇAMENTO DE NOTAS"
+  },
+  {
+    "DIA INICIAL": "2026-11-24",
+    "DIA FINAL": "2026-11-24",
+    "Categoria": "CEPG",
+    "EVENTO": "CEPG - REUNIÃO"
+  },
+  {
+    "DIA INICIAL": "2026-12-01",
+    "DIA FINAL": "2026-12-01",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Convocação para a reunião geral obrigatória com a coordenação do programa, a ser realizada no dia 04/12/2026"
+  },
+  {
+    "DIA INICIAL": "2026-12-04",
+    "DIA FINAL": "2026-12-04",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Reunião geral dos candidatos aprovados com a coordenação do PPGE e orientações sobre pré-matrícula, por meio remoto. A ausência do candidato implica a perda da vaga."
+  },
+  {
+    "DIA INICIAL": "2026-12-04",
+    "DIA FINAL": "2026-12-10",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Período de pré-matrícula. A não realização da pré-matrícula implica a perda da vaga."
+  },
+  {
+    "DIA INICIAL": "2026-12-15",
+    "DIA FINAL": "2026-12-24",
+    "Categoria": "FÉRIAS",
+    "EVENTO": "Férias Mauricio"
+  },
+  {
+    "DIA INICIAL": "2026-12-22",
+    "DIA FINAL": "2026-12-22",
+    "Categoria": "CEPG",
+    "EVENTO": "CEPG - REUNIÃO"
+  },
+  {
+    "DIA INICIAL": "2027-02-15",
+    "DIA FINAL": "2027-02-19",
+    "Categoria": "PROCESSO SELETIVO",
+    "EVENTO": "Matrícula obrigatória em disciplinas para o 1º semestre de 2027. Conforme deliberação da CEPG do PPGE/Unifesp, nenhum ingressante poderá deixar de efetuar matrícula em disciplina(s) na Unifesp, caso contrário, será automaticamente desligado do Programa."
+  }
+]
