@@ -16,20 +16,20 @@
             margin: 0;
             padding: 0;
             text-transform: uppercase;
-            display: flex; /* ATIVA O LAYOUT LADO A LADO */
+            display: flex;
             min-height: 100vh;
         }
         
-        /* SIDEBAR FIXA À ESQUERDA */
+        /* SIDEBAR DE CONTROLES */
         .sidebar {
             width: 320px;
-            background-color: #001A33;
+            background-color: #0F172A;
             color: white;
             padding: 30px 20px;
             display: flex;
             flex-direction: column;
             gap: 25px;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.15);
             position: fixed;
             top: 0;
             bottom: 0;
@@ -42,33 +42,35 @@
             font-family: 'Poppins';
             font-size: 18px;
             font-weight: 700;
-            color: #FFCC00;
+            color: #F1F5F9;
             margin: 0;
-            border-bottom: 2px solid #FFCC00;
-            padding-bottom: 10px;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 12px;
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* ÁREA PRINCIPAL DE CONTEÚDO (DIREITA) */
+        /* ÁREA DE CONTEÚDO PRINCIPAL */
         .main-content {
-            margin-left: 320px; /* ABRE ESPAÇO PARA A SIDEBAR DO LADO */
+            margin-left: 320px;
             flex-grow: 1;
             padding: 30px;
         }
         
         .header {
-            background: linear-gradient(135deg, #003366 0%, #001A33 100%);
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
             color: white;
-            padding: 20px 30px;
+            padding: 22px 30px;
             border-radius: 8px;
             margin-bottom: 25px;
-            border-left: 12px solid #FFCC00;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border-left: 12px solid #3182CE;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         .header h1 { margin: 0; font-family: 'Poppins'; font-size: 24px; font-weight: 700; }
-        .header p { margin: 5px 0 0 0; color: #FFCC00; font-weight: 600; font-size: 11px; letter-spacing: 1px; }
+        .header p { margin: 5px 0 0 0; color: #94A3B8; font-weight: 600; font-size: 11px; letter-spacing: 1px; }
 
-        /* GRUPOS DE FILTROS NA SIDEBAR */
         .filter-group {
             display: flex;
             flex-direction: column;
@@ -81,7 +83,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* CAIXA DE TEXTO DA SIDEBAR */
         .filter-input {
             padding: 12px;
             border: 1px solid #334155;
@@ -90,15 +91,12 @@
             font-size: 13px;
             text-transform: uppercase;
             width: 100%;
-            background-color: #0f172a;
+            background-color: #020617;
             color: white;
         }
-        .filter-input:focus {
-            outline: none;
-            border-color: #FFCC00;
-        }
+        .filter-input:focus { outline: none; border-color: #3182CE; }
         
-        /* BOTÕES ESTILO TAG SELECIONÁVEL (SAI O CTRL + MOUSE) */
+        /* BOTÕES DE SELEÇÃO INTELIGENTE (TAGS) */
         .tag-selector-container {
             display: flex;
             flex-direction: column;
@@ -108,13 +106,13 @@
             background-color: #1E293B;
             border: 1px solid #334155;
             color: #94A3B8;
-            padding: 10px 14px;
+            padding: 11px 14px;
             border-radius: 6px;
             font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             text-align: left;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -123,21 +121,21 @@
             background-color: #334155;
             color: white;
         }
-        /* ESTADO QUANDO A TAG ESTÁ ATIVA/SELECIONADA */
-        .tag-button.active {
-            background-color: #FFCC00;
-            color: #001A33;
-            border-color: #FFCC00;
-        }
-        .tag-button i {
-            font-size: 10px;
-            opacity: 0.7;
-        }
+
+        /* ESTADOS ATIVOS EXCLUSIVOS POR PALAVRA-CHAVE COM ALTO CONTRASTE */
+        .tag-button.active.cat-aula { background-color: #2F855A; color: white; border-color: #2F855A; }
+        .tag-button.active.cat-prazo { background-color: #C53030; color: white; border-color: #C53030; }
+        .tag-button.active.cat-secretaria { background-color: #C05621; color: white; border-color: #C05621; }
+        .tag-button.active.cat-evento { background-color: #6B46C1; color: white; border-color: #6B46C1; }
+        .tag-button.active.cat-geral { background-color: #2B6CB0; color: white; border-color: #2B6CB0; }
+        
+        /* TAG STATUS TEMPORAL */
+        .tag-button.active.status-time { background-color: #3182CE; color: white; border-color: #3182CE; }
 
         .btn-reset {
             margin-top: 10px;
             padding: 12px;
-            background-color: #EF4444;
+            background-color: #475569;
             color: white;
             border: none;
             border-radius: 6px;
@@ -151,16 +149,16 @@
             justify-content: center;
             gap: 8px;
         }
-        .btn-reset:hover { background-color: #DC2626; }
+        .btn-reset:hover { background-color: #334155; }
 
-        /* TIMELINE GRÁFICA GANTT */
+        /* TIMELINE GANTT COM TRILHAS */
         .gantt-timeline {
             position: relative;
             background: #FFF;
-            border: 2px solid #1E293B;
+            border: 2px solid #0F172A;
             border-radius: 12px;
             padding: 10px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
             display: flex;
             flex-direction: column;
         }
@@ -172,7 +170,7 @@
             top: 0;
             bottom: 0;
             width: 4px;
-            background: #003366;
+            background: #0F172A;
             z-index: 1;
         }
 
@@ -180,23 +178,19 @@
             display: flex;
             align-items: center;
             position: relative;
-            min-height: 105px;
-            padding: 20px 20px 20px 0;
-            border-bottom: 4px solid #1E293B;
+            min-height: 115px;
+            padding: 22px 20px 22px 0;
+            border-bottom: 4px solid #0F172A;
         }
-        .gantt-row:nth-child(even) {
-            background-color: #F8FAFC;
-        }
-        .gantt-row:last-child {
-            border-bottom: none;
-        }
+        .gantt-row:nth-child(even) { background-color: #F8FAFC; }
+        .gantt-row:last-child { border-bottom: none; }
 
         .gantt-date-side {
             width: 120px;
             font-family: 'Poppins';
             font-size: 13px;
             font-weight: 700;
-            color: #003366;
+            color: #0F172A;
             text-align: right;
             padding-right: 15px;
             flex-shrink: 0;
@@ -208,8 +202,8 @@
             left: 135px;
             width: 14px;
             height: 14px;
-            background: #FFCC00;
-            border: 3px solid #003366;
+            background: #FFF;
+            border: 4px solid #0F172A;
             border-radius: 50%;
             z-index: 3;
         }
@@ -224,61 +218,63 @@
             z-index: 2;
         }
 
+        /* CONTRAPOSIÇÃO COMPLETA DE CORES NOS CARDS HORIZONTAIS */
         .event-card-horizontal {
             background: #FFF;
-            border: 1px solid #CBD5E1;
-            border-left: 8px solid #3182CE;
-            border-radius: 6px;
-            padding: 14px 18px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            border: 2px solid #CBD5E1;
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-width: 290px; 
-            transition: all 0.2s;
+            min-width: 300px; 
+            transition: transform 0.2s;
         }
 
+        /* ESTILIZAÇÃO COMPLETA DE BACKGROUND E BORDA BASEADO NA CATEGORIA */
+        .card-aula { border-left: 10px solid #2F855A; background-color: #F0FDF4; }
+        .card-prazo { border-left: 10px solid #C53030; background-color: #FFF5F5; }
+        .card-secretaria { border-left: 10px solid #C05621; background-color: #FFFAF0; }
+        .card-evento { border-left: 10px solid #6B46C1; background-color: #FAF5FF; }
+        .card-geral { border-left: 10px solid #2B6CB0; background-color: #F7FAFC; }
+
+        /* CASO SEJA PASSADO/ATUAL (<= HOJE) - GANHA UMA BORDA MAIS FORTE */
         .card-status-past {
-            border: 2px solid #C53030 !important;
-            border-left: 12px solid #C53030 !important;
-            background: #FFF5F5 !important;
-            box-shadow: 0 4px 12px rgba(197, 48, 48, 0.15) !important;
+            border-top: 2px solid #0F172A !important;
+            border-right: 2px solid #0F172A !important;
+            border-bottom: 2px solid #0F172A !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
         }
-
-        .border-geral { border-left-color: #3182CE; }
-        .border-prazos { border-left-color: #E53E3E; }
-        .border-aulas { border-left-color: #38A169; }
-        .border-eventos { border-left-color: #805AD5; }
-        .border-secretaria { border-left-color: #D69E2E; }
 
         .card-top-time {
             font-size: 11px;
-            color: #003366;
+            color: #475569;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .badge-status-alert {
-            background-color: #C53030;
-            color: white;
-            padding: 2px 6px;
+            background-color: #0F172A;
+            color: #FFF;
+            padding: 3px 8px;
             border-radius: 4px;
             font-size: 9px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
         }
 
         .card-title {
             font-family: 'Poppins', sans-serif;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 700;
-            color: #1E293B;
-            margin: 0 0 10px 0;
+            color: #0F172A;
+            margin: 0 0 12px 0;
             line-height: 1.4;
         }
 
@@ -290,22 +286,27 @@
             font-weight: 700;
         }
 
-        .tag-category {
-            background: #E2E8F0;
-            padding: 2px 6px;
-            border-radius: 3px;
-            color: #475569;
+        /* IDENTIFICADORES COLORIDOS DE CATEGORIA DENTRO DO CARD */
+        .tag-category-label {
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: white;
+            font-size: 9px;
         }
+        .lbl-aula { background-color: #2F855A; }
+        .lbl-prazo { background-color: #C53030; }
+        .lbl-secretaria { background-color: #C05621; }
+        .lbl-evento { background-color: #6B46C1; }
+        .lbl-geral { background-color: #2B6CB0; }
 
         .tag-line {
-            background: #FFF5F5;
-            color: #C53030;
-            border: 1px solid #FEB2B2;
-            padding: 2px 6px;
-            border-radius: 3px;
+            background: #E2E8F0;
+            color: #475569;
+            padding: 3px 8px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
         }
 
         .loading { text-align: center; padding: 60px; color: #64748B; font-weight: 700; width: 100%; }
@@ -314,15 +315,15 @@
 <body>
 
 <div class="sidebar">
-    <h2 class="sidebar-title"><i class="fa-solid fa-sliders"></i> PAINEL FILTROS</h2>
+    <h2 class="sidebar-title"><i class="fa-solid fa-sliders"></i> PAINEL CRONOGRAMA</h2>
     
     <div class="filter-group">
-        <label><i class="fa-solid fa-magnifying-glass"></i> BUSCAR PALAVRA-CHAVE</label>
-        <input type="text" id="filter-search" class="filter-input" placeholder="DIGITE O TERMO..." oninput="filtrarCronograma()">
+        <label><i class="fa-solid fa-magnifying-glass"></i> FILTRAR TEXTO</label>
+        <input type="text" id="filter-search" class="filter-input" placeholder="BUSCAR PALAVRA..." oninput="filtrarCronograma()">
     </div>
     
     <div class="filter-group">
-        <label><i class="fa-solid fa-tags"></i> FILTRAR CATEGORIAS</label>
+        <label><i class="fa-solid fa-tags"></i> FILTRAR POR CATEGORIAS</label>
         <div id="container-tags-categoria" class="tag-selector-container">
             </div>
     </div>
@@ -330,24 +331,24 @@
     <div class="filter-group">
         <label><i class="fa-solid fa-hourglass-half"></i> STATUS TEMPORAL</label>
         <div class="tag-selector-container">
-            <button id="btn-status-ativos" class="tag-button active" onclick="toggleStatusTag('ATIVOS')">
-                <span>🚨 ANDAMENTO / ANTERIORES</span> <i class="fa-solid fa-check"></i>
+            <button id="btn-status-ativos" class="tag-button status-time" onclick="toggleStatusTag('ATIVOS')">
+                <span>🚨 ANDAMENTO / ANTERIORES</span> <i class="fa-solid fa-minus"></i>
             </button>
-            <button id="btn-status-futuros" class="tag-button active" onclick="toggleStatusTag('FUTUROS')">
-                <span>📅 ATIVIDADES FUTURAS</span> <i class="fa-solid fa-check"></i>
+            <button id="btn-status-futuros" class="tag-button status-time" onclick="toggleStatusTag('FUTUROS')">
+                <span>📅 COMPONENTES FUTUROS</span> <i class="fa-solid fa-minus"></i>
             </button>
         </div>
     </div>
     
     <button class="btn-reset" onclick="limparFiltros()">
-        <i class="fa-solid fa-filter-circle-xmark"></i> LIMPAR TODOS OS FILTROS
+        <i class="fa-solid fa-arrows-rotate"></i> PADRONIZAR VISÃO
     </button>
 </div>
 
 <div class="main-content">
     <div class="header">
         <h1>CRONOGRAMA INTEGRADO PPGE</h1>
-        <p>ARQUITETURA EM SIDEBAR AVANÇADA COM GERENCIAMENTO MULTISELECT POR TAGS DINÂMICAS</p>
+        <p>ISOLAMENTO COGNITIVO DE INFORMAÇÕES POR CLIQUE ÚNICO E DIFERENCIAÇÃO CROMÁTICA</p>
     </div>
 
     <div id="gantt-container" class="gantt-timeline">
@@ -357,8 +358,9 @@
 
 <script>
     let datasetCompleto = [];
-    let categoriasSelecionadas = [];
-    let statusSelecionados = ['ATIVOS', 'FUTUROS'];
+    let todasCategoriasExistentes = [];
+    let categoriasFiltradasAtivas = []; // Se vazia, indica padrão (exibir tudo)
+    let statusFiltradosAtivos = [];     // Se vazia, indica padrão (exibir tudo)
 
     function normalizarString(txt) {
         return String(txt || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -370,76 +372,103 @@
         return hoje;
     }
 
+    // Identifica o tipo de classe estilizada com base no nome da categoria
+    function descobrirClasseCor(categoria) {
+        const c = normalizarString(categoria);
+        if (c.includes('AULA') || c.includes('DISCIPLINA')) return 'aula';
+        if (c.includes('PRAZO') || c.includes('EDITAL') || c.includes('FINAL')) return 'prazo';
+        if (c.includes('SECRETARIA') || c.includes('MATRICULA')) return 'secretaria';
+        if (c.includes('EVENTO') || c.includes('SEMANA')) return 'evento';
+        return 'geral';
+    }
+
     async function inicializar() {
         try {
             const r = await fetch('agenda_ppge.json?t=' + new Date().getTime());
             const dadosBrutos = await r.json();
             
-            // Remove itens concluídos
             datasetCompleto = dadosBrutos.filter(ev => {
-                const statusConclusao = String(ev["CONCLUIDO"] || '').toUpperCase().trim();
-                return statusConclusao !== "SIM";
+                return String(ev["CONCLUIDO"] || '').toUpperCase().trim() !== "SIM";
             });
             
             datasetCompleto.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
             
-            mapearCategoriasIniciais();
+            extrairCategoriasDaBase();
             filtrarCronograma();
         } catch (e) {
-            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red;">ERRO AO CARREGAR BASE JSON DA AGENDA.</div>`;
+            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red;">ERRO AO SINALIZAR ARQUIVO JSON.</div>`;
         }
     }
 
-    // Cria as tags de categoria na sidebar com base nas ocorrências do JSON
-    function mapearCategoriasIniciais() {
-        const container = document.getElementById('container-tags-categoria');
-        container.innerHTML = '';
+    function extrairCategoriasDaBase() {
         const list = new Set();
-        
         datasetCompleto.forEach(ev => {
             const c = String(ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
             if(c) list.add(c);
         });
-
-        categoriasSelecionadas = Array.from(list).sort();
-
-        categoriasSelecionadas.forEach(cat => {
-            const btn = document.createElement('button');
-            btn.className = 'tag-button active';
-            btn.id = `btn-cat-${cat.replace(/\s+/g, '-')}`;
-            btn.innerHTML = `<span>${cat}</span> <i class="fa-solid fa-check"></i>`;
-            btn.onclick = () => toggleCategoriaTag(cat, btn.id);
-            container.appendChild(btn);
-        });
+        todasCategoriasExistentes = Array.from(list).sort();
+        renderizarBotoesSidebar();
     }
 
-    // Gerencia o clique simples nas tags de Categoria
-    function toggleCategoriaTag(cat, elementId) {
-        const btn = document.getElementById(elementId);
-        if (categoriasSelecionadas.includes(cat)) {
-            categoriasSelecionadas = categoriasSelecionadas.filter(c => c !== cat);
-            btn.classList.remove('active');
-            btn.querySelector('i').className = 'fa-solid fa-minus';
+    function renderizarBotoesSidebar() {
+        const container = document.getElementById('container-tags-categoria');
+        container.innerHTML = '';
+
+        todasCategoriasExistentes.forEach(cat => {
+            const btn = document.createElement('button');
+            const classeCor = descobrirClasseCor(cat);
+            
+            // Lógica Visual: Se não tem nenhum filtro ativo, todos ficam acesos (Modo Padrão)
+            const ehAtiva = categoriasFiltradasAtivas.length === 0 || categoriasFiltradasAtivas.includes(cat);
+            
+            btn.className = `tag-button ${ehAtiva ? 'active cat-' + classeCor : ''}`;
+            btn.innerHTML = `<span>${cat}</span> <i class="fa-solid ${ehAtiva ? 'fa-check' : 'fa-minus'}"></i>`;
+            
+            btn.onclick = () => gerenciarCliqueCategoria(cat);
+            container.appendChild(btn);
+        });
+
+        // Atualiza visual dos botões de Status Temporal
+        const statusAtivosVazio = statusFiltradosAtivos.length === 0;
+        
+        const btnAtivos = document.getElementById('btn-status-ativos');
+        const ativosLigado = statusAtivosVazio || statusFiltradosAtivos.includes('ATIVOS');
+        btnAtivos.className = `tag-button status-time ${ativosLigado ? 'active' : ''}`;
+        btnAtivos.querySelector('i').className = `fa-solid ${ativosLigado ? 'fa-check' : 'fa-minus'}`;
+
+        const btnFuturos = document.getElementById('btn-status-futuros');
+        const futurosLigado = statusAtivosVazio || statusFiltradosAtivos.includes('FUTUROS');
+        btnFuturos.className = `tag-button status-time ${futurosLigado ? 'active' : ''}`;
+        btnFuturos.querySelector('i').className = `fa-solid ${futurosLigado ? 'fa-check' : 'fa-minus'}`;
+    }
+
+    // REGRA DE ISOLAMENTO INTELIGENTE (SEM CONFIGURAÇÃO CHATA DE CONTRÔLE/DESMARCAÇÃO)
+    function gerenciarCliqueCategoria(cat) {
+        if (categoriasFiltradasAtivas.length === 0) {
+            // Estava no modo "Exibir Tudo". Isola apenas a categoria clicada.
+            categoriasFiltradasAtivas = [cat];
+        } else if (categoriasFiltradasAtivas.includes(cat)) {
+            // Clicou em uma que já estava isolada. Remove ela da lista.
+            categoriasFiltradasAtivas = Array.from(categoriasFiltradasAtivas).filter(c => c !== cat);
         } else {
-            categoriasSelecionadas.push(cat);
-            btn.classList.add('active');
-            btn.querySelector('i').className = 'fa-solid fa-check';
+            // Adiciona mais uma categoria para visualização combinada.
+            categoriasFiltradasAtivas.push(cat);
         }
+        
+        renderizarBotoesSidebar();
         filtrarCronograma();
     }
 
-    // Gerencia o clique simples nas tags de Status Temporal
     function toggleStatusTag(status) {
-        const btn = document.getElementById(`btn-status-${status.toLowerCase()}`);
-        if (statusSelecionados.includes(status)) {
-            statusSelecionados = statusSelecionados.filter(s => s !== status);
-            btn.classList.remove('active');
-            btn.querySelector('i').className = 'fa-solid fa-minus';
+        if (statusFiltradosAtivos.length === 0) {
+            statusFiltradosAtivos = [status];
+        } else if (statusFiltradosAtivos.includes(status)) {
+            statusFiltradosAtivos = Array.from(statusFiltradosAtivos).filter(s => s !== status);
         } else {
-            statusSelecionados.push(status);
-            btn.classList.add('active');
-            btn.querySelector('i').className = 'fa-solid fa-check';
+            statusFiltradosAtivos.push(status);
         }
+        
+        renderizarBotoesSidebar();
         filtrarCronograma();
     }
 
@@ -453,16 +482,18 @@
             const dataEvInic = new Date(ev["DIA INICIAL"]);
             dataEvInic.setHours(0,0,0,0);
 
-            // Filtro por Tags de Categoria
-            const bateCategoria = categoriasSelecionadas.includes(cEv);
+            // Se o array de filtros estiver vazio, o padrão é TRUE (Exibe tudo)
+            const bateCategoria = categoriasFiltradasAtivas.length === 0 || categoriasFiltradasAtivas.includes(cEv);
             
-            // Filtro por Tags de Status Temporal
             const ehAtivo = dataEvInic <= hojeTime;
             let bateStatus = false;
-            if (statusSelecionados.includes('ATIVOS') && ehAtivo) bateStatus = true;
-            if (statusSelecionados.includes('FUTUROS') && !ehAtivo) bateStatus = true;
+            if (statusFiltradosAtivos.length === 0) {
+                bateStatus = true;
+            } else {
+                if (statusFiltradosAtivos.includes('ATIVOS') && ehAtivo) bateStatus = true;
+                if (statusFiltradosAtivos.includes('FUTUROS') && !ehAtivo) bateStatus = true;
+            }
 
-            // Filtro por Busca Textual
             const bateBusca = (!bSel || nEv.includes(bSel) || cEv.includes(bSel));
 
             return bateCategoria && bateStatus && bateBusca;
@@ -473,23 +504,9 @@
 
     function limparFiltros() {
         document.getElementById('filter-search').value = '';
-        
-        // Reativa todas as tags de Categoria
-        categoriasSelecionadas = [];
-        document.querySelectorAll('#container-tags-categoria .tag-button').forEach(btn => {
-            btn.classList.add('active');
-            btn.querySelector('i').className = 'fa-solid fa-check';
-            const catText = btn.querySelector('span').innerText;
-            categoriasSelecionadas.push(catText);
-        });
-
-        // Reativa todas as tags de Status
-        statusSelecionados = ['ATIVOS', 'FUTUROS'];
-        document.querySelectorAll('[id^="btn-status-"]').forEach(btn => {
-            btn.classList.add('active');
-            btn.querySelector('i').className = 'fa-solid fa-check';
-        });
-
+        categoriasFiltradasAtivas = [];
+        statusFiltradosAtivos = [];
+        renderizarBotoesSidebar();
         filtrarCronograma();
     }
 
@@ -498,7 +515,7 @@
         container.innerHTML = '';
 
         if(eventos.length === 0) {
-            container.innerHTML = '<div class="loading">NENHUMA ATIVIDADE ATENDE AOS CRITÉRIOS DE SELEÇÃO ATIVOS.</div>';
+            container.innerHTML = '<div class="loading">NENHUM CRONOGRAMA CORRESPONDE AOS CRITÉRIOS DA SELEÇÃO ATIVA.</div>';
             return;
         }
 
@@ -541,34 +558,30 @@
                 dInicComparacao.setHours(0,0,0,0);
                 const ehPassadoOuAtual = dInicComparacao <= hojeTime;
 
-                let classeBorda = 'border-geral';
                 const cat = String(ev["CATEGORIA"] || 'GERAL').toUpperCase();
-                if (cat.includes('AULA') || cat.includes('DISCIPLINA')) classeBorda = 'border-aulas';
-                else if (cat.includes('PRAZO') || cat.includes('EDITAL')) classeBorda = 'border-prazos';
-                else if (cat.includes('SECRETARIA') || cat.includes('MATRICULA')) classeBorda = 'border-secretaria';
-                else if (cat.includes('EVENTO') || cat.includes('SEMANA')) classeBorda = 'border-eventos';
+                const sufixoClasse = descobrirClasseCor(cat);
 
                 const card = document.createElement('div');
-                card.className = `event-card-horizontal ${classeBorda}`;
+                card.className = `event-card-horizontal card-${sufixoClasse}`;
                 card.style.width = `${larguraCalculada}%`; 
 
                 let statusBadgeHTML = '';
                 if(ehPassadoOuAtual) {
                     card.classList.add('card-status-past');
-                    statusBadgeHTML = `<span class="badge-status-alert"><i class="fa-solid fa-triangle-exclamation"></i> VIGENTE / ANTERIOR</span>`;
+                    statusBadgeHTML = `<span class="badge-status-alert"><i class="fa-solid fa-hourglass-start"></i> VIGENTE</span>`;
                 }
 
                 const nLinha = ev["LINHA_PLANILHA"] || '...';
 
                 card.innerHTML = `
                     <div class="card-top-time">
-                        <span><i class="fa-regular fa-clock"></i> ${textoPeriodo} (${diferencaDias}D)</span>
+                        <span><i class="fa-regular fa-clock"></i> ${textoPeriodo} (${diferencaDias} DIAS)</span>
                         ${statusBadgeHTML}
                     </div>
                     <h2 class="card-title">${ev["EVENTO"]}</h2>
                     <div class="card-footer">
-                        <span class="tag-category"><i class="fa-solid fa-tag"></i> ${cat}</span>
-                        <span class="tag-line"><i class="fa-solid fa-table"></i> L: ${nLinha}</span>
+                        <span class="tag-category-label lbl-${sufixoClasse}"><i class="fa-solid fa-tag"></i> ${cat}</span>
+                        <span class="tag-line"><i class="fa-solid fa-table"></i> LINHA: ${nLinha}</span>
                     </div>
                 `;
                 space.appendChild(card);
