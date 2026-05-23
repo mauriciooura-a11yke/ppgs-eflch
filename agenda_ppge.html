@@ -15,7 +15,7 @@
             font-family: 'Lato', sans-serif;
             margin: 0;
             padding: 20px;
-            text-transform: uppercase; /* PADRONIZAÇÃO COMPLETA EM MAIÚSCULAS */
+            text-transform: uppercase; /* PADRONIZAÇÃO EM MAIÚSCULAS */
         }
         
         .container {
@@ -39,42 +39,66 @@
         /* PAINEL DE FILTROS */
         .filter-panel {
             background: #FFF;
-            border: 1px solid #E2E8F0;
+            border: 1px solid #CBD5E1;
             padding: 15px 20px;
             border-radius: 8px;
             margin-bottom: 25px;
             display: flex;
             gap: 20px;
-            align-items: center;
+            align-items: flex-end; /* ALINHA O BOTÃO COM OS CAMPOS */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
         .filter-group {
             display: flex;
             flex-direction: column;
             gap: 5px;
-            flex: 1;
+            flex: 2;
         }
         .filter-group label { font-size: 11px; font-weight: 700; color: #475569; }
         .filter-control {
-            padding: 8px 12px;
+            padding: 9px 12px;
             border: 1px solid #CBD5E1;
             border-radius: 6px;
             font-family: 'Lato';
             font-size: 13px;
             text-transform: uppercase;
             width: 100%;
+            background-color: #F8FAFC;
+        }
+        
+        /* BOTÃO DE REDEFINIR FILTROS */
+        .btn-reset {
+            flex: 1;
+            padding: 10px 15px;
+            background-color: #64748B;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Poppins';
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 38px;
+        }
+        .btn-reset:hover {
+            background-color: #475569;
         }
 
         /* CONTAINER DA TIMELINE TRACKS (GANTT) */
         .gantt-timeline {
             position: relative;
             background: #FFF;
-            border: 1px solid #E2E8F0;
+            border: 1px solid #CBD5E1;
             border-radius: 12px;
-            padding: 30px 20px;
+            padding: 20px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
-            gap: 15px;
         }
 
         /* LINHA VERTICAL GUIA */
@@ -85,18 +109,25 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            background: #CBD5E1;
+            background: #94A3B8;
             z-index: 1;
         }
 
-        /* LINHA HORIZONTAL (RAIA DO EVENTO) */
+        /* RAIA HORIZONTAL FORTE E BEM SEPARADA */
         .gantt-row {
             display: flex;
             align-items: center;
             position: relative;
-            min-height: 75px;
-            padding: 5px 0;
-            border-bottom: 1px dashed #F1F5F9;
+            min-height: 90px;
+            padding: 15px 20px 15px 0;
+            border-bottom: 2px solid #E2E8F0; /* LINHA DE SEPARAÇÃO FORTE */
+        }
+        /* EFEITO DE COR ALTERNADA NAS RAIAS PARA FACILITAR A LEITURA */
+        .gantt-row:nth-child(even) {
+            background-color: #F8FAFC;
+        }
+        .gantt-row:last-child {
+            border-bottom: none;
         }
 
         /* BLOCO DA DATA (FIXO À ESQUERDA) */
@@ -109,51 +140,53 @@
             text-align: right;
             padding-right: 15px;
             flex-shrink: 0;
+            z-index: 2;
         }
 
         /* NÓ DA LINHA VERTICAL */
         .gantt-node {
             position: absolute;
-            left: 114px; /* CENTRALIZADO NA LINHA VERTICAL */
+            left: 135px; /* CENTRALIZADO NA LINHA VERTICAL (140px - metade do nó) */
             width: 14px;
             height: 14px;
             background: #FFF;
             border: 3px solid #003366;
             border-radius: 50%;
-            z-index: 2;
+            z-index: 3;
         }
 
-        /* CONTAINER DOS CARDS DINÂMICOS (ZONA DE PLOTAGEM HORIZONTAL) */
+        /* CONTAINER DOS CARDS DINÂMICOS */
         .gantt-space {
             margin-left: 35px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             position: relative;
+            z-index: 2;
         }
 
         /* CARD HORIZONTAL PROPORCIONAL */
         .event-card-horizontal {
-            background: #F8FAFC;
-            border: 1px solid #E2E8F0;
+            background: #FFF;
+            border: 1px solid #CBD5E1;
             border-left: 6px solid #1A73E8;
             border-radius: 6px;
             padding: 12px 16px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-width: 280px; /* TAMANHO MÍNIMO COMPACTO */
+            min-width: 280px; 
             transition: all 0.2s;
         }
         .event-card-horizontal:hover {
             border-color: #94A3B8;
-            background: #FFF;
-            transform: translateX(3px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            transform: translateX(4px);
         }
 
-        /* DINÂMICA DE CORES DA BORDA */
+        /* CORES DA BORDA POR CATEGORIA */
         .border-geral { border-left-color: #3182CE; }
         .border-prazos { border-left-color: #E53E3E; }
         .border-aulas { border-left-color: #38A169; }
@@ -228,6 +261,10 @@
             <label><i class="fa-solid fa-magnifying-glass"></i> BUSCAR TERMO</label>
             <input type="text" id="filter-search" class="filter-control" placeholder="DIGITE PARA FILTRAR..." oninput="filtrarCronograma()">
         </div>
+        
+        <button class="btn-reset" onclick="limparFiltros()">
+            <i class="fa-solid fa-filter-circle-xmark"></i> LIMPAR FILTROS
+        </button>
     </div>
 
     <div id="gantt-container" class="gantt-timeline">
@@ -247,7 +284,7 @@
             const r = await fetch('agenda.json?t=' + new Date().getTime());
             datasetCompleto = await r.json();
             
-            // Ordenação cronológica inicial obrigatória
+            // Ordenação cronológica estrita
             datasetCompleto.sort((a, b) => new Date(a["DIA INICIAL"]) - new Date(b["DIA INICIAL"]));
             
             popularFiltroCategorias();
@@ -284,6 +321,13 @@
         renderizarGanttEstendido(dadosFiltrados);
     }
 
+    // FUNÇÃO QUE LIMPA OS CAMPOS E RESETA O CRONOGRAMA
+    function limparFiltros() {
+        document.getElementById('filter-category').value = 'TODAS';
+        document.getElementById('filter-search').value = '';
+        filtrarCronograma();
+    }
+
     function renderizarGanttEstendido(eventos) {
         const container = document.getElementById('gantt-container');
         container.innerHTML = '';
@@ -293,33 +337,27 @@
             return;
         }
 
-        // Mapeia todas as datas de início únicas para criar os degraus da linha vertical
+        // Mapeia todas as datas de início únicas
         const datasChave = Array.from(new Set(eventos.map(e => e["DIA INICIAL"]))).sort();
 
         datasChave.forEach(dataFoco => {
             const dataExibicaoBR = dataFoco.split('-').reverse().join('/');
-            
-            // Captura todos os eventos que dão início ou que estão rodando nessa data foco
             const eventosDaRaia = eventos.filter(e => e["DIA INICIAL"] === dataFoco);
 
             if(eventosDaRaia.length === 0) return;
 
-            // Cria a linha estrutural (Raia horizontal)
             const row = document.createElement('div');
             row.className = 'gantt-row';
 
-            // Adiciona a data fixa à esquerda da régua vertical
             const dateSide = document.createElement('div');
             dateSide.className = 'gantt-date-side';
             dateSide.innerText = dataExibicaoBR;
             row.appendChild(dateSide);
 
-            // Adiciona a bolinha guia em cima do eixo vertical
             const node = document.createElement('div');
             node.className = 'gantt-node';
             row.appendChild(node);
 
-            // Cria a zona de plotagem dos cards expandidos
             const space = document.createElement('div');
             space.className = 'gantt-space';
 
@@ -328,12 +366,11 @@
                 const fBR = ev["DIA FINAL"] ? ev["DIA FINAL"].split('-').reverse().join('/') : iBR;
                 const textoPeriodo = iBR === fBR ? iBR : `${iBR} ATÉ ${fBR}`;
 
-                // CÁLCULO DE LARGURA PROPORCIAL AO PERÍODO
                 const dInic = new Date(ev["DIA INICIAL"]);
                 const dFim = new Date(ev["DIA FINAL"] || ev["DIA INICIAL"]);
                 const diferencaDias = Math.max(1, Math.round((dFim - dInic) / (1000 * 60 * 60 * 24)) + 1);
                 
-                // Multiplicador geométrico de tamanho (Ex: 1 dia = 300px, 10 dias = 600px, etc.)
+                // Multiplicador geométrico de tamanho
                 const larguraCalculada = Math.min(100, 25 + (diferencaDias * 3)); 
 
                 let classeBorda = 'border-geral';
@@ -345,7 +382,7 @@
 
                 const card = document.createElement('div');
                 card.className = `event-card-horizontal ${classeBorda}`;
-                card.style.width = `${larguraCalculada}%`; // ESTICA O CARD BASEADO NOS DIAS DE DURAÇÃO
+                card.style.width = `${larguraCalculada}%`; 
 
                 const nLinha = ev["LINHA_PLANILHA"] || '...';
 
