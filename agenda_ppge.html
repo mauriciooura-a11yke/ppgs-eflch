@@ -67,107 +67,36 @@
 </div>
 
 <script type="text/javascript">
+    // Inicializa a biblioteca de gráficos do Google
     google.charts.load('current', {'packages':['gantt'], 'language': 'pt-br'});
-    google.charts.setOnLoadCallback(baixarDadosCSV);
+    google.charts.setOnLoadCallback(baixarDadosPlanilha);
 
-    function baixarDadosCSV() {
-        // ID público e definitivo da sua planilha
+    function baixarDadosPlanilha() {
+        // ID definitivo da sua planilha
         const spreadsheetId = "11gYJqlhSULjWt6hAExmIyWKprE43uB7fybmx7osr-z8";
         
-        // Link de exportação direta da aba correta (gid=0)
-        const urlCSV = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=0`;
+        // Usamos o endpoint gviz que o próprio motor do Google Charts usa para tabelas nativas
+        const urlGviz = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:csv&gid=0`;
 
-        fetch(urlCSV)
-            .then(response => {
-                if (!response.ok) throw new Error('Erro ao baixar a planilha.');
-                return response.text();
-            })
-            .then(csvText => {
-                processarCSV(csvText);
-            })
-            .catch(error => {
-                document.getElementById('gantt_chart').innerHTML = 
-                    `<p style="color:#e53e3e; text-align:center; padding: 40px;">
-                        Erro ao carregar dados da planilha pública.<br>
-                        <small>Certifique-se de que o acesso na planilha está configurado como "Qualquer pessoa com o link pode ler".</small>
-                    </p>`;
-                console.error(error);
-            });
+        // Executa a requisição usando o objeto seguro do Google, contornando erros de CORS
+        const query = new google.visualization.Query(urlGviz);
+        query.send(handleQueryResponse);
     }
 
-    // Parser universal de CSV que suporta tanto separador por vírgula quanto ponto e vírgula, 
-    // respeitando textos longos protegidos por aspas duplas.
-    function parseCSVUniversal(text) {
-        let lines = [];
-        let row = [""];
-        let inQuotes = false;
-
-        // Remove caractere de marcação invisível BOM se existir
-        if (text.startsWith('\ufeff')) {
-            text = text.substring(1);
+    function handleQueryResponse(response) {
+        if (response.isError()) {
+            document.getElementById('gantt_chart').innerHTML = 
+                `<p style="color:#e53e3e; text-align:center; padding: 40px;">
+                    Erro ao se comunicar com o Google Sheets.<br>
+                    <small>${response.getMessage()} - ${response.getDetailedMessage()}</small>
+                </p>`;
+            return;
         }
 
-        // Descobre dinamicamente o separador predominante no arquivo completo (; ou ,)
-        // Planilhas configuradas no Brasil usam ";" por padrão no CSV público do Google
-        const primeiraLinha = text.split('\n')[0];
-        const separador = primeiraLinha.includes(';') ? ';' : ',';
+        // Se a requisição deu certo, pegamos o objeto de dados nativo estruturado pelo Google
+        const dt = response.getDataTable();
+        const totalLinhas = dt.getNumberOfRows();
 
-        for (let i = 0; i < text.length; i++) {
-            let c = text[i];
-            let next = text[i+1];
-
-            if (c === '"') {
-                if (inQuotes && next === '"') { row[row.length - 1] += '"'; i++; }
-                else { inQuotes = !inQuotes; }
-            } else if (c === separador && !inQuotes) {
-                row.push('');
-            } else if ((c === '\r' || c === '\n') && !inQuotes) {
-                if (c === '\r' && next === '\n') { i++; }
-                lines.push(row);
-                row = [''];
-            } else {
-                row[row.length - 1] += c;
-            }
-        }
-        if (row.length > 1 || row[0] !== '') lines.push(row);
-        return lines;
-    }
-
-    // Conversor inteligente de datas capaz de tratar hifens (padrão ISO) ou barras (padrão BR)
-    function converterParaData(stringData) {
-        if (!stringData) return null;
-        
-        // Limpa espaços em branco e caracteres ocultos residuais
-        stringData = stringData.replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
-
-        // Tratamento para formato DD/MM/AAAA (ex: 20/05/2026)
-        if (stringData.includes('/')) {
-            const partes = stringData.split('/');
-            if (partes.length === 3) {
-                const dia = parseInt(partes[0], 10);
-                const mes = parseInt(partes[1], 10) - 1; // Meses no JS começam em 0
-                const ano = parseInt(partes[2], 10);
-                return new Date(ano, mes, dia);
-            }
-        }
-        
-        // Tratamento para formato AAAA-MM-DD (ex: 2026-05-20)
-        if (stringData.includes('-')) {
-            const partes = stringData.split('-');
-            if (partes.length === 3) {
-                const ano = parseInt(partes[0], 10);
-                const mes = parseInt(partes[1], 10) - 1;
-                const dia = parseInt(partes[2], 10);
-                return new Date(ano, mes, dia);
-            }
-        }
-
-        return null;
-    }
-
-    function processarCSV(csvText) {
-        const matrizDados = parseCSVUniversal(csvText);
-        
         var dataTable = new google.visualization.DataTable();
         dataTable.addColumn('string', 'Task ID');
         dataTable.addColumn('string', 'Task Name');
@@ -180,47 +109,42 @@
 
         let idContador = 1;
 
-        // Começa em i = 1 para ignorar a linha de cabeçalho (DIA INICIAL, DIA FINAL...)
-        for (let i = 1; i < matrizDados.length; i++) {
-            const colunas = matrizDados[i];
-            if (colunas.length < 4) continue;
+        for (let i = 0; i < totalLinhas; i++) {
+            // Mapeamento direto das células do Google Sheets:
+            // Coluna 0 (A): DIA INICIAL | Coluna 1 (B): DIA FINAL | Coluna 2 (C): Categoria | Coluna 3 (D): EVENTO
+            let valDataInicial = dt.getValue(i, 0);
+            let valDataFinal = dt.getValue(i, 1);
+            let categoria = dt.getValue(i, 2);
+            let evento = dt.getValue(i, 3);
 
-            const limparStr = (texto) => texto ? texto.trim() : '';
-            
-            const txtDataInic = limparStr(colunas[0]);
-            const txtDataFim = limparStr(colunas[1]);
-            const categoria = limparStr(colunas[2]);
-            const evento = limparStr(colunas[3]);
+            if (!valDataInicial || !valDataFinal) continue;
 
-            // Pula linhas de títulos vazias ou cabeçalhos acidentais
-            if (txtDataInic.toUpperCase().includes("DIA") || evento.toUpperCase().includes("EVENTO") || !txtDataInic) continue;
+            let dataInicio = converterParaData(valDataInicial);
+            let dataFim = converterParaData(valDataFinal);
 
-            const dataInicio = converterParaData(txtDataInic);
-            const dataFim = converterParaData(txtDataFim);
+            // Ignora o cabeçalho se ele for lido textualmente
+            if (!dataInicio || !dataFim || String(evento).toUpperCase().includes("EVENTO")) continue;
 
-            // Valida se as duas datas foram construídas com sucesso pelo interpretador
-            if (dataInicio && !isNaN(dataInicio.getTime()) && dataFim && !isNaN(dataFim.getTime())) {
-                dataTable.addRow([
-                    'T' + idContador, 
-                    evento,              
-                    categoria,           
-                    dataInicio,           
-                    dataFim,             
-                    null,                
-                    0,                   
-                    null                 
-                ]);
-                idContador++;
-            }
+            dataTable.addRow([
+                'T' + idContador, 
+                String(evento).trim(),              
+                categoria ? String(categoria).trim() : 'Geral',           
+                dataInicio,           
+                dataFim,             
+                null,                
+                0,                   
+                null                 
+            ]);
+            idContador++;
         }
 
         if (idContador === 1) {
             document.getElementById('gantt_chart').innerHTML = 
-                `<p style="text-align:center; padding:40px; color:#718096;">Nenhum dado pôde ser processado. Verifique o preenchimento das células de data na planilha.</p>`;
+                `<p style="text-align:center; padding:40px; color:#718096;">Nenhum dado pôde ser processado. Verifique as datas na planilha.</p>`;
             return;
         }
 
-        // Calcula dinamicamente a altura ideal para abrigar todas as barras confortavelmente
+        // Calcula a altura ideal do container do gráfico
         const alturaCalculada = (idContador * 42) + 60;
         document.getElementById('gantt_chart').style.height = alturaCalculada + 'px';
 
@@ -243,6 +167,30 @@
 
         const chart = new google.visualization.Gantt(document.getElementById('gantt_chart'));
         chart.draw(dataTable, opcoesVisuais);
+    }
+
+    // Conversor capaz de lidar tanto com objetos de data nativos do Google quanto com strings textuais (BR ou ISO)
+    function converterParaData(valor) {
+        if (!valor) return null;
+        if (valor instanceof Date) return valor;
+
+        let stringData = String(valor).replace(/[\u200B-\u200D\uFEFF]/g, "").trim();
+
+        if (stringData.includes('/')) {
+            const partes = stringData.split('/');
+            if (partes.length === 3) {
+                return new Date(parseInt(partes[2], 10), parseInt(partes[1], 10) - 1, parseInt(partes[0], 10));
+            }
+        }
+        
+        if (stringData.includes('-')) {
+            const partes = stringData.split('-');
+            if (partes.length === 3) {
+                return new Date(parseInt(partes[0], 10), parseInt(partes[1], 10) - 1, parseInt(partes[2], 10));
+            }
+        }
+
+        return null;
     }
 </script>
 
