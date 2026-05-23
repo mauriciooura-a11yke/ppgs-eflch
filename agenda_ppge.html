@@ -71,14 +71,14 @@
     google.charts.setOnLoadCallback(baixarDadosCSV);
 
     function baixarDadosCSV() {
-        // Link público da sua planilha configurado para exportação pura
-        const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlYhmbrQDLeT0KGj45EeXRMMwZfyO5vI4lBYB3WK0C_LiTxOsfE0IUwF6UgNrhMgpm-mUvTJNqg4E_/pub?gid=0&single=true&output=csv";
+        // O link exato que você acabou de gerar
+        const urlCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRlYhmbrQDLeT0KGj45EeXRMMwZfyO5vI4lBYB3WK0C_LiTxOsfE0IUwF6UgNrhMgpm-mUvTJNqg4E_/pub?output=csv";
 
-        // AllOrigins funciona como uma ponte para evitar erros de CORS ao testar localmente ou no Git
+        // AllOrigins funciona como uma ponte para permitir que o navegador leia o arquivo sem bloqueios de CORS
         fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(urlCSV)}`)
             .then(response => {
                 if (response.ok) return response.json();
-                throw new Error('Erro de conexão.');
+                throw new Error('Erro na conexão de rede.');
             })
             .then(data => {
                 processarCSV(data.contents);
@@ -87,13 +87,32 @@
                 document.getElementById('gantt_chart').innerHTML = 
                     `<p style="color:#e53e3e; text-align:center; padding: 40px;">
                         Erro ao carregar dados da planilha pública.<br>
-                        <small>Verifique se o arquivo está publicado corretamente na web.</small>
+                        <small>Verifique se o link está acessível ou tente atualizar a página.</small>
                     </p>`;
                 console.error(error);
             });
     }
 
+    // Função robusta para separar colunas por vírgula ignorando vírgulas dentro de aspas textuais
+    function parseCSVLine(text) {
+        let p = '', r = [];
+        let q = false;
+        for (let i = 0; i < text.length; i++) {
+            let c = text[i];
+            if (c === '"') {
+                q = !q; 
+            } else if (c === ',' && !q) {
+                r.push(p); p = '';
+            } else {
+                p += c;
+            }
+        }
+        r.push(p);
+        return r;
+    }
+
     function processarCSV(csvText) {
+        // Divide o texto por linhas (atendendo quebras de linha do Windows e Unix)
         const linhas = csvText.split(/\r?\n/);
         
         var dataTable = new google.visualization.DataTable();
@@ -108,42 +127,31 @@
 
         let idContador = 1;
 
+        // Pula o cabeçalho (i = 1)
         for (let i = 1; i < linhas.length; i++) {
             const linha = linhas[i].trim();
             if (!linha) continue;
 
-            // Descobre dinamicamente se o Google usou Ponto e Vírgula (;) ou Vírgula (,) nesta linha
-            const separador = linha.includes(';') ? ';' : ',';
-            
-            let colunas = [];
-            if (separador === ';') {
-                // Separa por ponto e vírgula simples
-                colunas = linha.split(';');
-            } else {
-                // Se for vírgula, usa expressão regular para não quebrar vírgulas que estejam dentro de aspas textuais
-                colunas = linha.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linha.split(',');
-            }
+            // Processa a linha usando o separador inteligente
+            const colunas = parseCSVLine(linha);
             
             if (colunas.length < 4) continue;
 
-            // Função para limpar aspas e espaços extras nas pontas do texto
-            const limpar = (texto) => {
-                if (!texto) return '';
-                return texto.trim().replace(/^"|"$/g, '').trim();
-            };
+            const limpar = (texto) => texto ? texto.trim().replace(/^"|"$/g, '').trim() : '';
             
-            const txtDataInic = limpar(colunas[0]); // YYYY-MM-DD
-            const txtDataFim = limpar(colunas[1]);  // YYYY-MM-DD
+            const txtDataInic = limpar(colunas[0]); // Formato esperado: YYYY-MM-DD
+            const txtDataFim = limpar(colunas[1]);  // Formato esperado: YYYY-MM-DD
             const categoria = limpar(colunas[2]);
             const evento = limpar(colunas[3]);
 
-            // Ignora linhas de cabeçalho teimosas que possam aparecer
-            if (txtDataInic.includes("DIA") || evento === "EVENTO") continue;
+            // Ignora linhas inválidas ou cabeçalhos repetidos
+            if (txtDataInic.includes("DIA") || evento === "EVENTO" || !txtDataInic.includes("-")) continue;
 
             const pStart = txtDataInic.split('-');
             const pEnd = txtDataFim.split('-');
 
             if (pStart.length === 3 && pEnd.length === 3) {
+                // Mês no JS é baseado em zero (Janeiro = 0, Dezembro = 11)
                 const dataInicio = new Date(parseInt(pStart[0]), parseInt(pStart[1]) - 1, parseInt(pStart[2]));
                 const dataFim = new Date(parseInt(pEnd[0]), parseInt(pEnd[1]) - 1, parseInt(pEnd[2]));
 
@@ -163,12 +171,12 @@
 
         if (idContador === 1) {
             document.getElementById('gantt_chart').innerHTML = 
-                `<p style="text-align:center; padding:40px; color:#718096;">Nenhum dado formatado foi encontrado na planilha. Verifique as datas.</p>`;
+                `<p style="text-align:center; padding:40px; color:#718096;">Nenhum dado pôde ser processado. Verifique a estrutura da planilha.</p>`;
             return;
         }
 
         const opcoesVisuais = {
-            height: idContador * 40 + 60, // Ajusta perfeitamente o tamanho baseado nas linhas lidas
+            height: idContador * 40 + 60, // Define a altura perfeita com base no volume de dados ativos
             gantt: {
                 trackHeight: 38,
                 barHeight: 24,
