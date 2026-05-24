@@ -186,13 +186,23 @@
         .gantt-date-side {
             width: 120px;
             font-family: 'Poppins';
-            font-size: 13px;
-            font-weight: 700;
             color: #0F172A;
             text-align: right;
             padding-right: 15px;
             flex-shrink: 0;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
+        }
+        .gantt-date-main {
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .gantt-date-weekday {
+            font-size: 10px;
+            font-weight: 600;
+            color: #64748B;
+            margin-top: 2px;
         }
 
         .gantt-node {
@@ -250,7 +260,6 @@
             gap: 5px;
         }
 
-        /* ESTILO DO MARCADOR DE HORÁRIO DETALHADO */
         .time-clock-badge {
             background-color: #E2E8F0;
             color: #0F172A;
@@ -324,7 +333,8 @@
             .header h1 { font-size: 18px; }
             .gantt-timeline::before { left: 30px; }
             .gantt-row { flex-direction: column; align-items: flex-start; padding: 15px 15px 15px 0; min-height: auto; gap: 10px; }
-            .gantt-date-side { width: auto; text-align: left; padding-left: 55px; font-size: 12px; }
+            .gantt-date-side { width: auto; text-align: left; padding-left: 55px; font-size: 12px; flex-direction: row; align-items: center; gap: 8px; }
+            .gantt-date-weekday { margin-top: 0; }
             .gantt-node { left: 25px; top: 17px; }
             .gantt-space { margin-left: 55px; width: calc(100% - 55px); }
             .event-card-horizontal { width: 100% !important; min-width: 0; padding: 12px 15px; }
@@ -368,7 +378,7 @@
 <div class="main-content">
     <div class="header">
         <h1>CRONOGRAMA INTEGRADO PPGE</h1>
-        <p>ARQUITETURA DE PRECISÃO — SUPORTE A RAIA TEMPORAL E DIRECIONAMENTO DE HORÁRIOS MÚLTIPLOS</p>
+        <p>ARQUITETURA DE PRECISÃO — COM CALENDÁRIO SEMANAL DETALHADO POR DATA DE ENTRADA</p>
     </div>
 
     <div id="gantt-container" class="gantt-timeline">
@@ -382,6 +392,9 @@
     let categoriasFiltradasAtivas = []; 
     let statusFiltradosAtivos = [];     
 
+    const DIAS_SEMANA_COMPLETO = ["DOMINGO", "SEGUNDA-FEIRA", "TERÇA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SÁBADO"];
+    const DIAS_SEMANA_CURTO = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+
     function normalizarString(txt) {
         return String(txt || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
     }
@@ -390,6 +403,15 @@
         const hoje = new Date();
         hoje.setHours(0, 0, 0, 0);
         return hoje;
+    }
+
+    // Retorna o dia da semana a partir de uma data string do formato "YYYY-MM-DD"
+    function pegarDiaSemana(dataString, resumido = false) {
+        const partes = dataString.split('-');
+        // Força interpretação local para não mudar fuso horário
+        const dataLocal = new Date(partes[0], partes[1] - 1, partes[2]);
+        const indice = dataLocal.getDay();
+        return resumido ? DIAS_SEMANA_CURTO[indice] : DIAS_SEMANA_COMPLETO[indice];
     }
 
     function gerarCorPorTexto(str) {
@@ -411,13 +433,11 @@
             const r = await fetch('agenda_ppge.json?t=' + new Date().getTime());
             const dadosBrutos = await r.json();
             
-            // Suporta chaves com ou sem acentos provenientes do Make/Planilha
             datasetCompleto = dadosBrutos.filter(ev => {
                 const concluido = ev["EVENTO CONCLUIDO"] || ev["EVENTO CONCLUÍDO"] || ev["CONCLUIDO"] || '';
                 return String(concluido).toUpperCase().trim() !== "SIM";
             });
             
-            // Ordenação por dia e horário inicial
             datasetCompleto.sort((a, b) => {
                 const dataA = new Date(a["DIA INICIAL"]);
                 const dataB = new Date(b["DIA INICIAL"]);
@@ -559,6 +579,8 @@
 
         datasChave.forEach(dataFoco => {
             const dataExibicaoBR = dataFoco.split('-').reverse().join('/');
+            const diaSemanaRaia = pegarDiaSemana(dataFoco, false); // Nome completo para a lateral
+            
             const eventosDaRaia = eventos.filter(e => e["DIA INICIAL"] === dataFoco);
 
             if(eventosDaRaia.length === 0) return;
@@ -568,7 +590,10 @@
 
             const dateSide = document.createElement('div');
             dateSide.className = 'gantt-date-side';
-            dateSide.innerText = dataExibicaoBR;
+            dateSide.innerHTML = `
+                <span class="gantt-date-main">${dataExibicaoBR}</span>
+                <span class="gantt-date-weekday">${diaSemanaRaia}</span>
+            `;
             row.appendChild(dateSide);
 
             const node = document.createElement('div');
@@ -580,17 +605,19 @@
 
             eventosDaRaia.forEach(ev => {
                 const iBR = ev["DIA INICIAL"].split('-').reverse().join('/');
+                const semInic = pegarDiaSemana(ev["DIA INICIAL"], true);
+                
                 const diaFinalBruto = ev["DIA FINAL"] || ev["DIA INICIAL"];
                 const fBR = diaFinalBruto.split('-').reverse().join('/');
+                const semFim = pegarDiaSemana(diaFinalBruto, true);
                 
-                // Extração dos novos campos de horário
                 const hInicio = ev["HORARIO INICIO"] || ev["HORÁRIO INÍCIO"] || "";
                 const hTermino = ev["HORARIO TÉRMINO"] || ev["HORÁRIO TÉRMINO"] || ev["HORARIO TERMINO"] || "";
                 
-                let textoPeriodo = iBR === fBR ? iBR : `${iBR} ATÉ ${fBR}`;
+                // Constrói período já aplicando os dias da semana resumidos
+                let textoPeriodo = iBR === fBR ? `${iBR} (${semInic})` : `${iBR} (${semInic}) ATÉ ${fBR} (${semFim})`;
                 let htmlHorario = "";
                 
-                // Constrói o elemento visual de relógio se houver horário preenchido
                 if(hInicio) {
                     const sufixoTermino = hTermino ? ` ÀS ${hTermino}` : "";
                     htmlHorario = `<span class="time-clock-badge"><i class="fa-regular fa-clock"></i> ${hInicio}${sufixoTermino}</span>`;
@@ -627,7 +654,7 @@
                 card.innerHTML = `
                     <div class="card-top-time">
                         <span style="color: ${coresCard.texto}">
-                            <i class="fa-regular fa-calendar"></i> ${textoPeriodo} (${diferencaDias} DIAS)
+                            <i class="fa-regular fa-calendar"></i> ${textoPeriodo} [${diferencaDias} DIAS]
                             ${htmlHorario}
                         </span>
                         ${statusBadgeHTML}
