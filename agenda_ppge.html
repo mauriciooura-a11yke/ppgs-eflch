@@ -405,6 +405,12 @@
         return hoje;
     }
 
+    // Cria um objeto Date estritamente local baseado nas frações "YYYY-MM-DD" para evitar bugs de fuso horário
+    function criarDataLocal(dataString) {
+        const partes = dataString.split('-');
+        return new Date(partes[0], partes[1] - 1, partes[2], 0, 0, 0, 0);
+    }
+
     // Retorna o dia da semana a partir de uma data string do formato "YYYY-MM-DD"
     function pegarDiaSemana(dataString, resumido = false) {
         const partes = dataString.split('-');
@@ -535,8 +541,9 @@
         const dadosFiltrados = datasetCompleto.filter(ev => {
             const cEv = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
             const nEv = normalizarString(ev["DESCRIÇÃO DO EVENTO"] || ev["EVENTO"]);
-            const dataEvInic = new Date(ev["DIA INICIAL"]);
-            dataEvInic.setHours(0,0,0,0);
+            
+            // Correção de Timezone no Filtro Lateral
+            const dataEvInic = criarDataLocal(ev["DIA INICIAL"]);
 
             const bateCategoria = categoriasFiltradasAtivas.length === 0 || categoriasFiltradasAtivas.includes(cEv);
             
@@ -629,9 +636,11 @@
                 
                 const larguraCalculada = Math.min(100, 25 + (diferencaDias * 3)); 
 
-                const dInicComparacao = new Date(ev["DIA INICIAL"]);
-                dInicComparacao.setHours(0,0,0,0);
-                const ehPassadoOuAtual = dInicComparacao <= hojeTime;
+                // NOVO (Corrigido)
+                const dInic = criarDataLocal(ev["DIA INICIAL"]);
+
+                // Comparação baseada no objeto local imutável 
+                const ehPassadoOuAtual = dInic <= hojeTime;
 
                 const cat = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase();
                 const coresCard = gerarCorPorTexto(cat);
