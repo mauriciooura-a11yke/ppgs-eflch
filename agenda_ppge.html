@@ -405,19 +405,21 @@
         return hoje;
     }
 
-    // Cria um objeto Date estritamente local baseado nas frações "YYYY-MM-DD" para evitar bugs de fuso horário
     function criarDataLocal(dataString) {
+        if(!dataString || typeof dataString !== 'string') return new Date();
         const partes = dataString.split('-');
+        if(partes.length < 3) return new Date();
         return new Date(partes[0], partes[1] - 1, partes[2], 0, 0, 0, 0);
     }
 
-    // Retorna o dia da semana a partir de uma data string do formato "YYYY-MM-DD"
     function pegarDiaSemana(dataString, resumido = false) {
-        const partes = dataString.split('-');
-        // Força interpretação local para não mudar fuso horário
-        const dataLocal = new Date(partes[0], partes[1] - 1, partes[2]);
-        const indice = dataLocal.getDay();
-        return resumido ? DIAS_SEMANA_CURTO[indice] : DIAS_SEMANA_COMPLETO[indice];
+        try {
+            const dataLocal = criarDataLocal(dataString);
+            const indice = dataLocal.getDay();
+            return resumido ? DIAS_SEMANA_CURTO[indice] : DIAS_SEMANA_COMPLETO[indice];
+        } catch(e) {
+            return resumido ? "---" : "";
+        }
     }
 
     function gerarCorPorTexto(str) {
@@ -437,16 +439,18 @@
     async function inicializar() {
         try {
             const r = await fetch('agenda_ppge.json?t=' + new Date().getTime());
+            if (!r.ok) throw new Error("Erro ao baixar arquivo JSON");
             const dadosBrutos = await r.json();
             
             datasetCompleto = dadosBrutos.filter(ev => {
                 const concluido = ev["EVENTO CONCLUIDO"] || ev["EVENTO CONCLUÍDO"] || ev["CONCLUIDO"] || '';
-                return String(concluido).toUpperCase().trim() !== "SIM";
+                const dataInic = ev["DIA INICIAL"] || ev["DIA_INICIAL"] || '';
+                return String(concluido).toUpperCase().trim() !== "SIM" && dataInic !== '';
             });
             
             datasetCompleto.sort((a, b) => {
-                const dataA = new Date(a["DIA INICIAL"]);
-                const dataB = new Date(b["DIA INICIAL"]);
+                const dataA = criarDataLocal(a["DIA INICIAL"]);
+                const dataB = criarDataLocal(b["DIA INICIAL"]);
                 if (dataA - dataB !== 0) return dataA - dataB;
                 
                 const horaA = a["HORARIO INICIO"] || a["HORÁRIO INÍCIO"] || "";
@@ -457,7 +461,7 @@
             extrairCategoriasDaBase();
             filtrarCronograma();
         } catch (e) {
-            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red;">ERRO AO SINALIZAR ARQUIVO JSON.</div>`;
+            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red; padding: 40px;">ERRO AO CARREGAR O ARQUIVO JSON.<br><br><small style="text-transform: none; color:#ef4444;">Detalhe: Certifique-se de executar o script na planilha uma vez para gerar a nova estrutura de colunas.</small></div>`;
         }
     }
 
@@ -473,6 +477,7 @@
 
     function renderizarBotoesSidebar() {
         const container = document.getElementById('container-tags-categoria');
+        if (!container) return;
         container.innerHTML = '';
 
         todasCategoriasExistentes.forEach(cat => {
@@ -500,14 +505,18 @@
         const statusAtivosVazio = statusFiltradosAtivos.length === 0;
         
         const btnAtivos = document.getElementById('btn-status-ativos');
-        const ativosLigado = statusAtivosVazio || statusFiltradosAtivos.includes('ATIVOS');
-        btnAtivos.className = `tag-button status-time ${ativosLigado ? 'active' : ''}`;
-        btnAtivos.querySelector('i').className = `fa-solid ${ativosLigado ? 'fa-check' : 'fa-minus'}`;
+        if (btnAtivos) {
+            const ativosLigado = statusAtivosVazio || statusFiltradosAtivos.includes('ATIVOS');
+            btnAtivos.className = `tag-button status-time ${ativosLigado ? 'active' : ''}`;
+            btnAtivos.querySelector('i').className = `fa-solid ${ativosLigado ? 'fa-check' : 'fa-minus'}`;
+        }
 
         const btnFuturos = document.getElementById('btn-status-futuros');
-        const futurosLigado = statusAtivosVazio || statusFiltradosAtivos.includes('FUTUROS');
-        btnFuturos.className = `tag-button status-time ${futurosLigado ? 'active' : ''}`;
-        btnFuturos.querySelector('i').className = `fa-solid ${futurosLigado ? 'fa-check' : 'fa-minus'}`;
+        if (btnFuturos) {
+            const futurosLigado = statusAtivosVazio || statusFiltradosAtivos.includes('FUTUROS');
+            btnFuturos.className = `tag-button status-time ${futurosLigado ? 'active' : ''}`;
+            btnFuturos.querySelector('i').className = `fa-solid ${futurosLigado ? 'fa-check' : 'fa-minus'}`;
+        }
     }
 
     function gerenciarCliqueCategoria(cat) {
@@ -535,14 +544,14 @@
     }
 
     function filtrarCronograma() {
-        const bSel = normalizarString(document.getElementById('filter-search').value);
+        const inputBusca = document.getElementById('filter-search');
+        const bSel = inputBusca ? normalizarString(inputBusca.value) : '';
         const hojeTime = obterDataHoje();
 
         const dadosFiltrados = datasetCompleto.filter(ev => {
             const cEv = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
             const nEv = normalizarString(ev["DESCRIÇÃO DO EVENTO"] || ev["EVENTO"]);
             
-            // Correção de Timezone no Filtro Lateral
             const dataEvInic = criarDataLocal(ev["DIA INICIAL"]);
 
             const bateCategoria = categoriasFiltradasAtivas.length === 0 || categoriasFiltradasAtivas.includes(cEv);
@@ -565,7 +574,8 @@
     }
 
     function limparFiltros() {
-        document.getElementById('filter-search').value = '';
+        const inputBusca = document.getElementById('filter-search');
+        if (inputBusca) inputBusca.value = '';
         categoriasFiltradasAtivas = [];
         statusFiltradosAtivos = [];
         renderizarBotoesSidebar();
@@ -574,6 +584,7 @@
 
     function renderizarGanttEstendido(eventos) {
         const container = document.getElementById('gantt-container');
+        if (!container) return;
         container.innerHTML = '';
 
         if(eventos.length === 0) {
@@ -585,8 +596,10 @@
         const hojeTime = obterDataHoje();
 
         datasChave.forEach(dataFoco => {
+            if(!dataFoco || typeof dataFoco !== 'string') return;
+            
             const dataExibicaoBR = dataFoco.split('-').reverse().join('/');
-            const diaSemanaRaia = pegarDiaSemana(dataFoco, false); // Nome completo para a lateral
+            const diaSemanaRaia = pegarDiaSemana(dataFoco, false); 
             
             const eventosDaRaia = eventos.filter(e => e["DIA INICIAL"] === dataFoco);
 
@@ -614,14 +627,13 @@
                 const iBR = ev["DIA INICIAL"].split('-').reverse().join('/');
                 const semInic = pegarDiaSemana(ev["DIA INICIAL"], true);
                 
-                const diaFinalBruto = ev["DIA FINAL"] || ev["DIA INICIAL"];
+                const diaFinalBruto = ev["DIA FINAL"] || ev["DIA INICIAL"] || ev["DIA INICIAL"];
                 const fBR = diaFinalBruto.split('-').reverse().join('/');
                 const semFim = pegarDiaSemana(diaFinalBruto, true);
                 
                 const hInicio = ev["HORARIO INICIO"] || ev["HORÁRIO INÍCIO"] || "";
                 const hTermino = ev["HORARIO TÉRMINO"] || ev["HORÁRIO TÉRMINO"] || ev["HORARIO TERMINO"] || "";
                 
-                // Constrói período já aplicando os dias da semana resumidos
                 let textoPeriodo = iBR === fBR ? `${iBR} (${semInic})` : `${iBR} (${semInic}) ATÉ ${fBR} (${semFim})`;
                 let htmlHorario = "";
                 
@@ -630,16 +642,12 @@
                     htmlHorario = `<span class="time-clock-badge"><i class="fa-regular fa-clock"></i> ${hInicio}${sufixoTermino}</span>`;
                 }
 
-                const dInic = new Date(ev["DIA INICIAL"]);
-                const dFim = new Date(diaFinalBruto);
+                const dInic = criarDataLocal(ev["DIA INICIAL"]);
+                const dFim = criarDataLocal(diaFinalBruto);
                 const diferencaDias = Math.max(1, Math.round((dFim - dInic) / (1000 * 60 * 60 * 24)) + 1);
                 
                 const larguraCalculada = Math.min(100, 25 + (diferencaDias * 3)); 
 
-                // NOVO (Corrigido)
-                const dInic = criarDataLocal(ev["DIA INICIAL"]);
-
-                // Comparação baseada no objeto local imutável 
                 const ehPassadoOuAtual = dInic <= hojeTime;
 
                 const cat = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase();
