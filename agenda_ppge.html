@@ -273,16 +273,28 @@
             border: 1px solid #CBD5E1;
         }
 
+        /* BADGE VIGENTE REESTILIZADO (MUITO MAIS CHAMATIVO) */
         .badge-status-alert {
-            background-color: #0F172A;
-            color: #FFF;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 9px;
-            font-weight: 700;
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+            color: #FFFFFF;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+            border: 1px solid #EF4444;
+            animation: pulseVigente 2s infinite ease-in-out;
+        }
+
+        /* Animação de pulsação para o status ativo */
+        @keyframes pulseVigente {
+            0% { transform: scale(1); box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3); }
+            50% { transform: scale(1.04); box-shadow: 0 4px 14px rgba(220, 38, 38, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3); }
         }
 
         .card-title {
@@ -662,7 +674,7 @@
                 let statusBadgeHTML = '';
                 if(ehPassadoOuAtual) {
                     card.classList.add('card-status-past');
-                    statusBadgeHTML = `<span class="badge-status-alert"><i class="fa-solid fa-hourglass-start"></i> VIGENTE</span>`;
+                    statusBadgeHTML = `<span class="badge-status-alert"><i class="fa-solid fa-bolt"></i> VIGENTE</span>`;
                 }
 
                 const nLinha = ev["LINHA_PLANILHA"] || '...';
