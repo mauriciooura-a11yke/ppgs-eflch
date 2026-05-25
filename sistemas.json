@@ -142,5 +142,14 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "agenda, salas, ensamento, booked"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Gerador de ata de reunião CEPG PPGE",
+    "descricao": "Sistema em Google Apps Script para gerar atas de reunião da CEPG do PPGE. ***** Acesso restrito ***** .",
+    "link": "https://script.google.com/macros/s/AKfycbxsXsDHzd8kfd8W_2V2C0XStVWF7XTkuLMKrMvKGTWmPQkMvQ0nWn1Xp0__XzLb2DElRQ/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "cepg, ata, reunião"
   }
 ]
