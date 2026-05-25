@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRONOGRAMA ESTRATÉGICO - PPGE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -164,7 +164,7 @@
         .gantt-timeline::before {
             content: '';
             position: absolute;
-            left: 140px;
+            left: 155px; /* Ajustado devido ao tamanho da lateral de data */
             top: 0;
             bottom: 0;
             width: 4px;
@@ -176,7 +176,7 @@
             display: flex;
             align-items: center;
             position: relative;
-            min-height: 115px;
+            min-height: 125px;
             padding: 22px 20px 22px 0;
             border-bottom: 4px solid #0F172A;
         }
@@ -184,7 +184,7 @@
         .gantt-row:last-child { border-bottom: none; }
 
         .gantt-date-side {
-            width: 120px;
+            width: 135px;
             font-family: 'Poppins';
             color: #0F172A;
             text-align: right;
@@ -193,21 +193,36 @@
             z-index: 2;
             display: flex;
             flex-direction: column;
+            gap: 3px;
         }
         .gantt-date-main {
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
         }
         .gantt-date-weekday {
             font-size: 10px;
-            font-weight: 600;
-            color: #64748B;
+            font-weight: 700;
+            color: #475569;
+        }
+        
+        /* NOVO DESTAQUE PARA O MÊS NA LINHA DO TEMPO */
+        .gantt-date-month-badge {
+            background-color: #0F172A;
+            color: #FFFFFF;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            align-self: flex-end;
             margin-top: 2px;
+            letter-spacing: 0.5px;
         }
 
         .gantt-node {
             position: absolute;
-            left: 135px;
+            left: 150px; /* Ajustado com a linha guia */
             width: 14px;
             height: 14px;
             background: #FFF;
@@ -248,29 +263,43 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
         }
 
+        /* SEÇÃO DE DATAS INTERNAS - AGORA MUITO MAIOR E DESTACADA */
         .card-top-time {
-            font-size: 11px;
-            color: #475569;
-            font-weight: 700;
-            margin-bottom: 8px;
+            font-size: 13px; /* Aumentado */
+            color: #1E293B; /* Tom mais escuro para leitura firme */
+            font-weight: 800; /* Peso da fonte aumentado */
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 5px;
+            gap: 8px;
+            border-bottom: 1px dashed #CBD5E1;
+            padding-bottom: 8px;
         }
 
-        .time-clock-badge {
-            background-color: #E2E8F0;
-            color: #0F172A;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 10px;
+        .card-time-text-container {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            margin-left: 6px;
-            border: 1px solid #CBD5E1;
+            gap: 6px;
+            background-color: rgba(255, 255, 255, 0.6);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        /* HORÁRIOS NOS CARDS MAIORES E DESTACADOS */
+        .time-clock-badge {
+            background-color: #0F172A;
+            color: #FFFFFF;
+            padding: 4px 10px; /* Maior espaçamento */
+            border-radius: 6px;
+            font-size: 12px; /* Fonte maior */
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid #0F172A;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
         }
 
         /* BADGE VIGENTE REESTILIZADO (MUITO MAIS CHAMATIVO) */
@@ -279,8 +308,8 @@
             color: #FFFFFF;
             padding: 5px 12px;
             border-radius: 6px;
-            font-size: 10px;
-            font-weight: 800;
+            font-size: 11px;
+            font-weight: 900;
             letter-spacing: 1px;
             display: flex;
             align-items: center;
@@ -299,7 +328,7 @@
 
         .card-title {
             font-family: 'Poppins', sans-serif;
-            font-size: 15px;
+            font-size: 16px; /* Leve aumento para acompanhar a hierarquia */
             font-weight: 700;
             color: #0F172A;
             margin: 0 0 12px 0;
@@ -347,10 +376,11 @@
             .gantt-row { flex-direction: column; align-items: flex-start; padding: 15px 15px 15px 0; min-height: auto; gap: 10px; }
             .gantt-date-side { width: auto; text-align: left; padding-left: 55px; font-size: 12px; flex-direction: row; align-items: center; gap: 8px; }
             .gantt-date-weekday { margin-top: 0; }
+            .gantt-date-month-badge { align-self: center; margin-top: 0; }
             .gantt-node { left: 25px; top: 17px; }
             .gantt-space { margin-left: 55px; width: calc(100% - 55px); }
             .event-card-horizontal { width: 100% !important; min-width: 0; padding: 12px 15px; }
-            .card-title { font-size: 13px; margin-bottom: 8px; }
+            .card-title { font-size: 14px; margin-bottom: 8px; }
             .tag-selector-container { flex-direction: column; }
         }
     </style>
@@ -406,6 +436,7 @@
 
     const DIAS_SEMANA_COMPLETO = ["DOMINGO", "SEGUNDA-FEIRA", "TERÇA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SÁBADO"];
     const DIAS_SEMANA_CURTO = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
+    const MESES_ANO_COMPLETO = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
 
     function normalizarString(txt) {
         return String(txt || '').toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
@@ -431,6 +462,16 @@
             return resumido ? DIAS_SEMANA_CURTO[indice] : DIAS_SEMANA_COMPLETO[indice];
         } catch(e) {
             return resumido ? "---" : "";
+        }
+    }
+
+    // Pega o nome por extenso do mês para a Linha do Tempo
+    function pegarNomeMes(dataString) {
+        try {
+            const dataLocal = criarDataLocal(dataString);
+            return MESES_ANO_COMPLETO[dataLocal.getMonth()];
+        } catch(e) {
+            return "";
         }
     }
 
@@ -612,6 +653,7 @@
             
             const dataExibicaoBR = dataFoco.split('-').reverse().join('/');
             const diaSemanaRaia = pegarDiaSemana(dataFoco, false); 
+            const nomeMesRaia = pegarNomeMes(dataFoco); // Captura o nome do mês
             
             const eventosDaRaia = eventos.filter(e => e["DIA INICIAL"] === dataFoco);
 
@@ -625,6 +667,7 @@
             dateSide.innerHTML = `
                 <span class="gantt-date-main">${dataExibicaoBR}</span>
                 <span class="gantt-date-weekday">${diaSemanaRaia}</span>
+                <span class="gantt-date-month-badge">${nomeMesRaia}</span>
             `;
             row.appendChild(dateSide);
 
@@ -639,7 +682,7 @@
                 const iBR = ev["DIA INICIAL"].split('-').reverse().join('/');
                 const semInic = pegarDiaSemana(ev["DIA INICIAL"], true);
                 
-                const diaFinalBruto = ev["DIA FINAL"] || ev["DIA INICIAL"] || ev["DIA INICIAL"];
+                const diaFinalBruto = ev["DIA FINAL"] || ev["DIA INICIAL"];
                 const fBR = diaFinalBruto.split('-').reverse().join('/');
                 const semFim = pegarDiaSemana(diaFinalBruto, true);
                 
@@ -682,10 +725,10 @@
 
                 card.innerHTML = `
                     <div class="card-top-time">
-                        <span style="color: ${coresCard.texto}">
-                            <i class="fa-regular fa-calendar"></i> ${textoPeriodo} [${diferencaDias} DIAS]
-                            ${htmlHorario}
+                        <span class="card-time-text-container" style="color: ${coresCard.texto}">
+                            <i class="fa-regular fa-calendar-days"></i> ${textoPeriodo} &nbsp;•&nbsp; <strong>${diferencaDias} ${diferencaDias > 1 ? 'DIAS' : 'DIA'}</strong>
                         </span>
+                        ${htmlHorario}
                         ${statusBadgeHTML}
                     </div>
                     <h2 class="card-title">${descricaoEvento}</h2>
