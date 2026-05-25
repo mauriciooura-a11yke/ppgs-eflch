@@ -151,5 +151,14 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "cepg, ata, reunião"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Agenda da Secretaria do PPGE",
+    "descricao": "[EM TESTE] Agenda de atividades da secretaria do PPGE",
+    "link": "https://mauriciooura-a11yke.github.io/ppgs-eflch/agenda_ppge.html",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "agenda ppge, follow-up, acompanhamento"
   }
 ]
