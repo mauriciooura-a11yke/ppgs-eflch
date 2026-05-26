@@ -133,5 +133,32 @@
     "botao": "ABRIR DOCUMENTO",
     "status": "ativo",
     "palavras_chave": "bolsas, capes, acúmulo, mestrado, doutorado, pós-doutorado"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "PORTARIA PROPGPQ N. 420/2023",
+    "descricao": "Dispõe sobre a publicação, em acesso aberto no Repositório Ins�tucional da Unifesp, de dissertações de mestrado teses de doutorado, defendidas até o ano de 2020, no âmbito dos programas de pós-graduação stricto sensu da Universidade Federal de São Paulo (Unifesp).",
+    "link": "https://drive.google.com/drive/folders/1pHS6sN-0b9KPaI35XXap2vKhdVggn5bU",
+    "botao": "ABRIR DOCUMENTO",
+    "status": "ativo",
+    "palavras_chave": "depósito, repositório"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "PORTARIA REITORIA N. 2803/2020",
+    "descricao": "Instui as normas para depósito no Repositório Instucional Unifesp de trabalhos de conclusão de curso, dissertações, teses e demais produções técnicas ou bibliográficas apresentadas com finalidade de obtenção de tulo produzidos nesta universidade.",
+    "link": "https://drive.google.com/drive/folders/1pHS6sN-0b9KPaI35XXap2vKhdVggn5bU",
+    "botao": "ABRIR DOCUMENTO",
+    "status": "ativo",
+    "palavras_chave": "depósito, repositório"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "INSTRUÇÃO NORMATIVA PROPGPQ Nº 4/2021",
+    "descricao": "Fluxo para o depósito de teses e dissertações e demais produções bibliográficas apresentadas com finalidade de obtenção de títulos em programas de pós-graduação stricto sensu da Universidade Federal de São Paulo. Substitui a Instrução Normativa 001/2021 de 20/02/2021.",
+    "link": "https://drive.google.com/drive/folders/1pHS6sN-0b9KPaI35XXap2vKhdVggn5bU",
+    "botao": "ABRIR DOCUMENTO",
+    "status": "ativo",
+    "palavras_chave": "depósito, repositório"
   }
 ]
