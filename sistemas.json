@@ -160,5 +160,14 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "agenda ppge, follow-up, acompanhamento"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Catálogo de disciplinas do PPGE",
+    "descricao": "[EM TESTE] Catálogo de disciplinas do PPGE [ACESSO PÚBLICO]. Divulgado na página do PPGE no quadro de disciplinas oferecidas;",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbxa8TiwcumXUMpk_HxjAg-POMiSQioBZCv9-GYppIo0/dev?pli=1&authuser=0",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "catálogo, disciplinas, ppge"
   }
 ]
