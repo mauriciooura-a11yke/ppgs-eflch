@@ -908,5 +908,85 @@
     "DIA FINAL": "2026-12-31",
     "HORÁRIO TÉRMINO": "",
     "EVENTO CONCLUÍDO": ""
+  },
+  {
+    "LINHA_PLANILHA": 95,
+    "CATEGORIA DO EVENTO": "POLARE",
+    "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
+    "DIA INICIAL": "2026-06-01",
+    "HORÁRIO INÍCIO": "",
+    "DIA FINAL": "2026-06-01",
+    "HORÁRIO TÉRMINO": "",
+    "EVENTO CONCLUÍDO": ""
+  },
+  {
+    "LINHA_PLANILHA": 96,
+    "CATEGORIA DO EVENTO": "POLARE",
+    "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
+    "DIA INICIAL": "2026-07-01",
+    "HORÁRIO INÍCIO": "",
+    "DIA FINAL": "2026-07-01",
+    "HORÁRIO TÉRMINO": "",
+    "EVENTO CONCLUÍDO": ""
+  },
+  {
+    "LINHA_PLANILHA": 97,
+    "CATEGORIA DO EVENTO": "POLARE",
+    "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
+    "DIA INICIAL": "2026-08-01",
+    "HORÁRIO INÍCIO": "",
+    "DIA FINAL": "2026-08-01",
+    "HORÁRIO TÉRMINO": "",
+    "EVENTO CONCLUÍDO": ""
+  },
+  {
+    "LINHA_PLANILHA": 98,
+    "CATEGORIA DO EVENTO": "POLARE",
+    "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
+    "DIA INICIAL": "2026-09-01",
+    "HORÁRIO INÍCIO": "",
+    "DIA FINAL": "2026-09-01",
+    "HORÁRIO TÉRMINO": "",
+    "EVENTO CONCLUÍDO": ""
+  },
+  {
+    "LINHA_PLANILHA": 99,
+    "CATEGORIA DO EVENTO": "POLARE",
+    "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
+    "DIA INICIAL": "2026-10-01",
+    "HORÁRIO INÍCIO": "",
+    "DIA FINAL": "2026-10-01",
+    "HORÁRIO TÉRMINO": "",
+    "EVENTO CONCLUÍDO": ""
+  },
+  {
+    "LINHA_PLANILHA": 100,
+    "CATEGORIA DO EVENTO": "POLARE",
+    "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
+    "DIA INICIAL": "2026-11-01",
+    "HORÁRIO INÍCIO": "",
+    "DIA FINAL": "2026-11-01",
+    "HORÁRIO TÉRMINO": "",
+    "EVENTO CONCLUÍDO": ""
+  },
+  {
+    "LINHA_PLANILHA": 101,
+    "CATEGORIA DO EVENTO": "POLARE",
+    "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
+    "DIA INICIAL": "2026-12-01",
+    "HORÁRIO INÍCIO": "",
+    "DIA FINAL": "2026-12-01",
+    "HORÁRIO TÉRMINO": "",
+    "EVENTO CONCLUÍDO": ""
+  },
+  {
+    "LINHA_PLANILHA": 102,
+    "CATEGORIA DO EVENTO": "POLARE",
+    "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
+    "DIA INICIAL": "2027-01-01",
+    "HORÁRIO INÍCIO": "",
+    "DIA FINAL": "2027-01-01",
+    "HORÁRIO TÉRMINO": "",
+    "EVENTO CONCLUÍDO": ""
   }
 ]
