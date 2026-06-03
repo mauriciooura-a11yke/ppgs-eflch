@@ -160,5 +160,14 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "agenda ppge, follow-up, acompanhamento"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Sistema de Gestão do PPGE (Prazos, Bancas, Homologações e Diplomas)",
+    "descricao": "[EM TESTE]",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbzsaHdWnorTXWw4xdA_whpJTVUfFPEYE3Los37fAi1FMDNazImHQ0XJwvxZHxAdR3k/exec?pli=1",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "ppge, prazos, bancas, acompahamento, follow-up, prazo, homologação, diploma"
   }
 ]
