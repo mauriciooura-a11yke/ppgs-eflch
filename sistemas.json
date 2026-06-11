@@ -147,7 +147,7 @@
     "ppg": "Educação",
     "titulo": "Gerador de ata de reunião CEPG PPGE",
     "descricao": "[EM TESTE] Sistema em Google Apps Script para gerar atas de reunião da CEPG do PPGE. ***** Acesso restrito ***** .",
-    "link": "https://script.google.com/macros/s/AKfycbxdRyh0OQDVITyEUiRHXRgThdpqV_oTE5yGcUELCilxo2nLsMAvPo86JJfGa7F1K3KL0Q/exec",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbxRRmLbtQfhy8HgR8CthSapqOK1EhKGozNuaFKg_gEiQwYFWgdxcCFkSoiP8HdDqEngQg/exec",
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "cepg, ata, reunião"
