@@ -145,7 +145,7 @@
   },
   {
     "ppg": "Educação",
-    "titulo": "Gerador de ata de reunião CEPG PPGE",
+    "titulo": "Gerador de ata de reunião CEPG PPG EDUCAÇÃO",
     "descricao": "[EM TESTE] Sistema em Google Apps Script para gerar atas de reunião da CEPG do PPGE. ***** Acesso restrito ***** .",
     "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbxRRmLbtQfhy8HgR8CthSapqOK1EhKGozNuaFKg_gEiQwYFWgdxcCFkSoiP8HdDqEngQg/exec",
     "botao": "ACESSAR SISTEMA",
@@ -169,5 +169,14 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "ppge, prazos, bancas, acompahamento, follow-up, prazo, homologação, diploma"
+  },
+  {
+    "ppg": "Filosofia",
+    "titulo": "Gerador de ata de reunião CEPG PPG FILOSOFIA",
+    "descricao": "",
+    "link": "https://script.google.com/macros/s/AKfycbwsWUoRj4Qh9bcKa7Cym60Eknr8BVqgpUBgEyahTPpNXCuv4RdqnOwqc8hN_VudfxAM/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "cepg, ata, reunião"
   }
 ]
