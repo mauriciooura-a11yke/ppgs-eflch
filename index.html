@@ -108,6 +108,31 @@
             font-weight: 600;
         }
 
+        .sidebar-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cat-count {
+            font-size: 0.65rem;
+            font-weight: 700;
+            background: rgba(56, 189, 248, 0.12);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 10px;
+            padding: 1px 7px;
+            min-width: 18px;
+            text-align: center;
+            display: none;
+        }
+        .cat-count.visible { display: inline-block; }
+        .cat-count.zero {
+            background: rgba(148, 163, 184, 0.08);
+            color: var(--text-dim);
+            border-color: rgba(148, 163, 184, 0.2);
+        }
+
         .menu-toggle {
             display: none;
             background: none;
@@ -229,13 +254,13 @@
     </select>
 
     <div class="sidebar-title">Categorias</div>
-    <a onclick="setCategory('all')" id="btn-all" class="sidebar-link active">🏠 Ver Tudo</a>
-    <a onclick="setCategory('fluxo')" id="btn-fluxo" class="sidebar-link">🌊 Fluxos</a>
-    <a onclick="setCategory('sistema')" id="btn-sistema" class="sidebar-link">💻 Sistemas</a>
-    <a onclick="setCategory('dashboard')" id="btn-dashboard" class="sidebar-link">📊 Dashboards</a>
-    <a onclick="setCategory('tutorial')" id="btn-tutorial" class="sidebar-link">📖 Tutoriais</a>
-    <a onclick="setCategory('normativo')" id="btn-normativo" class="sidebar-link">📜 Normativos</a>
-    <a onclick="setCategory('processo')" id="btn-processo" class="sidebar-link">📁 Processos</a>
+    <a onclick="setCategory('all')" id="btn-all" class="sidebar-link active" data-label="🏠 Ver Tudo">🏠 Ver Tudo <span class="cat-count" id="count-all"></span></a>
+    <a onclick="setCategory('fluxo')" id="btn-fluxo" class="sidebar-link" data-label="🌊 Fluxos">🌊 Fluxos <span class="cat-count" id="count-fluxo"></span></a>
+    <a onclick="setCategory('sistema')" id="btn-sistema" class="sidebar-link" data-label="💻 Sistemas">💻 Sistemas <span class="cat-count" id="count-sistema"></span></a>
+    <a onclick="setCategory('dashboard')" id="btn-dashboard" class="sidebar-link" data-label="📊 Dashboards">📊 Dashboards <span class="cat-count" id="count-dashboard"></span></a>
+    <a onclick="setCategory('tutorial')" id="btn-tutorial" class="sidebar-link" data-label="📖 Tutoriais">📖 Tutoriais <span class="cat-count" id="count-tutorial"></span></a>
+    <a onclick="setCategory('normativo')" id="btn-normativo" class="sidebar-link" data-label="📜 Normativos">📜 Normativos <span class="cat-count" id="count-normativo"></span></a>
+    <a onclick="setCategory('processo')" id="btn-processo" class="sidebar-link" data-label="📁 Processos">📁 Processos <span class="cat-count" id="count-processo"></span></a>
 </nav>
 
 <div class="main-wrapper">
@@ -413,10 +438,16 @@
         const rawQuery = document.getElementById('searchInput').value;
         const selPPG = document.getElementById('ppgFilter').value.toLowerCase();
         const sections = document.querySelectorAll('.section-block');
-        
+        const isFiltering = rawQuery.trim() !== '' || selPPG !== 'all';
+
+        // Contadores por seção (independente da categoria ativa)
+        const counts = {};
+        let totalCount = 0;
+
         sections.forEach(section => {
             const sectionId = section.id.replace('sec-', '');
             const cards = section.querySelectorAll('.card');
+            let visibleInSection = 0;
             let hasVisible = false;
 
             if (currentCategory === 'all' || currentCategory === sectionId) {
@@ -432,21 +463,58 @@
                         matchesPPG = (cardPPG === selPPG);
                     }
 
-                    // Busca com normalização de acentos e múltiplos termos
                     const searchOk = !rawQuery.trim() || matchesSearch(card.innerText, rawQuery);
 
-                    if (matchesPPG && searchOk) { 
-                        card.style.display = ""; 
-                        hasVisible = true; 
-                    } else { 
-                        card.style.display = "none"; 
+                    if (matchesPPG && searchOk) {
+                        card.style.display = "";
+                        hasVisible = true;
+                        visibleInSection++;
+                    } else {
+                        card.style.display = "none";
                     }
                 });
                 section.style.display = hasVisible ? "" : "none";
-            } else { 
-                section.style.display = "none"; 
+            } else {
+                // Seção oculta pela categoria, mas ainda conta para os badges
+                cards.forEach(card => {
+                    const cardPPG = (card.getAttribute('data-ppg') || '').toLowerCase();
+                    let matchesPPG = selPPG === 'all' || (selPPG === 'geral' ? cardPPG === 'geral' : cardPPG === selPPG);
+                    const searchOk = !rawQuery.trim() || matchesSearch(card.innerText, rawQuery);
+                    if (matchesPPG && searchOk) visibleInSection++;
+                });
+                section.style.display = "none";
+            }
+
+            counts[sectionId] = visibleInSection;
+            totalCount += visibleInSection;
+        });
+
+        // Atualiza badges do sidebar
+        secoes.forEach(sec => {
+            const badge = document.getElementById('count-' + sec.id);
+            if (!badge) return;
+            const n = counts[sec.id] || 0;
+            if (isFiltering) {
+                badge.textContent = n;
+                badge.classList.add('visible');
+                badge.classList.toggle('zero', n === 0);
+            } else {
+                badge.classList.remove('visible');
             }
         });
+
+        // Badge do "Ver Tudo"
+        const badgeAll = document.getElementById('count-all');
+        if (badgeAll) {
+            if (isFiltering) {
+                badgeAll.textContent = totalCount;
+                badgeAll.classList.add('visible');
+                badgeAll.classList.toggle('zero', totalCount === 0);
+            } else {
+                badgeAll.classList.remove('visible');
+            }
+        }
+
         updateFilterBadges();
     }
 
