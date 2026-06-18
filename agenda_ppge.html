@@ -597,9 +597,18 @@
             if (resultado.ok) {
                 // Remove o card visualmente sem precisar recarregar
                 const card = btnEl.closest(".event-card-horizontal");
+                const ganttRow = card.closest(".gantt-row");
                 card.style.transition = "opacity 0.4s";
                 card.style.opacity = "0";
-                setTimeout(() => card.remove(), 400);
+                setTimeout(() => {
+                    card.remove();
+                    // Se a linha ficou sem cards, remove a linha inteira
+                    if (ganttRow && ganttRow.querySelectorAll(".event-card-horizontal").length === 0) {
+                        ganttRow.style.transition = "opacity 0.3s";
+                        ganttRow.style.opacity = "0";
+                        setTimeout(() => ganttRow.remove(), 300);
+                    }
+                }, 400);
             } else {
                 alert("Erro: " + (resultado.erro || "resposta inesperada"));
                 btnEl.disabled = false;
