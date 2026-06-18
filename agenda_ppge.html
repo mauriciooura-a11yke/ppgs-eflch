@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
         * { box-sizing: border-box; }
@@ -365,6 +366,77 @@
 
         .loading { text-align: center; padding: 60px; color: #64748B; font-weight: 700; width: 100%; }
 
+        /* ── PAINEL DE AUTENTICAÇÃO ── */
+        .auth-panel {
+            border-top: 1px solid #334155;
+            padding-top: 18px;
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .auth-panel label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94A3B8;
+            letter-spacing: 0.5px;
+        }
+        .btn-auth {
+            padding: 11px 14px;
+            border-radius: 6px;
+            font-family: 'Poppins';
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid #475569;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .btn-auth-entrar {
+            background-color: #1E3A5F;
+            color: #93C5FD;
+            border-color: #1D4ED8;
+        }
+        .btn-auth-entrar:hover { background-color: #1D4ED8; color: white; }
+        .btn-auth-sair {
+            background-color: #1C1917;
+            color: #94A3B8;
+            border-color: #44403C;
+        }
+        .btn-auth-sair:hover { background-color: #44403C; color: white; }
+        .auth-status {
+            font-size: 10px;
+            color: #64748B;
+            font-weight: 600;
+            text-align: center;
+            min-height: 14px;
+        }
+        .auth-status.ok { color: #4ADE80; }
+        .auth-status.erro { color: #F87171; }
+
+        /* ── BOTÃO OCULTAR NOS CARDS ── */
+        .btn-ocultar-card {
+            display: none; /* visível só quando autenticado */
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: 1px solid #CBD5E1;
+            border-radius: 4px;
+            color: #94A3B8;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 3px 8px;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'Lato';
+            text-transform: uppercase;
+        }
+        .btn-ocultar-card:hover { background-color: #FEF2F2; border-color: #F87171; color: #DC2626; }
+        .modo-edicao .btn-ocultar-card { display: inline-flex; }
+
         /* REGRAS DE RESPONSIVIDADE */
         @media (max-width: 768px) {
             body { flex-direction: column; }
@@ -415,6 +487,18 @@
         <label><i class="fa-solid fa-tags"></i> FILTRAR POR CATEGORIAS</label>
         <div id="container-tags-categoria" class="tag-selector-container"></div>
     </div>
+
+    <!-- PAINEL DE AUTENTICAÇÃO -->
+    <div class="auth-panel">
+        <label><i class="fa-solid fa-lock"></i> MODO EDIÇÃO</label>
+        <div id="auth-status" class="auth-status">NÃO AUTENTICADO</div>
+        <button id="btn-entrar" class="btn-auth btn-auth-entrar" onclick="iniciarLogin()">
+            <i class="fa-brands fa-google"></i> ENTRAR COM GOOGLE
+        </button>
+        <button id="btn-sair" class="btn-auth btn-auth-sair" onclick="fazerLogout()" style="display:none">
+            <i class="fa-solid fa-right-from-bracket"></i> SAIR DO MODO EDIÇÃO
+        </button>
+    </div>
 </div>
 
 <div class="main-content">
@@ -429,10 +513,104 @@
 </div>
 
 <script>
+    // ─── CONFIGURAÇÃO ───────────────────────────────────────────────
+    // Substitua pela URL do seu Web App publicado no Apps Script
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwf7zYm_PkmlaVUV8tV6vm518mSO3_RY16oEeGqmBPnCSuB5Om--VgGg-z8ioF6czSwTw/exec";
+
+    // Client ID do projeto Google Cloud vinculado ao Apps Script
+    // Obtenha em: console.cloud.google.com → APIs e serviços → Credenciais
+    const GOOGLE_CLIENT_ID = "232452777424-94i4lltsg2e4d1n0ah2lsii4lpm5nna1.apps.googleusercontent.com";
+    // ────────────────────────────────────────────────────────────────
+
     let datasetCompleto = [];
     let todasCategoriasExistentes = [];
     let categoriasFiltradasAtivas = []; 
-    let statusFiltradosAtivos = [];     
+    let statusFiltradosAtivos = [];
+    let tokenGoogle = null; // token OAuth do usuário autenticado
+
+    // ─── AUTENTICAÇÃO GOOGLE ─────────────────────────────────────────
+
+    function iniciarLogin() {
+        const client = google.accounts.oauth2.initTokenClient({
+            client_id: GOOGLE_CLIENT_ID,
+            scope: "openid email profile",
+            callback: async (resposta) => {
+                if (resposta.error) {
+                    definirStatusAuth("ERRO AO AUTENTICAR", false);
+                    return;
+                }
+                tokenGoogle = resposta.access_token;
+                definirStatusAuth("VERIFICANDO ACESSO...", null);
+
+                try {
+                    const resultado = await chamarWebApp({ acao: "verificar", token: tokenGoogle });
+                    if (resultado.ok) {
+                        definirStatusAuth("✓ " + resultado.email, true);
+                        document.body.classList.add("modo-edicao");
+                        document.getElementById("btn-entrar").style.display = "none";
+                        document.getElementById("btn-sair").style.display = "flex";
+                    } else {
+                        tokenGoogle = null;
+                        definirStatusAuth("SEM PERMISSÃO DE EDIÇÃO", false);
+                    }
+                } catch (e) {
+                    tokenGoogle = null;
+                    definirStatusAuth("ERRO DE CONEXÃO", false);
+                }
+            }
+        });
+        client.requestAccessToken();
+    }
+
+    function fazerLogout() {
+        tokenGoogle = null;
+        document.body.classList.remove("modo-edicao");
+        document.getElementById("btn-entrar").style.display = "flex";
+        document.getElementById("btn-sair").style.display = "none";
+        definirStatusAuth("NÃO AUTENTICADO", null);
+    }
+
+    function definirStatusAuth(msg, ok) {
+        const el = document.getElementById("auth-status");
+        el.textContent = msg;
+        el.className = "auth-status" + (ok === true ? " ok" : ok === false ? " erro" : "");
+    }
+
+    async function chamarWebApp(payload) {
+        const r = await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify(payload)
+        });
+        if (!r.ok) throw new Error("Erro HTTP " + r.status);
+        return r.json();
+    }
+
+    async function ocultarEvento(linha, btnEl) {
+        if (!tokenGoogle) { alert("Faça login primeiro."); return; }
+        if (!confirm(`Ocultar o evento da linha ${linha}? Ele deixará de aparecer na agenda pública.`)) return;
+
+        btnEl.disabled = true;
+        btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AGUARDE';
+
+        try {
+            const resultado = await chamarWebApp({ acao: "ocultar", token: tokenGoogle, linha });
+            if (resultado.ok) {
+                // Remove o card visualmente sem precisar recarregar
+                const card = btnEl.closest(".event-card-horizontal");
+                card.style.transition = "opacity 0.4s";
+                card.style.opacity = "0";
+                setTimeout(() => card.remove(), 400);
+            } else {
+                alert("Erro: " + (resultado.erro || "resposta inesperada"));
+                btnEl.disabled = false;
+                btnEl.innerHTML = '<i class="fa-solid fa-eye-slash"></i> OCULTAR';
+            }
+        } catch (e) {
+            alert("Falha de comunicação com o servidor.");
+            btnEl.disabled = false;
+            btnEl.innerHTML = '<i class="fa-solid fa-eye-slash"></i> OCULTAR';
+        }
+    }     
 
     const DIAS_SEMANA_COMPLETO = ["DOMINGO", "SEGUNDA-FEIRA", "TERÇA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SÁBADO"];
     const DIAS_SEMANA_CURTO = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
@@ -735,6 +913,9 @@
                     <div class="card-footer">
                         <span class="tag-category-label" style="background-color: ${coresCard.borda}"><i class="fa-solid fa-tag"></i> ${cat}</span>
                         <span class="tag-line"><i class="fa-solid fa-table"></i> LINHA: ${nLinha}</span>
+                        <button class="btn-ocultar-card" onclick="ocultarEvento(${nLinha}, this)" title="Ocultar este evento da agenda pública">
+                            <i class="fa-solid fa-eye-slash"></i> OCULTAR
+                        </button>
                     </div>
                 `;
                 space.appendChild(card);
