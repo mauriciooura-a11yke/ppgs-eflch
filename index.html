@@ -259,6 +259,24 @@
 <script src="assets.js"></script>
 
 <script>
+    // ─── Utilidade: normaliza string removendo acentos e convertendo para minúsculas ───
+    function normalize(str) {
+        return (str || '')
+            .normalize('NFD')                      // decompõe caracteres acentuados
+            .replace(/[\u0300-\u036f]/g, '')       // remove os diacríticos
+            .toLowerCase();
+    }
+
+    // ─── Verifica se TODOS os termos da busca existem no texto normalizado ────────────
+    // Ex.: "dep prazo" encontra "Depósito de Prazo" e "Prazo de Depósito"
+    function matchesSearch(cardText, rawQuery) {
+        const haystack = normalize(cardText);
+        const terms = normalize(rawQuery).trim().split(/\s+/).filter(Boolean);
+        return terms.every(term => haystack.includes(term));
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────────
+
     function toggleMenu() {
         document.getElementById('sidebar').classList.toggle('open');
         document.getElementById('overlay').classList.toggle('visible');
@@ -392,7 +410,7 @@
     }
 
     function filter() {
-        const val = document.getElementById('searchInput').value.toLowerCase();
+        const rawQuery = document.getElementById('searchInput').value;
         const selPPG = document.getElementById('ppgFilter').value.toLowerCase();
         const sections = document.querySelectorAll('.section-block');
         
@@ -404,24 +422,20 @@
             if (currentCategory === 'all' || currentCategory === sectionId) {
                 cards.forEach(card => {
                     const cardPPG = (card.getAttribute('data-ppg') || '').toLowerCase();
-                    const txt = card.innerText.toLowerCase();
-                    
+
                     let matchesPPG = false;
-                    
                     if (selPPG === 'all') {
-                        // Mostra tudo
                         matchesPPG = true;
                     } else if (selPPG === 'geral') {
-                        // Mostra apenas itens marcados como geral
                         matchesPPG = (cardPPG === 'geral');
                     } else {
-                        // Se selecionou um PPG específico (ex: ppge), mostra APENAS ele (exclui o geral)
                         matchesPPG = (cardPPG === selPPG);
                     }
 
-                    const matchesSearch = txt.includes(val);
-                    
-                    if (matchesPPG && matchesSearch) { 
+                    // Busca com normalização de acentos e múltiplos termos
+                    const searchOk = !rawQuery.trim() || matchesSearch(card.innerText, rawQuery);
+
+                    if (matchesPPG && searchOk) { 
                         card.style.display = ""; 
                         hasVisible = true; 
                     } else { 
