@@ -650,7 +650,7 @@
 
     async function carregarOcultos() {
         try {
-            const r = await fetch('agenda_ppge_ocultos.json?t=' + new Date().getTime());
+            const r = await fetch(APPS_SCRIPT_URL + '?tipo=ocultos&token=' + encodeURIComponent(tokenGoogle));
             if (!r.ok) { datasetOcultos = []; return; }
             datasetOcultos = await r.json();
             const btn = document.getElementById("btn-mostrar-ocultos");
@@ -820,8 +820,8 @@
 
     async function inicializar() {
         try {
-            const r = await fetch('agenda_ppge.json?t=' + new Date().getTime());
-            if (!r.ok) throw new Error("Erro ao baixar arquivo JSON");
+            const r = await fetch(APPS_SCRIPT_URL + '?tipo=agenda');
+            if (!r.ok) throw new Error("Erro ao buscar agenda");
             const dadosBrutos = await r.json();
             
             datasetCompleto = dadosBrutos.filter(ev => {
