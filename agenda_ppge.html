@@ -666,9 +666,9 @@
                     return;
                 }
                 tokenGoogle = resposta.access_token;
-                // Salva token e expiração na sessão (dura enquanto a aba estiver aberta)
-                sessionStorage.setItem("ppge_token", tokenGoogle);
-                sessionStorage.setItem("ppge_token_exp", Date.now() + (resposta.expires_in * 1000));
+                // localStorage persiste enquanto o navegador estiver aberto (e além)
+                localStorage.setItem("ppge_token", tokenGoogle);
+                localStorage.setItem("ppge_token_exp", Date.now() + (resposta.expires_in * 1000));
                 document.getElementById("login-status").textContent = "CARREGANDO AGENDA...";
                 await autenticarECarregar();
             }
@@ -676,7 +676,6 @@
         client.requestAccessToken();
     }
 
-    // Centraliza autenticação + carregamento — usado no login e na restauração de sessão
     async function autenticarECarregar() {
         try {
             const r = await fetch(APPS_SCRIPT_URL + '?tipo=agenda&token=' + encodeURIComponent(tokenGoogle));
@@ -684,8 +683,8 @@
 
             if (dados.ok === false) {
                 tokenGoogle = null;
-                sessionStorage.removeItem("ppge_token");
-                sessionStorage.removeItem("ppge_token_exp");
+                localStorage.removeItem("ppge_token");
+                localStorage.removeItem("ppge_token_exp");
                 document.getElementById("login-status").textContent = dados.erro || "ACESSO NÃO AUTORIZADO";
                 return;
             }
@@ -693,19 +692,20 @@
             // Autorizado — esconde tela de login
             document.getElementById("tela-login").style.display = "none";
 
-            // Obtém e-mail e define modo edição
+            // Verifica e-mail e se é editor
             const resultado = await chamarWebApp({ acao: "verificar", token: tokenGoogle });
-            if (resultado.ok) {
+
+            if (resultado && resultado.ok) {
                 definirStatusAuth("✓ " + resultado.email, true);
             }
 
-            // Todos os usuários autorizados ficam em modo edição (agenda não é mais pública)
+            // Todos os autorizados entram em modo edição
             document.body.classList.add("modo-edicao");
             document.getElementById("btn-entrar").style.display = "none";
             document.getElementById("btn-sair").style.display = "flex";
 
-            // Carrega ocultos só para editores
-            if (resultado && resultado.editor) {
+            // Carrega ocultos para editores
+            if (resultado && resultado.ok && resultado.editor) {
                 await carregarOcultos();
             }
 
@@ -713,7 +713,7 @@
 
         } catch (e) {
             tokenGoogle = null;
-            sessionStorage.removeItem("ppge_token");
+            localStorage.removeItem("ppge_token");
             document.getElementById("login-status").textContent = "ERRO DE CONEXÃO";
         }
     }
@@ -723,8 +723,8 @@
         datasetCompleto = [];
         datasetOcultos = [];
         modoOcultoAtivo = false;
-        sessionStorage.removeItem("ppge_token");
-        sessionStorage.removeItem("ppge_token_exp");
+        localStorage.removeItem("ppge_token");
+        localStorage.removeItem("ppge_token_exp");
         document.body.classList.remove("modo-edicao");
         document.getElementById("btn-entrar").style.display = "flex";
         document.getElementById("btn-sair").style.display = "none";
@@ -926,16 +926,15 @@
     }
 
     async function inicializar() {
-        // Tenta restaurar sessão do sessionStorage (sobrevive a F5, não a fechar a aba)
-        const tokenSalvo = sessionStorage.getItem("ppge_token");
-        const expSalvo   = sessionStorage.getItem("ppge_token_exp");
+        const tokenSalvo = localStorage.getItem("ppge_token");
+        const expSalvo   = localStorage.getItem("ppge_token_exp");
 
         if (tokenSalvo && expSalvo && Date.now() < parseInt(expSalvo)) {
             tokenGoogle = tokenSalvo;
             document.getElementById("login-status").textContent = "RESTAURANDO SESSÃO...";
             await autenticarECarregar();
         }
-        // Se não há sessão válida, a tela de login permanece visível
+        // Se não há sessão válida, tela de login permanece visível
     }
 
     function extrairCategoriasDaBase() {
