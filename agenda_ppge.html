@@ -328,12 +328,13 @@
         }
 
         .card-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px; /* Leve aumento para acompanhar a hierarquia */
+            font-family: 'Lato', sans-serif;
+            font-size: 11px;
             font-weight: 700;
             color: #0F172A;
             margin: 0 0 12px 0;
             line-height: 1.4;
+            letter-spacing: 0.3px;
         }
 
         .card-footer {
@@ -484,15 +485,16 @@
 
         /* ── CATEGORIA EM DESTAQUE NO TOPO DO CARD ── */
         .card-categoria-topo {
-            font-size: 9px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            padding: 3px 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            padding: 8px 16px;
             border-radius: 4px 4px 0 0;
             margin: -16px -20px 12px -20px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             color: white;
         }
 
@@ -752,20 +754,32 @@
 
     async function carregarOcultos() {
         try {
-            const r = await fetch(APPS_SCRIPT_URL + '?tipo=ocultos&token=' + encodeURIComponent(tokenGoogle));
-            const dados = await r.json();
-            // doGet pode retornar { ok: false, erro: "..." } ou um array direto
+            const url = APPS_SCRIPT_URL + '?tipo=ocultos&token=' + encodeURIComponent(tokenGoogle);
+            const r = await fetch(url);
+            const texto = await r.text(); // pega texto bruto primeiro
+            console.log("Resposta ocultos (bruta):", texto.substring(0, 300));
+
+            let dados;
+            try { dados = JSON.parse(texto); } catch(e) {
+                console.error("Erro ao parsear JSON de ocultos:", e);
+                datasetOcultos = [];
+                return;
+            }
+
             if (Array.isArray(dados)) {
                 datasetOcultos = dados;
-            } else if (dados.ok === false) {
-                console.warn("Ocultos:", dados.erro);
-                datasetOcultos = [];
+            } else if (dados && Array.isArray(dados.data)) {
+                datasetOcultos = dados.data;
             } else {
+                console.warn("Formato inesperado:", dados);
                 datasetOcultos = [];
             }
+
+            console.log("Ocultos carregados:", datasetOcultos.length);
             const btn = document.getElementById("btn-mostrar-ocultos");
             btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> OCULTOS (${datasetOcultos.length})`;
         } catch (e) {
+            console.error("Erro ao carregar ocultos:", e);
             datasetOcultos = [];
         }
     }
@@ -1155,7 +1169,7 @@
                 const dInic = criarDataLocal(ev["DIA INICIAL"]);
                 const dFim = criarDataLocal(diaFinalBruto);
                 const diferencaDias = Math.max(1, Math.round((dFim - dInic) / (1000 * 60 * 60 * 24)) + 1);
-                const larguraCalculada = Math.min(100, 25 + (diferencaDias * 3));
+                const larguraCalculada = 100; // cards ocupam linha inteira
                 const ehPassadoOuAtual = dInic <= hojeTime;
 
                 const cat = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase();
