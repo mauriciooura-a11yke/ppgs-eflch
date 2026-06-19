@@ -211,15 +211,16 @@
         .badge-vigente-lateral {
             background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
             color: white;
-            font-size: 8px;
+            font-size: 10px;
             font-weight: 900;
-            padding: 2px 6px;
+            padding: 4px 8px;
             border-radius: 4px;
             letter-spacing: 0.5px;
             display: inline-flex;
             align-items: center;
-            gap: 3px;
-            margin-top: 2px;
+            gap: 4px;
+            margin-top: 4px;
+            box-shadow: 0 2px 6px rgba(220,38,38,0.4);
             animation: pulseVigente 2s infinite ease-in-out;
         }
         
@@ -282,7 +283,7 @@
 
         /* SEÇÃO DE DATAS INTERNAS */
         .card-top-time {
-            font-size: 11px;
+            font-size: 13px;
             color: #1E293B;
             font-weight: 700;
             margin-bottom: 6px;
@@ -345,10 +346,10 @@
 
         .card-title {
             font-family: 'Lato', sans-serif;
-            font-size: 11px;
+            font-size: 14px;
             font-weight: 700;
             color: #0F172A;
-            margin: 0 0 12px 0;
+            margin: 0 0 8px 0;
             line-height: 1.4;
             letter-spacing: 0.3px;
         }
@@ -357,7 +358,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 10px;
+            font-size: 12px;
             font-weight: 700;
             flex-wrap: wrap;
             gap: 5px;
@@ -869,7 +870,7 @@
 
     async function ocultarEvento(linha, btnEl) {
         if (!tokenGoogle) { alert("Faça login primeiro."); return; }
-        if (!confirm(`Ocultar o evento da linha ${linha}? Ele deixará de aparecer na agenda pública.`)) return;
+        if (!confirm(`Ocultar o evento da linha ${linha}? Ele deixará de aparecer na agenda.`)) return;
 
         btnEl.disabled = true;
         btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AGUARDE';
