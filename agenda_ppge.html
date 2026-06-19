@@ -1179,14 +1179,14 @@
             const eventosDaRaia = eventos
                 .filter(e => e["DIA INICIAL"] === dataFoco)
                 .sort((a, b) => {
-                    // Hora de início primeiro
+                    // Ordena por data final crescente (eventos curtos antes dos longos)
+                    const fimA = criarDataLocal(a["DIA FINAL"] || a["DIA INICIAL"]);
+                    const fimB = criarDataLocal(b["DIA FINAL"] || b["DIA INICIAL"]);
+                    if (fimA - fimB !== 0) return fimA - fimB;
+                    // Desempate: hora de início
                     const hA = a["HORÁRIO INÍCIO"] || "";
                     const hB = b["HORÁRIO INÍCIO"] || "";
-                    if (hA !== hB) return hA.localeCompare(hB);
-                    // Duração crescente (eventos curtos antes)
-                    const durA = criarDataLocal(a["DIA FINAL"] || a["DIA INICIAL"]) - criarDataLocal(a["DIA INICIAL"]);
-                    const durB = criarDataLocal(b["DIA FINAL"] || b["DIA INICIAL"]) - criarDataLocal(b["DIA INICIAL"]);
-                    return durA - durB;
+                    return hA.localeCompare(hB);
                 });
             const ocultosDaRaia = ocultos.filter(e => e["DIA INICIAL"] === dataFoco);
 
