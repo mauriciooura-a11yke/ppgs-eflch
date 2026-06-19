@@ -482,6 +482,20 @@
         .btn-ocultar-card:hover { background-color: #FEF2F2; border-color: #F87171; color: #DC2626; }
         .modo-edicao .btn-ocultar-card { display: inline-flex; }
 
+        /* ── CATEGORIA EM DESTAQUE NO TOPO DO CARD ── */
+        .card-categoria-topo {
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            padding: 3px 10px;
+            border-radius: 4px 4px 0 0;
+            margin: -16px -20px 12px -20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: white;
+        }
+
         /* ── BOTÃO MOSTRAR OCULTOS (só para autenticados) ── */
         .btn-mostrar-ocultos {
             display: none; /* aparece após login */
@@ -739,11 +753,18 @@
     async function carregarOcultos() {
         try {
             const r = await fetch(APPS_SCRIPT_URL + '?tipo=ocultos&token=' + encodeURIComponent(tokenGoogle));
-            if (!r.ok) { datasetOcultos = []; return; }
-            datasetOcultos = await r.json();
+            const dados = await r.json();
+            // doGet pode retornar { ok: false, erro: "..." } ou um array direto
+            if (Array.isArray(dados)) {
+                datasetOcultos = dados;
+            } else if (dados.ok === false) {
+                console.warn("Ocultos:", dados.erro);
+                datasetOcultos = [];
+            } else {
+                datasetOcultos = [];
+            }
             const btn = document.getElementById("btn-mostrar-ocultos");
-            const total = datasetOcultos.length;
-            btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> OCULTOS (${total})`;
+            btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> OCULTOS (${datasetOcultos.length})`;
         } catch (e) {
             datasetOcultos = [];
         }
@@ -1159,6 +1180,9 @@
                 const descricaoEvento = ev["DESCRIÇÃO DO EVENTO"] || ev["EVENTO"] || "";
 
                 card.innerHTML = `
+                    <div class="card-categoria-topo" style="background-color: ${isOculto ? '#7C3AED' : coresCard.borda}">
+                        <i class="fa-solid fa-tag"></i> ${cat}
+                    </div>
                     <div class="card-top-time">
                         <span class="card-time-text-container" style="color: ${isOculto ? '#64748B' : coresCard.texto}">
                             <i class="fa-regular fa-calendar-days"></i> ${textoPeriodo} &nbsp;•&nbsp; <strong>${diferencaDias} ${diferencaDias > 1 ? 'DIAS' : 'DIA'}</strong>
@@ -1168,7 +1192,6 @@
                     </div>
                     <h2 class="card-title" style="${isOculto ? 'color:#64748B' : ''}">${descricaoEvento}</h2>
                     <div class="card-footer">
-                        <span class="tag-category-label" style="background-color: ${isOculto ? '#7C3AED' : coresCard.borda}"><i class="fa-solid fa-tag"></i> ${cat}</span>
                         <span class="tag-line"><i class="fa-solid fa-table"></i> LINHA: ${nLinha}</span>
                         ${isOculto
                             ? `<button class="btn-revelar-card" onclick="revelarEvento(${nLinha}, this)" title="Revelar este evento na agenda pública"><i class="fa-solid fa-eye"></i> REVELAR</button>`
