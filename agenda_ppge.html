@@ -516,6 +516,35 @@
         .btn-ocultar-card:hover { background-color: #FEF2F2; border-color: #F87171; color: #DC2626; }
         .modo-edicao .btn-ocultar-card { display: inline-flex; }
 
+        /* ── META ROW DENTRO DO CARD (hora, linha, período) ── */
+        .card-meta-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .card-hora-inline {
+            color: #1D4ED8;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-linha-inline {
+            color: #94A3B8;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-periodo-inline {
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
         /* ── CATEGORIA EM DESTAQUE NO TOPO DO CARD ── */
         .card-categoria-topo {
             font-family: 'Poppins', sans-serif;
@@ -1179,27 +1208,14 @@
             const vigenteBadges = [];
             eventosDaRaia.forEach(ev => {
                 const ret = renderizarCard(ev, space, hojeTime, false);
-                if (ret) {
-                    if (ret.vigenteLateral) vigenteBadges.push(ret.vigenteLateral);
-                    if (ret.dadosLaterais) {
-                        const { horaLateral, nLinha } = ret.dadosLaterais;
-                        if (horaLateral) {
-                            dateSide.insertAdjacentHTML('beforeend',
-                                `<span class="gantt-date-hora"><i class="fa-regular fa-clock"></i> ${horaLateral}</span>`);
-                        }
-                        dateSide.insertAdjacentHTML('beforeend',
-                            `<span class="gantt-date-linha"><i class="fa-solid fa-table"></i> L.${nLinha}</span>`);
-                    }
-                }
+                if (ret && ret.vigenteLateral) vigenteBadges.push(ret.vigenteLateral);
             });
 
-            // Renderiza eventos ocultos (com visual diferenciado)
+            // Renderiza eventos ocultos
             ocultosDaRaia.forEach(ev => renderizarCard(ev, space, hojeTime, true));
 
             // Injeta badges VIGENTE na coluna de data
-            if (vigenteBadges.length > 0) {
-                vigenteBadges.forEach(b => dateSide.insertAdjacentHTML('beforeend', b));
-            }
+            vigenteBadges.forEach(b => dateSide.insertAdjacentHTML('beforeend', b));
 
             row.appendChild(space);
             container.appendChild(row);
@@ -1227,15 +1243,11 @@
                 const nLinha = ev["LINHA_PLANILHA"] || '...';
                 const descricaoEvento = ev["DESCRIÇÃO DO EVENTO"] || ev["EVENTO"] || "";
 
-                // Texto do período só se for multi-dia
-                const textoPeriodo = iBR === fBR
-                    ? `${iBR} (${semInic})`
-                    : `${iBR} (${semInic}) → ${fBR} (${semFim}) • <strong>${diferencaDias} DIAS</strong>`;
-
-                // Horário formatado para coluna lateral
-                let horaLateral = '';
+                // Horário formatado para o card
+                let horaHtml = '';
                 if (hInicio) {
-                    horaLateral = hTermino ? `${hInicio} – ${hTermino}` : hInicio;
+                    const horaStr = hTermino ? `${hInicio} – ${hTermino}` : hInicio;
+                    horaHtml = `<span class="card-hora-inline"><i class="fa-regular fa-clock"></i> ${horaStr}</span>`;
                 }
 
                 const card = document.createElement('div');
@@ -1255,17 +1267,16 @@
                     : '';
                 if (!isOculto && ehPassadoOuAtual) card.classList.add('card-status-past');
 
-                // Dados para coluna lateral (retornados para injeção no dateSide)
-                const dadosLaterais = { horaLateral, nLinha };
-
                 card.innerHTML = `
                     <div class="card-categoria-topo" style="background-color: ${isOculto ? '#7C3AED' : coresCard.borda}">
                         <i class="fa-solid fa-tag"></i> ${cat}
                         ${statusBadgeHTML}
                         <span style="margin-left:auto; font-size:10px; font-weight:600; opacity:0.85">${diferencaDias > 1 ? diferencaDias + ' DIAS' : ''}</span>
                     </div>
-                    <div style="padding: 2px 0 4px 0; font-size:11px; color:${isOculto ? '#94A3B8' : coresCard.texto}; font-weight:700;">
-                        ${iBR !== fBR ? `<i class="fa-regular fa-calendar-days"></i> ${textoPeriodo}` : ''}
+                    <div class="card-meta-row">
+                        ${horaHtml}
+                        <span class="card-linha-inline"><i class="fa-solid fa-table"></i> L.${nLinha}</span>
+                        ${iBR !== fBR ? `<span class="card-periodo-inline"><i class="fa-regular fa-calendar-days"></i> ${iBR} → ${fBR}</span>` : ''}
                     </div>
                     <h2 class="card-title" style="${isOculto ? 'color:#64748B' : ''}">${descricaoEvento}</h2>
                     <div style="display:flex; justify-content:flex-end; margin-top:2px;">
@@ -1276,7 +1287,7 @@
                     </div>
                 `;
                 space.appendChild(card);
-                return { vigenteLateral: vigenteLateral || null, dadosLaterais };
+                return { vigenteLateral: vigenteLateral || null };
     }
 
     window.onload = inicializar;
