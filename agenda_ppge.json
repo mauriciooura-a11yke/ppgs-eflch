@@ -1,1002 +1,677 @@
 [
   {
-    "LINHA_PLANILHA": 2,
-    "CATEGORIA DO EVENTO": "BOLSAS CAPES DS",
-    "DESCRIÇÃO DO EVENTO": "ENVIO DE DOCUMENTAÇÃO PARA CADASTRAMENTO DE BOLSISTA PARA O E-MAIL PPGE.EDUCACAO@UNIFESP.BR",
-    "DIA INICIAL": "2026-05-20",
-    "HORÁRIO INÍCIO": "00:01",
-    "DIA FINAL": "2026-05-25",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
     "LINHA_PLANILHA": 3,
     "CATEGORIA DO EVENTO": "BOLSAS CAPES DS",
     "DESCRIÇÃO DO EVENTO": "ENVIO DE DOCUMENTAÇÃO (DOUTORANDOS) PARA CADASTRAMENTO DE BOLSISTA PARA O E-MAIL PPGE.EDUCACAO@UNIFESP.BR",
-    "DIA INICIAL": "2026-07-01",
+    "DIA INICIAL": "quarta-feira, 01 de julho de 2026",
     "HORÁRIO INÍCIO": "00:01",
-    "DIA FINAL": "2026-07-01",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quarta-feira, 01 de julho de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 4,
     "CATEGORIA DO EVENTO": "CAPGPQ",
     "DESCRIÇÃO DO EVENTO": "DATA-LIMITE PARA ENVIO DE PROCESSOS PARA CAPGPQ - REUNIÃO DE JULHO/26.",
-    "DIA INICIAL": "2026-06-24",
+    "DIA INICIAL": "quarta-feira, 24 de junho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-24",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
-  },
-  {
-    "LINHA_PLANILHA": 5,
-    "CATEGORIA DO EVENTO": "REUNIÃO CEPG",
-    "DESCRIÇÃO DO EVENTO": "CEPG - REUNIÃO",
-    "DIA INICIAL": "2026-05-26",
-    "HORÁRIO INÍCIO": "09:00",
-    "DIA FINAL": "2026-05-26",
-    "HORÁRIO TÉRMINO": "12:00",
-    "EVENTO CONCLUÍDO": "SIM"
+    "DIA FINAL": "quarta-feira, 24 de junho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 6,
     "CATEGORIA DO EVENTO": "REUNIÃO CEPG",
     "DESCRIÇÃO DO EVENTO": "CEPG - REUNIÃO",
-    "DIA INICIAL": "2026-07-28",
+    "DIA INICIAL": "terça-feira, 28 de julho de 2026",
     "HORÁRIO INÍCIO": "09:00",
-    "DIA FINAL": "2026-07-28",
-    "HORÁRIO TÉRMINO": "12:00",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 28 de julho de 2026",
+    "HORÁRIO TÉRMINO": "12:00"
   },
   {
     "LINHA_PLANILHA": 7,
     "CATEGORIA DO EVENTO": "REUNIÃO CEPG",
     "DESCRIÇÃO DO EVENTO": "CEPG - REUNIÃO",
-    "DIA INICIAL": "2026-09-22",
+    "DIA INICIAL": "terça-feira, 22 de setembro de 2026",
     "HORÁRIO INÍCIO": "09:00",
-    "DIA FINAL": "2026-09-22",
-    "HORÁRIO TÉRMINO": "12:00",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 22 de setembro de 2026",
+    "HORÁRIO TÉRMINO": "12:00"
   },
   {
     "LINHA_PLANILHA": 8,
     "CATEGORIA DO EVENTO": "REUNIÃO CEPG",
     "DESCRIÇÃO DO EVENTO": "CEPG - REUNIÃO",
-    "DIA INICIAL": "2026-11-24",
+    "DIA INICIAL": "terça-feira, 24 de novembro de 2026",
     "HORÁRIO INÍCIO": "09:00",
-    "DIA FINAL": "2026-11-24",
-    "HORÁRIO TÉRMINO": "12:00",
-    "EVENTO CONCLUÍDO": ""
-  },
-  {
-    "LINHA_PLANILHA": 9,
-    "CATEGORIA DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
-    "DESCRIÇÃO DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
-    "DIA INICIAL": "2026-05-28",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-05-28",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
+    "DIA FINAL": "terça-feira, 24 de novembro de 2026",
+    "HORÁRIO TÉRMINO": "12:00"
   },
   {
     "LINHA_PLANILHA": 10,
     "CATEGORIA DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
     "DESCRIÇÃO DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
-    "DIA INICIAL": "2026-06-25",
+    "DIA INICIAL": "quinta-feira, 25 de junho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-25",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 25 de junho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 11,
     "CATEGORIA DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
     "DESCRIÇÃO DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
-    "DIA INICIAL": "2026-07-30",
+    "DIA INICIAL": "quinta-feira, 30 de julho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-07-30",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 30 de julho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 12,
     "CATEGORIA DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
     "DESCRIÇÃO DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
-    "DIA INICIAL": "2026-08-27",
+    "DIA INICIAL": "quinta-feira, 27 de agosto de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-08-27",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 27 de agosto de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 13,
     "CATEGORIA DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
     "DESCRIÇÃO DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
-    "DIA INICIAL": "2026-09-24",
+    "DIA INICIAL": "quinta-feira, 24 de setembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-09-24",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 24 de setembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 14,
     "CATEGORIA DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
     "DESCRIÇÃO DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
-    "DIA INICIAL": "2026-10-29",
+    "DIA INICIAL": "quinta-feira, 29 de outubro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-10-29",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 29 de outubro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 15,
     "CATEGORIA DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
     "DESCRIÇÃO DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
-    "DIA INICIAL": "2026-11-26",
+    "DIA INICIAL": "quinta-feira, 26 de novembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-11-26",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 26 de novembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 16,
     "CATEGORIA DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
     "DESCRIÇÃO DO EVENTO": "REUNIÃO DO CONSELHO DE PÓS",
-    "DIA INICIAL": "2026-12-17",
+    "DIA INICIAL": "quinta-feira, 17 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-17",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
-  },
-  {
-    "LINHA_PLANILHA": 17,
-    "CATEGORIA DO EVENTO": "CRONOGRAMA - SIIU - 1º SEM",
-    "DESCRIÇÃO DO EVENTO": "7_LANÇAMENTO DE NOTAS (DOCENTES)",
-    "DIA INICIAL": "2026-06-01",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-07-31",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 18,
-    "CATEGORIA DO EVENTO": "CRONOGRAMA - SIIU - 2º SEM",
-    "DESCRIÇÃO DO EVENTO": "1_CADASTRO DISCIPLINA (DOCENTES)",
-    "DIA INICIAL": "2026-05-25",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-06",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 19,
-    "CATEGORIA DO EVENTO": "CRONOGRAMA - SIIU - 2º SEM",
-    "DESCRIÇÃO DO EVENTO": "2_VALIDAÇÃO DE DISCIPLINAS (SECRETARIA",
-    "DIA INICIAL": "2026-06-07",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-10",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 20,
-    "CATEGORIA DO EVENTO": "CRONOGRAMA - SIIU - 2º SEM",
-    "DESCRIÇÃO DO EVENTO": "3_OFERTA DE DISCIPLINA (DOCENTES)",
-    "DIA INICIAL": "2026-06-11",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-17",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 21,
-    "CATEGORIA DO EVENTO": "CRONOGRAMA - SIIU - 2º SEM",
-    "DESCRIÇÃO DO EVENTO": "4_VALIDAÇÃO OFERTA DE DISCIPLINA (SECRETARIA)",
-    "DIA INICIAL": "2026-06-18",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-19",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
+    "DIA FINAL": "quinta-feira, 17 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 22,
     "CATEGORIA DO EVENTO": "CRONOGRAMA - SIIU - 2º SEM",
     "DESCRIÇÃO DO EVENTO": "5_MATRICULA EM DISCIPLINA (ESTUDANTES)",
-    "DIA INICIAL": "2026-06-23",
+    "DIA INICIAL": "terça-feira, 23 de junho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-07-07",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 07 de julho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 23,
     "CATEGORIA DO EVENTO": "CRONOGRAMA - SIIU - 2º SEM",
     "DESCRIÇÃO DO EVENTO": "6_VALIDAÇÃO DE MATRICULA (SECRETARIA)",
-    "DIA INICIAL": "2026-06-23",
+    "DIA INICIAL": "terça-feira, 23 de junho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-07-10",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 10 de julho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 24,
     "CATEGORIA DO EVENTO": "CRONOGRAMA - SIIU - 2º SEM",
     "DESCRIÇÃO DO EVENTO": "7_LANÇAMENTO DE NOTAS (DOCENTES)",
-    "DIA INICIAL": "2026-11-16",
+    "DIA INICIAL": "segunda-feira, 16 de novembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2027-02-15",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 15 de fevereiro de 2027",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 25,
     "CATEGORIA DO EVENTO": "FÉRIAS",
     "DESCRIÇÃO DO EVENTO": "FÉRIAS MAURICIO",
-    "DIA INICIAL": "2026-07-22",
+    "DIA INICIAL": "quarta-feira, 22 de julho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-07-31",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 31 de julho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 26,
     "CATEGORIA DO EVENTO": "FÉRIAS",
     "DESCRIÇÃO DO EVENTO": "FÉRIAS MAURICIO",
-    "DIA INICIAL": "2026-12-15",
+    "DIA INICIAL": "terça-feira, 15 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-24",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 24 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 27,
     "CATEGORIA DO EVENTO": "INTRANET",
     "DESCRIÇÃO DO EVENTO": "PRORROGAR AUTORIZADOS NA INTRANET",
-    "DIA INICIAL": "2026-11-01",
+    "DIA INICIAL": "domingo, 01 de novembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-11-16",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
-  },
-  {
-    "LINHA_PLANILHA": 28,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "PERÍODO DE INSCRIÇÕES",
-    "DIA INICIAL": "2026-04-30",
-    "HORÁRIO INÍCIO": "12:00",
-    "DIA FINAL": "2026-05-13",
-    "HORÁRIO TÉRMINO": "12:00",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 29,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DAS INSCRIÇÕES HOMOLOGADAS.",
-    "DIA INICIAL": "2026-05-29",
-    "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-05-29",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 30,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "PERÍODO PARA INTERPOSIÇÃO DE RECURSOS CONTRA INSCRIÇÕES INDEFERIDAS.",
-    "DIA INICIAL": "2026-05-29",
-    "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-06-01",
-    "HORÁRIO TÉRMINO": "17:00",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 31,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO DE RECURSOS CONTRA INSCRIÇÕES INDEFERIDAS.",
-    "DIA INICIAL": "2026-06-05",
-    "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-06-05",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 32,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "CONVOCAÇÃO PARA A FASE I (PROVA ESCRITA).",
-    "DIA INICIAL": "2026-06-08",
-    "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-06-08",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 33,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "ENVIAR LISTAGEM DE CANDIDATOS PARA SERVIÇOS GERAIS",
-    "DIA INICIAL": "2026-06-19",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-19",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
+    "DIA FINAL": "segunda-feira, 16 de novembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 34,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "PROVA ESCRITA PPGE",
-    "DIA INICIAL": "2026-06-23",
+    "DIA INICIAL": "terça-feira, 23 de junho de 2026",
     "HORÁRIO INÍCIO": "09:00",
-    "DIA FINAL": "2026-06-23",
-    "HORÁRIO TÉRMINO": "12:00",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 23 de junho de 2026",
+    "HORÁRIO TÉRMINO": "12:00"
   },
   {
     "LINHA_PLANILHA": 35,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DOS RESULTADOS DA FASE I.",
-    "DIA INICIAL": "2026-08-07",
+    "DIA INICIAL": "sexta-feira, 07 de agosto de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-08-07",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 07 de agosto de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 36,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "PERÍODO PARA INTERPOSIÇÃO DE RECURSOS CONTRA RESULTADOS DA FASE I (PROVA ESCRITA)",
-    "DIA INICIAL": "2026-08-07",
+    "DIA INICIAL": "sexta-feira, 07 de agosto de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-08-10",
-    "HORÁRIO TÉRMINO": "17:00",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 10 de agosto de 2026",
+    "HORÁRIO TÉRMINO": "17:00"
   },
   {
     "LINHA_PLANILHA": 37,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO DE RECURSOS CONTRA RESULTADOS DA FASE I (PROVA ESCRITA)",
-    "DIA INICIAL": "2026-08-17",
+    "DIA INICIAL": "segunda-feira, 17 de agosto de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-08-17",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 17 de agosto de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 38,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "FASE II – ANÁLISE DE PROJETOS DE PESQUISA, SEM A PRESENÇA DO CANDIDATO.",
-    "DIA INICIAL": "2026-08-18",
+    "DIA INICIAL": "terça-feira, 18 de agosto de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-09-09",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quarta-feira, 09 de setembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 39,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO DA ANÁLISE DO PROJETO DE PESQUISA E CONVOCAÇÃO PARA A FASE III (ENTREVISTA).",
-    "DIA INICIAL": "2026-09-10",
+    "DIA INICIAL": "quinta-feira, 10 de setembro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-09-10",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 10 de setembro de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 40,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "PERÍODO PARA INTERPOSIÇÃO DE RECURSOS CONTRA FASE II - ANÁLISE DE PROJETOS DE PESQUISA.",
-    "DIA INICIAL": "2026-09-10",
+    "DIA INICIAL": "quinta-feira, 10 de setembro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-09-12",
-    "HORÁRIO TÉRMINO": "17:00",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sábado, 12 de setembro de 2026",
+    "HORÁRIO TÉRMINO": "17:00"
   },
   {
     "LINHA_PLANILHA": 41,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO DE RECURSOS  CONTRA FASE II - ANÁLISE DE PROJETOS DE PESQUISA.",
-    "DIA INICIAL": "2026-09-15",
+    "DIA INICIAL": "terça-feira, 15 de setembro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-09-15",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 15 de setembro de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 42,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "FASE III – REALIZAÇÃO DE ENTREVISTAS.",
-    "DIA INICIAL": "2026-09-16",
+    "DIA INICIAL": "quarta-feira, 16 de setembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-09-30",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quarta-feira, 30 de setembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 43,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO DAS ENTREVISTAS E CONVOCAÇÃO PARA A FASE IV (SUBMISSÃO E CONFERÊNCIA DE DOCUMENTOS).",
-    "DIA INICIAL": "2026-10-02",
+    "DIA INICIAL": "sexta-feira, 02 de outubro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-10-02",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 02 de outubro de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 44,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "PERÍODO PARA INTERPOSIÇÃO DE RECURSOS CONTRA FASE III – REALIZAÇÃO DE ENTREVISTAS.",
-    "DIA INICIAL": "2026-10-02",
+    "DIA INICIAL": "sexta-feira, 02 de outubro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-10-05",
-    "HORÁRIO TÉRMINO": "17:00",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 05 de outubro de 2026",
+    "HORÁRIO TÉRMINO": "17:00"
   },
   {
     "LINHA_PLANILHA": 45,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO DE RECURSOS CONTRA FASE III – REALIZAÇÃO DE ENTREVISTAS.",
-    "DIA INICIAL": "2026-10-09",
+    "DIA INICIAL": "sexta-feira, 09 de outubro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-10-09",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 09 de outubro de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 46,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "FASE IV – SUBMISSÃO E CONFERÊNCIA DE DOCUMENTOS.",
-    "DIA INICIAL": "2026-10-12",
+    "DIA INICIAL": "segunda-feira, 12 de outubro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-10-19",
-    "HORÁRIO TÉRMINO": "17:00",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 19 de outubro de 2026",
+    "HORÁRIO TÉRMINO": "17:00"
   },
   {
     "LINHA_PLANILHA": 47,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO DA FASE IV.",
-    "DIA INICIAL": "2026-10-30",
+    "DIA INICIAL": "sexta-feira, 30 de outubro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-10-30",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 30 de outubro de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 48,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "PERÍODO PARA INTERPOSIÇÃO DE RECURSOS CONTRA RESULTADO DA FASE IV.",
-    "DIA INICIAL": "2026-10-30",
+    "DIA INICIAL": "sexta-feira, 30 de outubro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-11-03",
-    "HORÁRIO TÉRMINO": "17:00",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 03 de novembro de 2026",
+    "HORÁRIO TÉRMINO": "17:00"
   },
   {
     "LINHA_PLANILHA": 49,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO DE RECURSOS CONTRA RESULTADO DA FASE IV.",
-    "DIA INICIAL": "2026-11-09",
+    "DIA INICIAL": "segunda-feira, 09 de novembro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-11-09",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 09 de novembro de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 50,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO FINAL PARA OS INSCRITOS NA MODALIDADE “AMPLA CONCORRÊNCIA”.",
-    "DIA INICIAL": "2026-11-10",
+    "DIA INICIAL": "terça-feira, 10 de novembro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-11-10",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 10 de novembro de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 51,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "CONVOCAÇÃO PARA A FASE V (AVALIAÇÃO POR BANCA DE HETEROIDENTIFICAÇÃO E DE ANÁLISE DOCUMENTAL), EXCLUSIVAMENTE PARA CANDIDATOS INSCRITOS NA MODALIDADE “AÇÕES AFIRMATIVAS”.",
-    "DIA INICIAL": "2026-11-10",
+    "DIA INICIAL": "terça-feira, 10 de novembro de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-11-10",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 10 de novembro de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 52,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "FASE V – AVALIAÇÃO POR BANCA DE HETEROIDENTIFICAÇÃO E DE ANÁLISE DOCUMENTAL PARA PESSOA COM DEFICIÊNCIA PARA CANDIDATOS INSCRITOS NA MODALIDADE “AÇÕES AFIRMATIVAS”. (DATAS A INFORMAR NO SITE)",
-    "DIA INICIAL": "2026-11-11",
+    "DIA INICIAL": "quarta-feira, 11 de novembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-11-25",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quarta-feira, 25 de novembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 53,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "DIVULGAÇÃO DO RESULTADO FINAL PARA OS INSCRITOS NA MODALIDADE “AÇÕES AFIRMATIVAS”. (DATA A INFORMAR NO SITE)",
-    "DIA INICIAL": "2026-11-26",
+    "DIA INICIAL": "quinta-feira, 26 de novembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-11-30",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 30 de novembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 54,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "CONVOCAÇÃO PARA A REUNIÃO GERAL OBRIGATÓRIA COM A COORDENAÇÃO DO PROGRAMA, A SER REALIZADA NO DIA 04/12/2026",
-    "DIA INICIAL": "2026-12-01",
+    "DIA INICIAL": "terça-feira, 01 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-01",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 01 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 55,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "REUNIÃO GERAL DOS CANDIDATOS APROVADOS COM A COORDENAÇÃO DO PPGE E ORIENTAÇÕES SOBRE PRÉ-MATRÍCULA, POR MEIO REMOTO. A AUSÊNCIA DO CANDIDATO IMPLICA A PERDA DA VAGA.",
-    "DIA INICIAL": "2026-12-04",
+    "DIA INICIAL": "sexta-feira, 04 de dezembro de 2026",
     "HORÁRIO INÍCIO": "10:00",
-    "DIA FINAL": "2026-12-04",
-    "HORÁRIO TÉRMINO": "12:00",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 04 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": "12:00"
   },
   {
     "LINHA_PLANILHA": 56,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "PERÍODO DE PRÉ-MATRÍCULA. A NÃO REALIZAÇÃO DA PRÉ-MATRÍCULA IMPLICA A PERDA DA VAGA.",
-    "DIA INICIAL": "2026-12-04",
+    "DIA INICIAL": "sexta-feira, 04 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-10",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 10 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 57,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "MATRÍCULA OBRIGATÓRIA EM DISCIPLINAS PARA O 1º SEMESTRE DE 2027. CONFORME DELIBERAÇÃO DA CEPG DO PPGE/UNIFESP, NENHUM INGRESSANTE PODERÁ DEIXAR DE EFETUAR MATRÍCULA EM DISCIPLINA(S) NA UNIFESP, CASO CONTRÁRIO, SERÁ AUTOMATICAMENTE DESLIGADO DO PROGRAMA.",
-    "DIA INICIAL": "2027-02-15",
+    "DIA INICIAL": "segunda-feira, 15 de fevereiro de 2027",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2027-02-19",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
-  },
-  {
-    "LINHA_PLANILHA": 58,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "PLANEJAMENTO INTERNO (SECRETARIA): COMUNICAR SERVIÇOS GERAIS, EVENTOS E DIRACAD DA REALIZAÇÃO DA PROVA ESCRITA.",
-    "DIA INICIAL": "2026-05-25",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-05-28",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 59,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "PLANEJAMENTO INTERNO (SECRETARIA): ENVIAR PARA SERVIÇOS GERAIS LISTAGEM DE CANDIDATOS",
-    "DIA INICIAL": "2026-06-17",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-22",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 60,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "PLANEJAMENTO INTERNO (DOCENTES): ATÉ 08/06 - ENVIO DAS PROVAS, POR LINHA E POR NÍVEL. ENVIAR PARA O E-MAIL DA SECRETARIA DO PPGE, COM CÓPIA PARA FERNANDO, VANESSA E MÁRCIA",
-    "DIA INICIAL": "2026-06-08",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-08",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 61,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "PLANEJAMENTO INTERNO (SECRETARIA): DIVULGAR SALAS DE AULAS NO SITE",
-    "DIA INICIAL": "2026-06-10",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-10",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 62,
-    "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
-    "DESCRIÇÃO DO EVENTO": "PLANEJAMENTO INTERNO (DOCENTES): ATÉ 15/06 - ENVIO DA RELAÇÃO DE PROFESSORES E PÓS-DOCS QUE IRÃO ATUAR NA APLICAÇÃO DA PROVA ESCRITA, DIA 23/06. PRECISAMOS ENTRE 25 E 30 PESSOAS. OU SEJA, ENTRE 5 E 6 PESSOAS POR LINHA.",
-    "DIA INICIAL": "2026-06-15",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-15",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
+    "DIA FINAL": "sexta-feira, 19 de fevereiro de 2027",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 63,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "PLANEJAMENTO INTERNO (DOCENTES): ATÉ 22/06 - ENVIO DAS DUPLAS DE CORREÇÃO DE PROVAS. ENVIAR PARA O E-MAIL DA SECRETARIA DO PPGE, COM CÓPIA PARA FERNANDO, VANESSA E MÁRCIA;",
-    "DIA INICIAL": "2026-06-22",
+    "DIA INICIAL": "segunda-feira, 22 de junho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-22",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 22 de junho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 64,
     "CATEGORIA DO EVENTO": "PROCESSO SELETIVO - INGRESSO 2027",
     "DESCRIÇÃO DO EVENTO": "PLANEJAMENTO INTERNO (DOCENTES): ATÉ 02/08 - ENVIO DAS NOTAS DAS PROVAS CORRIGIDAS. O ENVIO SERÁ ORIENTADO PELA SECRETARIA DO PPGE, POR MEIO DE PLANILHA.",
-    "DIA INICIAL": "2026-08-02",
+    "DIA INICIAL": "domingo, 02 de agosto de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-08-02",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
-  },
-  {
-    "LINHA_PLANILHA": 67,
-    "CATEGORIA DO EVENTO": "PROFICIÊNCIA",
-    "DESCRIÇÃO DO EVENTO": "PROVA DE PROFICIÊNCIA - SALA 310",
-    "DIA INICIAL": "2026-06-02",
-    "HORÁRIO INÍCIO": "09:30",
-    "DIA FINAL": "2026-06-02",
-    "HORÁRIO TÉRMINO": "12:30",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 68,
-    "CATEGORIA DO EVENTO": "PROFICIÊNCIA",
-    "DESCRIÇÃO DO EVENTO": "COMUNICADO PARA CANDIDATOS E COMISSÃO DE PROFICIÊNCIA INDICANDO A LOCALIZAÇÃO DA SALA",
-    "DIA INICIAL": "2026-05-27",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-05-29",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 69,
-    "CATEGORIA DO EVENTO": "PROFICIÊNCIA",
-    "DESCRIÇÃO DO EVENTO": "PUBLICAÇÃO DO RESULTADO",
-    "DIA INICIAL": "2026-06-16",
-    "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-06-16",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": "SIM"
+    "DIA FINAL": "domingo, 02 de agosto de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 70,
     "CATEGORIA DO EVENTO": "RECREDENCIAMENTO",
     "DESCRIÇÃO DO EVENTO": "ALERTAR SOBRE VENCIMENTO DE PRAZOS",
-    "DIA INICIAL": "2026-08-01",
+    "DIA INICIAL": "sábado, 01 de agosto de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-08-31",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 31 de agosto de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 71,
     "CATEGORIA DO EVENTO": "ALUNOS ESPECIAIS",
     "DESCRIÇÃO DO EVENTO": "CANDIDATOS -> PERÍODO DE INSCRIÇÕES",
-    "DIA INICIAL": "2026-06-15",
+    "DIA INICIAL": "segunda-feira, 15 de junho de 2026",
     "HORÁRIO INÍCIO": "00:01",
-    "DIA FINAL": "2026-06-21",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "domingo, 21 de junho de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 72,
     "CATEGORIA DO EVENTO": "ALUNOS ESPECIAIS",
     "DESCRIÇÃO DO EVENTO": "DOCENTES -> PERÍODO DE AVALIAÇÃO",
-    "DIA INICIAL": "2026-06-22",
+    "DIA INICIAL": "segunda-feira, 22 de junho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-29",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 29 de junho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 73,
     "CATEGORIA DO EVENTO": "ALUNOS ESPECIAIS",
     "DESCRIÇÃO DO EVENTO": "DOCENTES -> INFORMAR SECRETARIA ALUNOS ACEITOS/RECUSADOS",
-    "DIA INICIAL": "2026-06-29",
+    "DIA INICIAL": "segunda-feira, 29 de junho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-29",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 29 de junho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 74,
     "CATEGORIA DO EVENTO": "ALUNOS ESPECIAIS",
     "DESCRIÇÃO DO EVENTO": "SECRETARIA -> DIVULGAÇÃO DE CANDIDATOS ACEITOS",
-    "DIA INICIAL": "2026-06-30",
+    "DIA INICIAL": "terça-feira, 30 de junho de 2026",
     "HORÁRIO INÍCIO": "17:00",
-    "DIA FINAL": "2026-06-30",
-    "HORÁRIO TÉRMINO": "23:59",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 30 de junho de 2026",
+    "HORÁRIO TÉRMINO": "23:59"
   },
   {
     "LINHA_PLANILHA": 75,
     "CATEGORIA DO EVENTO": "ANPED",
     "DESCRIÇÃO DO EVENTO": "PAGAMENTO DE ANUIDADE 2027 (MONTAR PROCESSO DE INEXIGIBILIDADE, REF. ANUIDADE 2026, PROCESSO 23089.005566/2026-48)",
-    "DIA INICIAL": "2027-02-15",
+    "DIA INICIAL": "segunda-feira, 15 de fevereiro de 2027",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2027-03-31",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
-  },
-  {
-    "LINHA_PLANILHA": 76,
-    "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
-    "DESCRIÇÃO DO EVENTO": "CORPUS CHRIST",
-    "DIA INICIAL": "2026-06-04",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-04",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
-  },
-  {
-    "LINHA_PLANILHA": 77,
-    "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
-    "DESCRIÇÃO DO EVENTO": "PONTO FACULTATIVO - PONTE",
-    "DIA INICIAL": "2026-06-05",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-05",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
+    "DIA FINAL": "quarta-feira, 31 de março de 2027",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 78,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "REVOLUÇÃO CONSTITUCIONALISTA",
-    "DIA INICIAL": "2026-07-09",
+    "DIA INICIAL": "quinta-feira, 09 de julho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-07-09",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 09 de julho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 79,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "INDEPENDÊNCIA",
-    "DIA INICIAL": "2026-09-07",
+    "DIA INICIAL": "segunda-feira, 07 de setembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-09-07",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 07 de setembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 80,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "NOSSA SENHORA APARECIDA",
-    "DIA INICIAL": "2026-10-12",
+    "DIA INICIAL": "segunda-feira, 12 de outubro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-10-12",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 12 de outubro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 81,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "DIA DO SERVIDOR PÚBLICO",
-    "DIA INICIAL": "2026-10-28",
+    "DIA INICIAL": "quarta-feira, 28 de outubro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-10-28",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quarta-feira, 28 de outubro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 82,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "FINADOS",
-    "DIA INICIAL": "2026-11-02",
+    "DIA INICIAL": "segunda-feira, 02 de novembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-11-02",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 02 de novembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 83,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "CONSCIÊNCIA NEGRA",
-    "DIA INICIAL": "2026-11-20",
+    "DIA INICIAL": "sexta-feira, 20 de novembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-11-20",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 20 de novembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 84,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "ANIVERSÁRIO DE GUARULHOS",
-    "DIA INICIAL": "2026-12-08",
+    "DIA INICIAL": "terça-feira, 08 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-08",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 08 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 85,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "PONTO FACULTATIVO APÓS 13H",
-    "DIA INICIAL": "2026-12-24",
+    "DIA INICIAL": "quinta-feira, 24 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-24",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 24 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 86,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "NATAL",
-    "DIA INICIAL": "2026-12-25",
+    "DIA INICIAL": "sexta-feira, 25 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-25",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 25 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 87,
     "CATEGORIA DO EVENTO": "FERIADOS E PONTOS FACULTATIVOS",
     "DESCRIÇÃO DO EVENTO": "PONTO FACULTATIVO APÓS 13H",
-    "DIA INICIAL": "2026-12-31",
+    "DIA INICIAL": "quinta-feira, 31 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-31",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
-  },
-  {
-    "LINHA_PLANILHA": 88,
-    "CATEGORIA DO EVENTO": "POLARE",
-    "DESCRIÇÃO DO EVENTO": "DUPLICAR E FINALIZAR ATIVIDADES POLARE",
-    "DIA INICIAL": "2026-05-29",
-    "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-05-29",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": "SIM"
+    "DIA FINAL": "quinta-feira, 31 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 89,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "DUPLICAR E FINALIZAR ATIVIDADES POLARE",
-    "DIA INICIAL": "2026-06-30",
+    "DIA INICIAL": "terça-feira, 30 de junho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-06-30",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 30 de junho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 90,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "DUPLICAR E FINALIZAR ATIVIDADES POLARE",
-    "DIA INICIAL": "2026-07-31",
+    "DIA INICIAL": "sexta-feira, 31 de julho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-07-31",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 31 de julho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 91,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "DUPLICAR E FINALIZAR ATIVIDADES POLARE",
-    "DIA INICIAL": "2026-08-31",
+    "DIA INICIAL": "segunda-feira, 31 de agosto de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-08-31",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 31 de agosto de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 92,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "DUPLICAR E FINALIZAR ATIVIDADES POLARE",
-    "DIA INICIAL": "2026-09-30",
+    "DIA INICIAL": "quarta-feira, 30 de setembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-09-30",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quarta-feira, 30 de setembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 93,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "DUPLICAR E FINALIZAR ATIVIDADES POLARE",
-    "DIA INICIAL": "2026-10-30",
+    "DIA INICIAL": "sexta-feira, 30 de outubro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-10-30",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 30 de outubro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 94,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "DUPLICAR E FINALIZAR ATIVIDADES POLARE",
-    "DIA INICIAL": "2026-11-30",
+    "DIA INICIAL": "segunda-feira, 30 de novembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-11-30",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "segunda-feira, 30 de novembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 95,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "DUPLICAR E FINALIZAR ATIVIDADES POLARE",
-    "DIA INICIAL": "2026-12-31",
+    "DIA INICIAL": "quinta-feira, 31 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-31",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 31 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 96,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
-    "DIA INICIAL": "2026-07-01",
+    "DIA INICIAL": "quarta-feira, 01 de julho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-07-01",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quarta-feira, 01 de julho de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 97,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
-    "DIA INICIAL": "2026-08-01",
+    "DIA INICIAL": "sábado, 01 de agosto de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-08-01",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sábado, 01 de agosto de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 98,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
-    "DIA INICIAL": "2026-09-01",
+    "DIA INICIAL": "terça-feira, 01 de setembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-09-01",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 01 de setembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 99,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
-    "DIA INICIAL": "2026-10-01",
+    "DIA INICIAL": "quinta-feira, 01 de outubro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-10-01",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "quinta-feira, 01 de outubro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 100,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
-    "DIA INICIAL": "2026-11-01",
+    "DIA INICIAL": "domingo, 01 de novembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-11-01",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "domingo, 01 de novembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 101,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
-    "DIA INICIAL": "2026-12-01",
+    "DIA INICIAL": "terça-feira, 01 de dezembro de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-12-01",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "terça-feira, 01 de dezembro de 2026",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 102,
     "CATEGORIA DO EVENTO": "POLARE",
     "DESCRIÇÃO DO EVENTO": "INICIAR EXECUÇÃO",
-    "DIA INICIAL": "2027-01-01",
+    "DIA INICIAL": "sexta-feira, 01 de janeiro de 2027",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2027-01-01",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 01 de janeiro de 2027",
+    "HORÁRIO TÉRMINO": ""
   },
   {
     "LINHA_PLANILHA": 104,
     "CATEGORIA DO EVENTO": "CAPGPQ",
     "DESCRIÇÃO DO EVENTO": "ENSALAMENTO 2º SEM. 2026 (PREENCHER FORMS ATÉ A DATA INFORMADA: HTTPS://DOCS.GOOGLE.COM/FORMS/D/E/1FAIPQLSDL5DXTKOB3N_CJUNNA6JV2Y_TUYZ4A-DGKCDPUOOL4TTN5CQ/VIEWFORM)",
-    "DIA INICIAL": "2026-07-03",
+    "DIA INICIAL": "sexta-feira, 03 de julho de 2026",
     "HORÁRIO INÍCIO": "",
-    "DIA FINAL": "2026-07-03",
-    "HORÁRIO TÉRMINO": "",
-    "EVENTO CONCLUÍDO": ""
+    "DIA FINAL": "sexta-feira, 03 de julho de 2026",
+    "HORÁRIO TÉRMINO": ""
   }
 ]
