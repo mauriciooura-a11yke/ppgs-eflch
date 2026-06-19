@@ -175,10 +175,10 @@
 
         .gantt-row {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             position: relative;
-            min-height: 125px;
-            padding: 22px 20px 22px 0;
+            min-height: auto;
+            padding: 12px 16px 12px 0;
             border-bottom: 4px solid #0F172A;
         }
         .gantt-row:nth-child(even) { background-color: #F8FAFC; }
@@ -190,21 +190,37 @@
             color: #0F172A;
             text-align: right;
             padding-right: 15px;
+            padding-top: 4px;
             flex-shrink: 0;
             z-index: 2;
             display: flex;
             flex-direction: column;
             gap: 3px;
+            align-items: flex-end;
         }
         .gantt-date-main {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             letter-spacing: -0.3px;
         }
         .gantt-date-weekday {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             color: #475569;
+        }
+        .badge-vigente-lateral {
+            background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+            color: white;
+            font-size: 8px;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            margin-top: 2px;
+            animation: pulseVigente 2s infinite ease-in-out;
         }
         
         /* NOVO DESTAQUE PARA O MÊS NA LINHA DO TEMPO */
@@ -246,14 +262,14 @@
         /* CONFIGURAÇÃO BASE DOS CARDS */
         .event-card-horizontal {
             background: #FFF;
-            border: 2px solid #CBD5E1;
-            border-radius: 8px;
-            padding: 16px 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            padding: 10px 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.03);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-width: 300px; 
+            min-width: 300px;
             transition: transform 0.2s;
         }
 
@@ -264,19 +280,19 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
         }
 
-        /* SEÇÃO DE DATAS INTERNAS - AGORA MUITO MAIOR E DESTACADA */
+        /* SEÇÃO DE DATAS INTERNAS */
         .card-top-time {
-            font-size: 13px; /* Aumentado */
-            color: #1E293B; /* Tom mais escuro para leitura firme */
-            font-weight: 800; /* Peso da fonte aumentado */
-            margin-bottom: 12px;
+            font-size: 11px;
+            color: #1E293B;
+            font-weight: 700;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 4px;
             border-bottom: 1px dashed #CBD5E1;
-            padding-bottom: 8px;
+            padding-bottom: 5px;
         }
 
         .card-time-text-container {
@@ -486,15 +502,15 @@
         /* ── CATEGORIA EM DESTAQUE NO TOPO DO CARD ── */
         .card-categoria-topo {
             font-family: 'Poppins', sans-serif;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 800;
-            letter-spacing: 0.5px;
-            padding: 8px 16px;
+            letter-spacing: 0.3px;
+            padding: 5px 14px;
             border-radius: 4px 4px 0 0;
-            margin: -16px -20px 12px -20px;
+            margin: -10px -14px 8px -14px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: white;
         }
 
@@ -708,12 +724,9 @@
             // Autorizado — esconde tela de login
             document.getElementById("tela-login").style.display = "none";
 
-            // Verifica e-mail e se é editor
-            const resultado = await chamarWebApp({ acao: "verificar", token: tokenGoogle });
-
-            if (resultado && resultado.ok) {
-                definirStatusAuth("✓ " + resultado.email, true);
-            }
+            // dados._meta vem do doGet com email e se é editor
+            const meta = dados._meta || {};
+            if (meta.email) definirStatusAuth("✓ " + meta.email, true);
 
             // Todos os autorizados entram em modo edição
             document.body.classList.add("modo-edicao");
@@ -721,13 +734,17 @@
             document.getElementById("btn-sair").style.display = "flex";
 
             // Carrega ocultos para editores
-            if (resultado && resultado.ok && resultado.editor) {
+            console.log("É editor?", meta.editor);
+            if (meta.editor) {
                 await carregarOcultos();
             }
 
-            processarDados(dados);
+            // Remove _meta antes de processar os dados
+            const dadosLimpos = Array.isArray(dados) ? dados : (dados.agenda || []);
+            processarDados(dadosLimpos);
 
         } catch (e) {
+            console.error("Erro em autenticarECarregar:", e);
             tokenGoogle = null;
             localStorage.removeItem("ppge_token");
             document.getElementById("login-status").textContent = "ERRO DE CONEXÃO";
@@ -943,11 +960,10 @@
 
     // processarDados: chamado após login bem-sucedido com os dados já carregados
     function processarDados(dadosBrutos) {
-        datasetCompleto = Array.isArray(dadosBrutos) ? dadosBrutos : [];
-        datasetCompleto = datasetCompleto.filter(ev => {
-            const dataInic = ev["DIA INICIAL"] || '';
-            return dataInic !== '';
-        });
+        // Aceita array direto ou { _meta, agenda: [...] }
+        const lista = Array.isArray(dadosBrutos) ? dadosBrutos
+                    : (dadosBrutos && Array.isArray(dadosBrutos.agenda) ? dadosBrutos.agenda : []);
+        datasetCompleto = lista.filter(ev => (ev["DIA INICIAL"] || '') !== '');
         datasetCompleto.sort((a, b) => {
             const dataA = criarDataLocal(a["DIA INICIAL"]);
             const dataB = criarDataLocal(b["DIA INICIAL"]);
@@ -1137,10 +1153,19 @@
             space.className = 'gantt-space';
 
             // Renderiza eventos visíveis
-            eventosDaRaia.forEach(ev => renderizarCard(ev, space, hojeTime, false));
+            const vigenteBadges = [];
+            eventosDaRaia.forEach(ev => {
+                const badge = renderizarCard(ev, space, hojeTime, false);
+                if (badge) vigenteBadges.push(badge);
+            });
 
             // Renderiza eventos ocultos (com visual diferenciado)
             ocultosDaRaia.forEach(ev => renderizarCard(ev, space, hojeTime, true));
+
+            // Injeta badges VIGENTE na coluna de data
+            if (vigenteBadges.length > 0) {
+                vigenteBadges.forEach(b => dateSide.insertAdjacentHTML('beforeend', b));
+            }
 
             row.appendChild(space);
             container.appendChild(row);
@@ -1185,10 +1210,13 @@
                 let statusBadgeHTML = '';
                 if (isOculto) {
                     statusBadgeHTML = `<span class="badge-oculto"><i class="fa-solid fa-eye-slash"></i> OCULTO</span>`;
-                } else if(ehPassadoOuAtual) {
-                    card.classList.add('card-status-past');
-                    statusBadgeHTML = `<span class="badge-status-alert"><i class="fa-solid fa-bolt"></i> VIGENTE</span>`;
                 }
+
+                // Badge VIGENTE vai para a coluna de data (injetado via dataset)
+                const vigenteLateral = (!isOculto && ehPassadoOuAtual)
+                    ? `<span class="badge-vigente-lateral"><i class="fa-solid fa-bolt"></i> VIGENTE</span>`
+                    : '';
+                if (!isOculto && ehPassadoOuAtual) card.classList.add('card-status-past');
 
                 const nLinha = ev["LINHA_PLANILHA"] || '...';
                 const descricaoEvento = ev["DESCRIÇÃO DO EVENTO"] || ev["EVENTO"] || "";
@@ -1214,6 +1242,7 @@
                     </div>
                 `;
                 space.appendChild(card);
+                return vigenteLateral || null;
     }
 
     window.onload = inicializar;
