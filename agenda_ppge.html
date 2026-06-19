@@ -366,6 +366,51 @@
 
         .loading { text-align: center; padding: 60px; color: #64748B; font-weight: 700; width: 100%; }
 
+        /* ── TELA DE LOGIN BLOQUEANTE ── */
+        #tela-login {
+            position: fixed;
+            inset: 0;
+            background: #0F172A;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            z-index: 9999;
+        }
+        #tela-login h2 {
+            font-family: 'Poppins';
+            font-size: 20px;
+            font-weight: 700;
+            color: #F1F5F9;
+            margin: 0;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        #tela-login p {
+            color: #64748B;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 0;
+            text-align: center;
+        }
+        #tela-login .btn-auth {
+            width: auto;
+            padding: 14px 28px;
+            font-size: 13px;
+        }
+        #tela-login .login-status {
+            font-size: 11px;
+            font-weight: 700;
+            color: #F87171;
+            min-height: 16px;
+            text-align: center;
+        }
+        #tela-login .login-logo {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
         /* ── PAINEL DE AUTENTICAÇÃO ── */
         .auth-panel {
             border-top: 1px solid #334155;
@@ -524,6 +569,17 @@
 </head>
 <body>
 
+<!-- TELA DE LOGIN — cobre tudo até autenticar -->
+<div id="tela-login">
+    <div class="login-logo">🔒</div>
+    <h2>CRONOGRAMA INTEGRADO PPGE</h2>
+    <p>ACESSO RESTRITO — FAÇA LOGIN PARA CONTINUAR</p>
+    <button class="btn-auth btn-auth-entrar" onclick="iniciarLogin()">
+        <i class="fa-brands fa-google"></i> ENTRAR COM GOOGLE
+    </button>
+    <div id="login-status" class="login-status"></div>
+</div>
+
 <div class="sidebar">
     <h2 class="sidebar-title"><i class="fa-solid fa-sliders"></i> PAINEL CRONOGRAMA</h2>
     
@@ -607,27 +663,44 @@
             callback: async (resposta) => {
                 if (resposta.error) {
                     definirStatusAuth("ERRO AO AUTENTICAR", false);
+                    document.getElementById("login-status").textContent = "ERRO AO AUTENTICAR";
                     return;
                 }
                 tokenGoogle = resposta.access_token;
-                definirStatusAuth("VERIFICANDO ACESSO...", null);
+                document.getElementById("login-status").textContent = "VERIFICANDO ACESSO...";
 
                 try {
+                    // Tenta carregar a agenda — o doGet já valida o token e a permissão
+                    const r = await fetch(APPS_SCRIPT_URL + '?tipo=agenda&token=' + encodeURIComponent(tokenGoogle));
+                    const dados = await r.json();
+
+                    if (dados.ok === false) {
+                        tokenGoogle = null;
+                        document.getElementById("login-status").textContent = dados.erro || "ACESSO NÃO AUTORIZADO";
+                        return;
+                    }
+
+                    // Acesso autorizado — esconde tela de login e renderiza
+                    document.getElementById("tela-login").style.display = "none";
+
+                    // Obtém e-mail para exibir na sidebar
                     const resultado = await chamarWebApp({ acao: "verificar", token: tokenGoogle });
                     if (resultado.ok) {
                         definirStatusAuth("✓ " + resultado.email, true);
-                        document.body.classList.add("modo-edicao");
-                        document.getElementById("btn-entrar").style.display = "none";
-                        document.getElementById("btn-sair").style.display = "flex";
-                        // Carrega os eventos ocultos ao autenticar
-                        await carregarOcultos();
-                    } else {
-                        tokenGoogle = null;
-                        definirStatusAuth("SEM PERMISSÃO DE EDIÇÃO", false);
+                        if (resultado.editor) {
+                            document.body.classList.add("modo-edicao");
+                            document.getElementById("btn-entrar").style.display = "none";
+                            document.getElementById("btn-sair").style.display = "flex";
+                            await carregarOcultos();
+                        }
                     }
+
+                    // Carrega dados na agenda
+                    processarDados(dados);
+
                 } catch (e) {
                     tokenGoogle = null;
-                    definirStatusAuth("ERRO DE CONEXÃO", false);
+                    document.getElementById("login-status").textContent = "ERRO DE CONEXÃO";
                 }
             }
         });
@@ -636,6 +709,7 @@
 
     function fazerLogout() {
         tokenGoogle = null;
+        datasetCompleto = [];
         datasetOcultos = [];
         modoOcultoAtivo = false;
         document.body.classList.remove("modo-edicao");
@@ -645,7 +719,9 @@
         btnOcultos.classList.remove("ativo");
         btnOcultos.innerHTML = '<i class="fa-solid fa-eye-slash"></i> MOSTRAR OCULTOS';
         definirStatusAuth("NÃO AUTENTICADO", null);
-        filtrarCronograma(); // re-renderiza sem ocultos
+        // Mostra tela de login novamente
+        document.getElementById("tela-login").style.display = "flex";
+        document.getElementById("login-status").textContent = "";
     }
 
     async function carregarOcultos() {
@@ -818,33 +894,28 @@
         };
     }
 
+    // processarDados: chamado após login bem-sucedido com os dados já carregados
+    function processarDados(dadosBrutos) {
+        datasetCompleto = Array.isArray(dadosBrutos) ? dadosBrutos : [];
+        datasetCompleto = datasetCompleto.filter(ev => {
+            const dataInic = ev["DIA INICIAL"] || '';
+            return dataInic !== '';
+        });
+        datasetCompleto.sort((a, b) => {
+            const dataA = criarDataLocal(a["DIA INICIAL"]);
+            const dataB = criarDataLocal(b["DIA INICIAL"]);
+            if (dataA - dataB !== 0) return dataA - dataB;
+            const horaA = a["HORÁRIO INÍCIO"] || "";
+            const horaB = b["HORÁRIO INÍCIO"] || "";
+            return horaA.localeCompare(horaB);
+        });
+        extrairCategoriasDaBase();
+        filtrarCronograma();
+    }
+
     async function inicializar() {
-        try {
-            const r = await fetch(APPS_SCRIPT_URL + '?tipo=agenda');
-            if (!r.ok) throw new Error("Erro ao buscar agenda");
-            const dadosBrutos = await r.json();
-            
-            datasetCompleto = dadosBrutos.filter(ev => {
-                const concluido = ev["EVENTO CONCLUIDO"] || ev["EVENTO CONCLUÍDO"] || ev["CONCLUIDO"] || '';
-                const dataInic = ev["DIA INICIAL"] || ev["DIA_INICIAL"] || '';
-                return String(concluido).toUpperCase().trim() !== "SIM" && dataInic !== '';
-            });
-            
-            datasetCompleto.sort((a, b) => {
-                const dataA = criarDataLocal(a["DIA INICIAL"]);
-                const dataB = criarDataLocal(b["DIA INICIAL"]);
-                if (dataA - dataB !== 0) return dataA - dataB;
-                
-                const horaA = a["HORARIO INICIO"] || a["HORÁRIO INÍCIO"] || "";
-                const horaB = b["HORARIO INICIO"] || b["HORÁRIO INÍCIO"] || "";
-                return horaA.localeCompare(horaB);
-            });
-            
-            extrairCategoriasDaBase();
-            filtrarCronograma();
-        } catch (e) {
-            document.getElementById('gantt-container').innerHTML = `<div class="loading" style="color: red; padding: 40px;">ERRO AO CARREGAR O ARQUIVO JSON.<br><br><small style="text-transform: none; color:#ef4444;">Detalhe: Certifique-se de executar o script na planilha uma vez para gerar a nova estrutura de colunas.</small></div>`;
-        }
+        // Não carrega nada — aguarda login
+        // A tela de login já está visível pelo HTML
     }
 
     function extrairCategoriasDaBase() {
