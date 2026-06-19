@@ -662,49 +662,60 @@
             scope: "openid email profile",
             callback: async (resposta) => {
                 if (resposta.error) {
-                    definirStatusAuth("ERRO AO AUTENTICAR", false);
                     document.getElementById("login-status").textContent = "ERRO AO AUTENTICAR";
                     return;
                 }
                 tokenGoogle = resposta.access_token;
-                document.getElementById("login-status").textContent = "VERIFICANDO ACESSO...";
-
-                try {
-                    // Tenta carregar a agenda — o doGet já valida o token e a permissão
-                    const r = await fetch(APPS_SCRIPT_URL + '?tipo=agenda&token=' + encodeURIComponent(tokenGoogle));
-                    const dados = await r.json();
-
-                    if (dados.ok === false) {
-                        tokenGoogle = null;
-                        document.getElementById("login-status").textContent = dados.erro || "ACESSO NÃO AUTORIZADO";
-                        return;
-                    }
-
-                    // Acesso autorizado — esconde tela de login e renderiza
-                    document.getElementById("tela-login").style.display = "none";
-
-                    // Obtém e-mail para exibir na sidebar
-                    const resultado = await chamarWebApp({ acao: "verificar", token: tokenGoogle });
-                    if (resultado.ok) {
-                        definirStatusAuth("✓ " + resultado.email, true);
-                        if (resultado.editor) {
-                            document.body.classList.add("modo-edicao");
-                            document.getElementById("btn-entrar").style.display = "none";
-                            document.getElementById("btn-sair").style.display = "flex";
-                            await carregarOcultos();
-                        }
-                    }
-
-                    // Carrega dados na agenda
-                    processarDados(dados);
-
-                } catch (e) {
-                    tokenGoogle = null;
-                    document.getElementById("login-status").textContent = "ERRO DE CONEXÃO";
-                }
+                // Salva token e expiração na sessão (dura enquanto a aba estiver aberta)
+                sessionStorage.setItem("ppge_token", tokenGoogle);
+                sessionStorage.setItem("ppge_token_exp", Date.now() + (resposta.expires_in * 1000));
+                document.getElementById("login-status").textContent = "CARREGANDO AGENDA...";
+                await autenticarECarregar();
             }
         });
         client.requestAccessToken();
+    }
+
+    // Centraliza autenticação + carregamento — usado no login e na restauração de sessão
+    async function autenticarECarregar() {
+        try {
+            const r = await fetch(APPS_SCRIPT_URL + '?tipo=agenda&token=' + encodeURIComponent(tokenGoogle));
+            const dados = await r.json();
+
+            if (dados.ok === false) {
+                tokenGoogle = null;
+                sessionStorage.removeItem("ppge_token");
+                sessionStorage.removeItem("ppge_token_exp");
+                document.getElementById("login-status").textContent = dados.erro || "ACESSO NÃO AUTORIZADO";
+                return;
+            }
+
+            // Autorizado — esconde tela de login
+            document.getElementById("tela-login").style.display = "none";
+
+            // Obtém e-mail e define modo edição
+            const resultado = await chamarWebApp({ acao: "verificar", token: tokenGoogle });
+            if (resultado.ok) {
+                definirStatusAuth("✓ " + resultado.email, true);
+            }
+
+            // Todos os usuários autorizados ficam em modo edição (agenda não é mais pública)
+            document.body.classList.add("modo-edicao");
+            document.getElementById("btn-entrar").style.display = "none";
+            document.getElementById("btn-sair").style.display = "flex";
+
+            // Carrega ocultos só para editores
+            if (resultado && resultado.editor) {
+                await carregarOcultos();
+            }
+
+            processarDados(dados);
+
+        } catch (e) {
+            tokenGoogle = null;
+            sessionStorage.removeItem("ppge_token");
+            document.getElementById("login-status").textContent = "ERRO DE CONEXÃO";
+        }
     }
 
     function fazerLogout() {
@@ -712,6 +723,8 @@
         datasetCompleto = [];
         datasetOcultos = [];
         modoOcultoAtivo = false;
+        sessionStorage.removeItem("ppge_token");
+        sessionStorage.removeItem("ppge_token_exp");
         document.body.classList.remove("modo-edicao");
         document.getElementById("btn-entrar").style.display = "flex";
         document.getElementById("btn-sair").style.display = "none";
@@ -719,7 +732,6 @@
         btnOcultos.classList.remove("ativo");
         btnOcultos.innerHTML = '<i class="fa-solid fa-eye-slash"></i> MOSTRAR OCULTOS';
         definirStatusAuth("NÃO AUTENTICADO", null);
-        // Mostra tela de login novamente
         document.getElementById("tela-login").style.display = "flex";
         document.getElementById("login-status").textContent = "";
     }
@@ -914,8 +926,16 @@
     }
 
     async function inicializar() {
-        // Não carrega nada — aguarda login
-        // A tela de login já está visível pelo HTML
+        // Tenta restaurar sessão do sessionStorage (sobrevive a F5, não a fechar a aba)
+        const tokenSalvo = sessionStorage.getItem("ppge_token");
+        const expSalvo   = sessionStorage.getItem("ppge_token_exp");
+
+        if (tokenSalvo && expSalvo && Date.now() < parseInt(expSalvo)) {
+            tokenGoogle = tokenSalvo;
+            document.getElementById("login-status").textContent = "RESTAURANDO SESSÃO...";
+            await autenticarECarregar();
+        }
+        // Se não há sessão válida, a tela de login permanece visível
     }
 
     function extrairCategoriasDaBase() {
