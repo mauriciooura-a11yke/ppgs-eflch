@@ -1,524 +1,734 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Fluxos PPGs | EFLCH</title>
-    <style>
-        :root {
-            --bg-dark: #0a0f18;
-            --card-bg: #161d29;
-            --border: #2d3748;
-            --accent: #38bdf8;
-            --text-bright: #e2e8f0;
-            --text-dim: #94a3b8;
-            --tag-systems: #8b5cf6;
-            --tag-norms: #f59e0b;
-            --tag-flow: #10b981;
-            --tag-proc: #3b82f6;
-            --tag-dash: #ec4899;
-            --tag-tuto: #06b6d4;
-            --sidebar-width: 280px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal do Conhecimento | PPGs - EFLCH</title>
 
-        body { 
-            font-family: 'Inter', -apple-system, sans-serif; 
-            background-color: var(--bg-dark); 
-            color: var(--text-bright);
-            margin: 0;
-            display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-        /* --- MENU LATERAL --- */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: #0d131f;
-            border-right: 1px solid var(--border);
-            height: 100vh;
-            position: fixed;
-            padding: 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            z-index: 1000;
-            transition: transform 0.3s ease;
-        }
+  <style>
+    :root {
+      --bg-dark: #0a0f18;
+      --card-bg: #161d29;
+      --border: #2d3748;
+      --accent: #38bdf8;
+      --text-bright: #e2e8f0;
+      --text-dim: #94a3b8;
+      --sidebar-width: 280px;
+    }
 
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
-            z-index: 999;
-        }
+    * { box-sizing: border-box; }
 
-        .btn-reset-all {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: pointer;
-            margin-bottom: 25px;
-            transition: 0.2s;
-            text-align: center;
-        }
-        .btn-reset-all:hover { background: var(--accent); color: var(--bg-dark); }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-bright);
+      margin: 0;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        .sidebar-title {
-            color: var(--text-dim);
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin: 15px 0 10px;
-            padding-left: 5px;
-        }
+    /* ── LOGIN ── */
+    #login-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 100vh;
+      gap: 24px;
+    }
+    #login-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      max-width: 360px;
+      width: 90%;
+    }
+    #login-box h1 { font-size: 1.4rem; margin: 0; text-align: center; }
+    #login-box h1 span { color: var(--accent); }
+    #login-box p { color: var(--text-dim); font-size: 0.9rem; margin: 0; text-align: center; }
+    #login-error {
+      color: #f87171;
+      font-size: 0.8rem;
+      text-align: center;
+      display: none;
+    }
 
-        .ppg-selector {
-            width: 100%;
-            padding: 10px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-bright);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            outline: none;
-            cursor: pointer;
-        }
+    /* ── APP ── */
+    #app-screen { display: none; width: 100%; }
 
-        .sidebar-link {
-            color: var(--text-bright);
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            transition: 0.2s;
-            cursor: pointer;
-            margin-bottom: 4px;
-            display: block;
-        }
-        .sidebar-link.active {
-            background: rgba(56, 189, 248, 0.15);
-            color: var(--accent);
-            font-weight: 600;
-        }
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: #0d131f;
+      border-right: 1px solid var(--border);
+      height: 100vh;
+      position: fixed;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+    }
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 999;
+    }
 
-        .sidebar-link {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .sidebar-actions { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
 
-        .cat-count {
-            font-size: 0.65rem;
-            font-weight: 700;
-            background: rgba(56, 189, 248, 0.12);
-            color: var(--accent);
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            border-radius: 10px;
-            padding: 1px 7px;
-            min-width: 18px;
-            text-align: center;
-            display: none;
-        }
-        .cat-count.visible { display: inline-block; }
-        .cat-count.zero {
-            background: rgba(148, 163, 184, 0.08);
-            color: var(--text-dim);
-            border-color: rgba(148, 163, 184, 0.2);
-        }
+    .btn-sidebar-action {
+      background: rgba(56,189,248,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(56,189,248,0.3);
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s;
+      text-align: center;
+      width: 100%;
+    }
+    .btn-sidebar-action:hover { background: var(--accent); color: var(--bg-dark); }
+    .btn-sidebar-action:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--accent);
-            font-size: 1.8rem;
-            cursor: pointer;
-            padding: 0;
-            margin-right: 15px;
-        }
+    .sidebar-title {
+      color: var(--text-dim);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin: 15px 0 10px;
+      padding-left: 5px;
+    }
 
-        .main-wrapper {
-            margin-left: var(--sidebar-width);
-            flex: 1;
-            padding: 20px 40px;
-            box-sizing: border-box;
-            width: 100%;
-        }
+    .ppg-selector {
+      width: 100%;
+      padding: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-bright);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      outline: none;
+      cursor: pointer;
+    }
 
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 15px;
-            margin-bottom: 30px;
-        }
+    .sidebar-link {
+      color: var(--text-bright);
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      transition: 0.2s;
+      cursor: pointer;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .sidebar-link:hover { background: rgba(255,255,255,0.05); }
+    .sidebar-link.active {
+      background: rgba(56,189,248,0.15);
+      color: var(--accent);
+      font-weight: 600;
+    }
 
-        .brand-container { display: flex; align-items: center; gap: 10px; }
-        .logo-img { height: 40px; width: auto; display: none; } 
-        .brand h1 { font-size: 1.1rem; margin: 0; }
-        .brand h1 span { color: var(--accent); }
+    .cat-count {
+      font-size: 0.65rem;
+      font-weight: 700;
+      background: rgba(56,189,248,0.12);
+      color: var(--accent);
+      border: 1px solid rgba(56,189,248,0.25);
+      border-radius: 10px;
+      padding: 1px 7px;
+      min-width: 18px;
+      text-align: center;
+      display: none;
+    }
+    .cat-count.visible { display: inline-block; }
+    .cat-count.zero { background: rgba(148,163,184,0.08); color: var(--text-dim); border-color: rgba(148,163,184,0.2); }
 
-        #searchInput {
-            width: 100%;
-            padding: 15px 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            margin-bottom: 15px;
-            outline: none;
-            box-sizing: border-box;
-        }
+    .sidebar-user {
+      margin-top: auto;
+      padding-top: 15px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      word-break: break-all;
+    }
+    .sidebar-user strong { display: block; color: var(--text-bright); margin-bottom: 4px; }
+    .btn-logout {
+      margin-top: 8px;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn-logout:hover { border-color: #f87171; color: #f87171; }
 
-        .active-filters-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 30px;
-            align-items: center;
-            min-height: 40px;
-        }
-        .filter-label { font-size: 0.8rem; font-weight: 700; color: var(--accent); }
-        .filter-badge {
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            display: flex; align-items: center; gap: 8px;
-        }
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0;
+      margin-right: 15px;
+    }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
+    /* ── MAIN ── */
+    .main-wrapper {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 20px 40px;
+      width: 100%;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 15px;
+      margin-bottom: 30px;
+    }
+    .brand-container { display: flex; align-items: center; gap: 10px; }
+    .brand h1 { font-size: 1.1rem; margin: 0; }
+    .brand h1 span { color: var(--accent); }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px;
-            display: flex; flex-direction: column;
-            transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); border-color: var(--accent); }
+    #status-bar {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      min-height: 18px;
+    }
+    #status-bar.loading { color: var(--accent); }
+    #status-bar.error   { color: #f87171; }
 
-        .category-tag { font-size: 0.6rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; text-transform: uppercase; }
-        .tag-flow { background: rgba(16, 185, 129, 0.1); color: #10b981; }
-        .tag-system { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
-        .tag-normative { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
-        .tag-process { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
-        .tag-dashboard { background: rgba(236, 72, 153, 0.1); color: #ec4899; }
-        .tag-tutorial { background: rgba(6, 182, 212, 0.1); color: #06b6d4; }
+    #searchInput {
+      width: 100%;
+      padding: 15px 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      outline: none;
+    }
 
-        .keyword-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 15px; }
-        .keyword-tag { font-size: 0.6rem; color: var(--text-dim); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; }
+    .active-filters-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 30px;
+      align-items: center;
+      min-height: 40px;
+    }
+    .filter-label { font-size: 0.8rem; font-weight: 700; color: var(--accent); }
+    .filter-badge {
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.2);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      display: flex; align-items: center; gap: 8px;
+    }
 
-        .btn-view {
-            text-decoration: none; text-align: center; padding: 12px; border-radius: 8px;
-            font-size: 0.75rem; font-weight: 700; border: 1px solid; margin-top: 20px;
-        }
+    /* ── CARDS ── */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex; flex-direction: column;
+      transition: 0.3s;
+    }
+    .card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
-        footer { margin-top: 60px; padding: 40px; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--text-dim); }
+    .category-tag { font-size: 0.6rem; font-weight: 800; padding: 3px 10px; border-radius: 50px; text-transform: uppercase; }
+    .tag-flow      { background: rgba(16,185,129,0.1);  color: #10b981; }
+    .tag-system    { background: rgba(139,92,246,0.1);  color: #8b5cf6; }
+    .tag-normative { background: rgba(245,158,11,0.1);  color: #f59e0b; }
+    .tag-process   { background: rgba(59,130,246,0.1);  color: #3b82f6; }
+    .tag-dashboard { background: rgba(236,72,153,0.1);  color: #ec4899; }
+    .tag-tutorial  { background: rgba(6,182,212,0.1);   color: #06b6d4; }
 
-        @media (max-width: 1024px) {
-            .sidebar { transform: translateX(-100%); }
-            .sidebar.open { transform: translateX(0); }
-            .sidebar-overlay.visible { display: block; }
-            .main-wrapper { margin-left: 0; padding: 15px; }
-            .menu-toggle { display: block; }
-        }
-    </style>
+    .keyword-container { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 15px; }
+    .keyword-tag { font-size: 0.6rem; color: var(--text-dim); border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; }
+
+    .btn-view {
+      text-decoration: none; text-align: center; padding: 12px; border-radius: 8px;
+      font-size: 0.75rem; font-weight: 700; border: 1px solid; margin-top: 20px;
+    }
+
+    footer { margin-top: 60px; padding: 40px; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--text-dim); }
+
+    @media (max-width: 1024px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.visible { display: block; }
+      .main-wrapper { margin-left: 0; padding: 15px; }
+      .menu-toggle { display: block; }
+    }
+  </style>
 </head>
 <body>
 
-<div id="overlay" class="sidebar-overlay" onclick="toggleMenu()"></div>
+<!-- ══════════════════════════════════════════════════════════
+     TELA DE LOGIN
+════════════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div id="login-box">
+    <h1>Portal do Conhecimento<br><span>PPGs · EFLCH</span></h1>
+    <p>Acesso restrito a usuários autorizados.<br>Faça login com sua conta Google.</p>
+    <div id="g_id_signin"></div>
+    <div id="login-error">⚠️ Acesso não autorizado para este e-mail.</div>
+  </div>
+</div>
 
-<nav id="sidebar" class="sidebar">
-    <button class="btn-reset-all" onclick="resetAllFilters(); toggleMenu();">🧹 Redefinir Filtros</button>
+<!-- ══════════════════════════════════════════════════════════
+     APP PRINCIPAL
+════════════════════════════════════════════════════════════ -->
+<div id="app-screen">
+
+  <div id="overlay" class="sidebar-overlay" onclick="toggleMenu()"></div>
+
+  <nav id="sidebar" class="sidebar">
+    <div class="sidebar-actions">
+      <button class="btn-sidebar-action" id="btn-refresh" onclick="refreshDados()">🔄 Atualizar Dados</button>
+      <button class="btn-sidebar-action" onclick="resetAllFilters()">🧹 Redefinir Filtros</button>
+    </div>
 
     <div class="sidebar-title">Filtro por PPG</div>
     <select id="ppgFilter" class="ppg-selector" onchange="filter(); maybeCloseMenu();">
-        <option value="all">Todos os PPGs (+ Geral)</option>
-        <option value="geral">Apenas GERAL</option>
+      <option value="all">Todos os PPGs (+ Geral)</option>
+      <option value="geral">Apenas GERAL</option>
     </select>
 
     <div class="sidebar-title">Categorias</div>
-    <a onclick="setCategory('all')" id="btn-all" class="sidebar-link active" data-label="🏠 Ver Tudo">🏠 Ver Tudo <span class="cat-count" id="count-all"></span></a>
-    <a onclick="setCategory('fluxo')" id="btn-fluxo" class="sidebar-link" data-label="🌊 Fluxos">🌊 Fluxos <span class="cat-count" id="count-fluxo"></span></a>
-    <a onclick="setCategory('sistema')" id="btn-sistema" class="sidebar-link" data-label="💻 Sistemas">💻 Sistemas <span class="cat-count" id="count-sistema"></span></a>
-    <a onclick="setCategory('dashboard')" id="btn-dashboard" class="sidebar-link" data-label="📊 Dashboards">📊 Dashboards <span class="cat-count" id="count-dashboard"></span></a>
-    <a onclick="setCategory('tutorial')" id="btn-tutorial" class="sidebar-link" data-label="📖 Tutoriais">📖 Tutoriais <span class="cat-count" id="count-tutorial"></span></a>
-    <a onclick="setCategory('normativo')" id="btn-normativo" class="sidebar-link" data-label="📜 Normativos">📜 Normativos <span class="cat-count" id="count-normativo"></span></a>
-    <a onclick="setCategory('processo')" id="btn-processo" class="sidebar-link" data-label="📁 Processos">📁 Processos <span class="cat-count" id="count-processo"></span></a>
-</nav>
+    <a onclick="setCategory('all')"       id="btn-all"       class="sidebar-link active">🏠 Ver Tudo    <span class="cat-count" id="count-all"></span></a>
+    <a onclick="setCategory('fluxo')"     id="btn-fluxo"     class="sidebar-link">🌊 Fluxos      <span class="cat-count" id="count-fluxo"></span></a>
+    <a onclick="setCategory('sistema')"   id="btn-sistema"   class="sidebar-link">💻 Sistemas    <span class="cat-count" id="count-sistema"></span></a>
+    <a onclick="setCategory('dashboard')" id="btn-dashboard" class="sidebar-link">📊 Dashboards  <span class="cat-count" id="count-dashboard"></span></a>
+    <a onclick="setCategory('tutorial')"  id="btn-tutorial"  class="sidebar-link">📖 Tutoriais   <span class="cat-count" id="count-tutorial"></span></a>
+    <a onclick="setCategory('normativo')" id="btn-normativo" class="sidebar-link">📜 Normativos  <span class="cat-count" id="count-normativo"></span></a>
+    <a onclick="setCategory('processo')"  id="btn-processo"  class="sidebar-link">📁 Processos   <span class="cat-count" id="count-processo"></span></a>
 
-<div class="main-wrapper">
+    <div class="sidebar-user">
+      <strong id="user-name"></strong>
+      <span id="user-email"></span>
+      <button class="btn-logout" onclick="logout()">Sair</button>
+    </div>
+  </nav>
+
+  <div class="main-wrapper">
     <header>
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <div class="brand-container">
-            <img id="mainLogo" class="logo-img" alt="Logo">
-            <div class="brand">
-                <h1>Portal do Conhecimento<span> | PPGs - EFLCH</span></h1>
-            </div>
+      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+      <div class="brand-container">
+        <div class="brand">
+          <h1>Portal do Conhecimento<span> | PPGs - EFLCH</span></h1>
         </div>
+      </div>
     </header>
 
+    <div id="status-bar"></div>
     <input type="text" id="searchInput" onkeyup="filter()" placeholder="Busque por título ou palavras-chave...">
-    
     <div id="activeFilters" class="active-filters-bar"></div>
     <div id="content-area"></div>
     <footer>&copy; 2026 UNIFESP | EFLCH | Desenvolvido por Mauricio Massao Oura</footer>
+  </div>
+
 </div>
 
-<script src="assets.js"></script>
-
 <script>
-    // ─── Utilidade: normaliza string removendo acentos e convertendo para minúsculas ───
-    function normalize(str) {
-        return (str || '')
-            .normalize('NFD')                      // decompõe caracteres acentuados
-            .replace(/[\u0300-\u036f]/g, '')       // remove os diacríticos
-            .toLowerCase();
+// ══════════════════════════════════════════════════════════════
+//  CONFIGURAÇÃO — preencher após o deploy
+// ══════════════════════════════════════════════════════════════
+
+// 1. Client ID OAuth do projeto GCP vinculado ao GAS
+//    console.cloud.google.com → APIs e serviços → Credenciais → Criar credencial OAuth
+//    Tipo: "Aplicativo da Web" | Origens: URL do seu Web App GAS
+const GOOGLE_CLIENT_ID = 'SEU_CLIENT_ID_AQUI.apps.googleusercontent.com';
+
+// 2. URL do GAS após publicar como Web App
+//    Implantar → Novo Implantação → Tipo: Web App → Executar como: Eu → Acesso: Todos
+const GAS_URL = 'https://script.google.com/macros/s/SEU_DEPLOYMENT_ID/exec';
+
+// Cache local: 6 horas
+const CACHE_TTL = 6 * 60 * 60 * 1000;
+const CACHE_KEY = 'portal_dados_v1';
+const CACHE_TS  = 'portal_dados_ts_v1';
+
+// ══════════════════════════════════════════════════════════════
+//  AUTH — Google Identity Services
+// ══════════════════════════════════════════════════════════════
+let currentUserEmail = null;
+let currentUserName  = null;
+
+window.addEventListener('load', () => {
+  // Aguarda o script GIS carregar
+  const initGIS = () => {
+    if (typeof google === 'undefined' || !google.accounts) {
+      setTimeout(initGIS, 100);
+      return;
+    }
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleCredentialResponse,
+      auto_select: false,
+    });
+
+    // Tenta restaurar sessão
+    const savedEmail = sessionStorage.getItem('portal_email');
+    const savedName  = sessionStorage.getItem('portal_name');
+
+    if (savedEmail) {
+      currentUserEmail = savedEmail;
+      currentUserName  = savedName || savedEmail;
+      entrarNoApp();
+    } else {
+      mostrarLogin();
+    }
+  };
+  initGIS();
+});
+
+function mostrarLogin() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-screen').style.display   = 'none';
+  google.accounts.id.renderButton(
+    document.getElementById('g_id_signin'),
+    { theme: 'filled_blue', size: 'large', text: 'signin_with', locale: 'pt-BR' }
+  );
+}
+
+function handleCredentialResponse(response) {
+  // Decodifica JWT (verificação real é feita pelo GAS via e-mail)
+  const payload = JSON.parse(atob(response.credential.split('.')[1]));
+  currentUserEmail = payload.email;
+  currentUserName  = payload.name || payload.email;
+
+  sessionStorage.setItem('portal_email', currentUserEmail);
+  sessionStorage.setItem('portal_name',  currentUserName);
+
+  document.getElementById('login-error').style.display = 'none';
+  entrarNoApp();
+}
+
+function entrarNoApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display   = 'flex';
+  document.getElementById('user-name').textContent  = currentUserName;
+  document.getElementById('user-email').textContent = currentUserEmail;
+  iniciarApp();
+}
+
+function logout() {
+  if (typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
+  sessionStorage.clear();
+  localStorage.removeItem(CACHE_KEY);
+  localStorage.removeItem(CACHE_TS);
+  currentUserEmail = null;
+  currentUserName  = null;
+  mostrarLogin();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  DADOS
+// ══════════════════════════════════════════════════════════════
+function setStatus(msg, tipo = '') {
+  const el = document.getElementById('status-bar');
+  el.textContent = msg;
+  el.className = tipo;
+}
+
+async function iniciarApp() {
+  const ts     = parseInt(localStorage.getItem(CACHE_TS) || '0');
+  const cached = localStorage.getItem(CACHE_KEY);
+  const age    = Date.now() - ts;
+
+  if (cached && age < CACHE_TTL) {
+    const mins = Math.round(age / 60000);
+    setStatus(`⚡ Carregado do cache local (atualizado há ${mins < 1 ? '<1' : mins} min)`);
+    renderizarTudo(JSON.parse(cached));
+  } else {
+    await buscarDados('getData');
+  }
+}
+
+async function refreshDados() {
+  const btn = document.getElementById('btn-refresh');
+  btn.disabled = true;
+  btn.textContent = '⏳ Atualizando...';
+  localStorage.removeItem(CACHE_KEY); // força busca nova
+  await buscarDados('getData');
+  btn.disabled = false;
+  btn.textContent = '🔄 Atualizar Dados';
+}
+
+async function buscarDados(action) {
+  setStatus('⏳ Carregando dados da planilha...', 'loading');
+  document.getElementById('content-area').innerHTML =
+    '<p style="text-align:center;padding:60px;color:var(--text-dim)">Carregando...</p>';
+
+  try {
+    const url  = `${GAS_URL}?action=${action}&email=${encodeURIComponent(currentUserEmail)}`;
+    const resp = await fetch(url);
+    const dados = await resp.json();
+
+    if (dados.error === 'unauthorized') {
+      document.getElementById('login-error').style.display = 'block';
+      logout();
+      return;
     }
 
-    // ─── Verifica se TODOS os termos da busca existem no texto normalizado ────────────
-    // Ex.: "dep prazo" encontra "Depósito de Prazo" e "Prazo de Depósito"
-    function matchesSearch(cardText, rawQuery) {
-        const haystack = normalize(cardText);
-        const terms = normalize(rawQuery).trim().split(/\s+/).filter(Boolean);
-        return terms.every(term => haystack.includes(term));
+    localStorage.setItem(CACHE_KEY, JSON.stringify(dados));
+    localStorage.setItem(CACHE_TS, String(Date.now()));
+
+    const ts = new Date().toLocaleTimeString('pt-BR');
+    setStatus(`✅ Dados atualizados às ${ts} — próxima atualização automática em 6h`);
+    renderizarTudo(dados);
+
+  } catch (err) {
+    setStatus('❌ Erro ao carregar dados. Verifique a conexão e tente novamente.', 'error');
+    console.error(err);
+  }
+}
+
+// Atualização automática a cada 6h enquanto a aba estiver aberta
+setInterval(() => { if (currentUserEmail) buscarDados('getData'); }, CACHE_TTL);
+
+// ══════════════════════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════════════════════
+let secoes = [];
+let currentCategory = 'all';
+
+function renderizarTudo(dados) {
+  secoes = dados.secoes || [];
+  const container = document.getElementById('content-area');
+  const ppgSelect = document.getElementById('ppgFilter');
+  const ppgsFound = new Set();
+  let   fullHtml  = '';
+
+  secoes.forEach(sec => {
+    sec.itens.forEach(item => {
+      const p = (item.ppg || '').trim().toLowerCase();
+      if (p && p !== 'geral' && p !== 'todos') ppgsFound.add(p);
+    });
+
+    let conteudo;
+    if (sec.id === 'processo') {
+      const ativos   = sec.itens.filter(i => i.status === 'ativo');
+      const inativos = sec.itens.filter(i => i.status === 'inativo');
+      conteudo = `
+        <div class="grid-container">${renderCards(ativos, sec.tagClass, sec.titulo)}</div>
+        <h4 style="color:var(--text-dim);margin-top:30px;">○ ARQUIVADOS</h4>
+        <div class="grid-container" style="opacity:0.6">${renderCards(inativos, sec.tagClass, sec.titulo)}</div>`;
+    } else {
+      conteudo = `<div class="grid-container">${renderCards(sec.itens, sec.tagClass, sec.titulo)}</div>`;
     }
 
-    // ─────────────────────────────────────────────────────────────────────────────────
+    fullHtml += `
+      <div class="section-block" id="sec-${sec.id}">
+        <h2 style="color:var(--accent);font-size:1rem;text-transform:uppercase;margin:40px 0 20px">${sec.titulo}</h2>
+        ${conteudo}
+      </div>`;
+  });
 
-    function toggleMenu() {
-        document.getElementById('sidebar').classList.toggle('open');
-        document.getElementById('overlay').classList.toggle('visible');
+  const currentVal = ppgSelect.value;
+  ppgSelect.innerHTML = '<option value="all">Todos os PPGs (+ Geral)</option><option value="geral">Apenas GERAL</option>';
+  Array.from(ppgsFound).sort().forEach(p =>
+    ppgSelect.innerHTML += `<option value="${p}">${p.toUpperCase()}</option>`
+  );
+  ppgSelect.value = ppgsFound.has(currentVal) ? currentVal : 'all';
+
+  container.innerHTML = fullHtml;
+  filter();
+}
+
+function renderCards(lista, tagClass, categoriaTitulo) {
+  if (!lista.length) return '<p style="color:var(--text-dim);font-size:0.85rem;padding:10px 0">Nenhum item.</p>';
+
+  return lista.map(item => {
+    const ppgOriginal = item.ppg || 'Geral';
+    const ppgCor      = getPPGColor(ppgOriginal);
+    const isProc      = tagClass === 'tag-process';
+    const corStatus   = item.status === 'ativo' ? '#10b981' : '#64748b';
+
+    const kwHtml = item.palavras_chave
+      ? `<div class="keyword-container">${
+          String(item.palavras_chave).split(',')
+            .map(t => `<span class="keyword-tag">#${t.trim()}</span>`).join('')
+        }</div>`
+      : '';
+
+    return `
+      <div class="card" data-ppg="${ppgOriginal.toLowerCase()}"
+           style="border-top:4px solid ${isProc ? corStatus : ppgCor}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <span class="category-tag ${tagClass}">${categoriaTitulo.slice(0,-1)}</span>
+          <span style="font-size:0.6rem;color:${ppgCor};border:1px solid ${ppgCor};padding:1px 6px;border-radius:4px;font-weight:bold">${ppgOriginal.toUpperCase()}</span>
+        </div>
+        <h3 style="margin:10px 0;font-size:1.1rem">${item.titulo}</h3>
+        <p style="font-size:0.85rem;color:var(--text-dim);flex-grow:1">${item.descricao || ''}</p>
+        ${isProc ? `<div style="font-size:0.65rem;font-weight:bold;color:${corStatus};margin:10px 0">● ${String(item.status).toUpperCase()}</div>` : ''}
+        ${kwHtml}
+        <a href="${item.link}" class="btn-view" target="_blank"
+           style="border-color:${ppgCor};color:${ppgCor}">ABRIR</a>
+      </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  FILTROS
+// ══════════════════════════════════════════════════════════════
+function normalize(str) {
+  return (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
+function matchesSearch(text, query) {
+  const hay   = normalize(text);
+  const terms = normalize(query).trim().split(/\s+/).filter(Boolean);
+  return terms.every(t => hay.includes(t));
+}
+
+function filter() {
+  const rawQuery    = document.getElementById('searchInput').value;
+  const selPPG      = document.getElementById('ppgFilter').value.toLowerCase();
+  const sections    = document.querySelectorAll('.section-block');
+  const isFiltering = rawQuery.trim() !== '' || selPPG !== 'all';
+  const counts      = {};
+  let   totalCount  = 0;
+
+  sections.forEach(section => {
+    const sectionId = section.id.replace('sec-', '');
+    const cards     = section.querySelectorAll('.card');
+    let visibleInSection = 0;
+    let hasVisible = false;
+    const isActive = currentCategory === 'all' || currentCategory === sectionId;
+
+    cards.forEach(card => {
+      const cardPPG = (card.getAttribute('data-ppg') || '').toLowerCase();
+      const matchesPPG =
+        selPPG === 'all'   ? true :
+        selPPG === 'geral' ? cardPPG === 'geral' :
+                             cardPPG === selPPG;
+      const searchOk = !rawQuery.trim() || matchesSearch(card.innerText, rawQuery);
+
+      if (matchesPPG && searchOk) {
+        visibleInSection++;
+        if (isActive) { card.style.display = ''; hasVisible = true; }
+        else            card.style.display = 'none';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    section.style.display = (isActive && hasVisible) ? '' : 'none';
+    counts[sectionId] = visibleInSection;
+    totalCount += visibleInSection;
+  });
+
+  // Badges do sidebar
+  secoes.forEach(sec => {
+    const badge = document.getElementById('count-' + sec.id);
+    if (!badge) return;
+    const n = counts[sec.id] || 0;
+    if (isFiltering) {
+      badge.textContent = n;
+      badge.classList.add('visible');
+      badge.classList.toggle('zero', n === 0);
+    } else {
+      badge.classList.remove('visible');
     }
+  });
 
-    function maybeCloseMenu() {
-        if (window.innerWidth <= 1024) toggleMenu();
+  const badgeAll = document.getElementById('count-all');
+  if (badgeAll) {
+    if (isFiltering) {
+      badgeAll.textContent = totalCount;
+      badgeAll.classList.add('visible');
+      badgeAll.classList.toggle('zero', totalCount === 0);
+    } else {
+      badgeAll.classList.remove('visible');
     }
+  }
 
-    window.onload = function() {
-        const logoImg = document.getElementById('mainLogo');
-        if (typeof LOGO_PPGE !== 'undefined' && LOGO_PPGE !== '') {
-            logoImg.src = LOGO_PPGE;
-            logoImg.style.display = 'block';
-        }
-    };
+  updateFilterBadges();
+}
 
-    const secoes = [
-        { id: 'fluxo', titulo: 'Fluxos', arquivo: 'fluxos.json', tagClass: 'tag-flow' },
-        { id: 'sistema', titulo: 'Sistemas', arquivo: 'sistemas.json', tagClass: 'tag-system' },
-        { id: 'dashboard', titulo: 'Dashboards', arquivo: 'dashboards.json', tagClass: 'tag-dashboard' },
-        { id: 'tutorial', titulo: 'Tutoriais', arquivo: 'tutoriais.json', tagClass: 'tag-tutorial' },
-        { id: 'normativo', titulo: 'Normativos', arquivo: 'normativos.json', tagClass: 'tag-normative' },
-        { id: 'processo', titulo: 'Processos', arquivo: 'processos.json', tagClass: 'tag-process' }
-    ];
+function setCategory(cat) {
+  currentCategory = cat;
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('btn-' + cat).classList.add('active');
+  maybeCloseMenu();
+  filter();
+}
 
-    let currentCategory = 'all';
+function resetAllFilters() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('ppgFilter').value   = 'all';
+  setCategory('all');
+}
 
-    function getPPGColor(ppg) {
-        const ppgLower = (ppg || '').toLowerCase();
-        if (!ppg || ppgLower === 'geral' || ppgLower === 'todos') return '#94a3b8'; 
-        const colors = ['#38bdf8', '#10b981', '#818cf8', '#fbbf24', '#2dd4bf', '#6366f1'];
-        let hash = 0;
-        for (let i = 0; i < ppg.length; i++) { hash = ppg.charCodeAt(i) + ((hash << 5) - hash); }
-        return colors[Math.abs(hash) % colors.length];
-    }
+function updateFilterBadges() {
+  const bar    = document.getElementById('activeFilters');
+  const ppg    = document.getElementById('ppgFilter').value;
+  const search = document.getElementById('searchInput').value;
+  let html = '';
+  if (ppg !== 'all' || currentCategory !== 'all' || search !== '') {
+    html = '<span class="filter-label">Filtros:</span>';
+    if (ppg !== 'all')             html += `<div class="filter-badge">${ppg.toUpperCase()}</div>`;
+    if (currentCategory !== 'all') html += `<div class="filter-badge">${currentCategory.toUpperCase()}</div>`;
+    if (search)                    html += `<div class="filter-badge">"${search}"</div>`;
+  }
+  bar.innerHTML = html;
+}
 
-    function resetAllFilters() {
-        document.getElementById('searchInput').value = '';
-        document.getElementById('ppgFilter').value = 'all';
-        setCategory('all');
-    }
-
-    function updateFilterBadges() {
-        const badgeContainer = document.getElementById('activeFilters');
-        const ppg = document.getElementById('ppgFilter').value;
-        const search = document.getElementById('searchInput').value;
-        let badges = '';
-        if (ppg !== 'all' || currentCategory !== 'all' || search !== '') {
-            badges = '<span class="filter-label">Filtros:</span>';
-            if (ppg !== 'all') badges += `<div class="filter-badge">${ppg.toUpperCase()}</div>`;
-            if (currentCategory !== 'all') badges += `<div class="filter-badge">${currentCategory.toUpperCase()}</div>`;
-            if (search) badges += `<div class="filter-badge">"${search}"</div>`;
-        }
-        badgeContainer.innerHTML = badges;
-    }
-
-    function renderCards(lista, tagClass, categoriaTitulo) {
-        return lista.map(item => {
-            const ppgOriginal = (item.ppg || 'Geral');
-            const ppgCor = getPPGColor(ppgOriginal);
-            const isProc = tagClass === 'tag-process';
-            const corStatus = item.status === 'ativo' ? '#10b981' : '#64748b';
-
-            let keywordsHtml = '';
-            if (item.palavras_chave) {
-                keywordsHtml = `<div class="keyword-container">
-                    ${item.palavras_chave.split(',').map(tag => `<span class="keyword-tag">#${tag.trim()}</span>`).join('')}
-                </div>`;
-            }
-
-            return `
-                <div class="card" data-ppg="${ppgOriginal.toLowerCase()}" style="border-top: 4px solid ${isProc ? corStatus : ppgCor}">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <span class="category-tag ${tagClass}">${categoriaTitulo.slice(0,-1)}</span>
-                        <span style="font-size: 0.6rem; color: ${ppgCor}; border: 1px solid ${ppgCor}; padding: 1px 6px; border-radius: 4px; font-weight: bold;">${ppgOriginal.toUpperCase()}</span>
-                    </div>
-                    <h3 style="margin: 10px 0; font-size: 1.1rem;">${item.titulo}</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-dim); flex-grow: 1;">${item.descricao}</p>
-                    ${isProc ? `<div style="font-size: 0.65rem; font-weight: bold; color: ${corStatus}; margin: 10px 0;">● ${item.status.toUpperCase()}</div>` : ''}
-                    ${keywordsHtml}
-                    <a href="${item.link}" class="btn-view" target="_blank" style="border-color: ${ppgCor}; color: ${ppgCor};">ABRIR</a>
-                </div>
-            `;
-        }).join('');
-    }
-
-    async function carregarDados() {
-        const container = document.getElementById('content-area');
-        const ppgSelect = document.getElementById('ppgFilter');
-        const ppgsEncontrados = new Set();
-        container.innerHTML = '<p style="text-align:center; padding: 50px;">Sincronizando arquivos...</p>';
-        let fullHtml = '';
-
-        for (const sec of secoes) {
-            try {
-                const response = await fetch(sec.arquivo);
-                if (!response.ok) continue;
-                const dados = await response.json();
-                dados.forEach(item => { 
-                    const p = (item.ppg || '').trim().toLowerCase();
-                    if(p && p !== 'geral' && p !== 'todos' && p !== '') ppgsEncontrados.add(p);
-                });
-
-                let conteudo = `<div class="grid-container">${renderCards(dados, sec.tagClass, sec.titulo)}</div>`;
-                if (sec.id === 'processo') {
-                    const ativos = dados.filter(i => i.status === 'ativo');
-                    const inativos = dados.filter(i => i.status === 'inativo');
-                    conteudo = `<div class="grid-container">${renderCards(ativos, sec.tagClass, sec.titulo)}</div>
-                                <h4 style="color: var(--text-dim); margin-top: 30px;">○ ARQUIVADOS</h4>
-                                <div class="grid-container" style="opacity: 0.6;">${renderCards(inativos, sec.tagClass, sec.titulo)}</div>`;
-                }
-                fullHtml += `<div class="section-block" id="sec-${sec.id}"><h2 style="color: var(--accent); font-size: 1rem; text-transform: uppercase; margin: 40px 0 20px;">${sec.titulo}</h2>${conteudo}</div>`;
-            } catch (e) { console.error(e); }
-        }
-
-        const currentVal = ppgSelect.value;
-        ppgSelect.innerHTML = '<option value="all">Todos os PPGs (+ Geral)</option><option value="geral">Apenas GERAL</option>';
-        Array.from(ppgsEncontrados).sort().forEach(p => ppgSelect.innerHTML += `<option value="${p}">${p.toUpperCase()}</option>`);
-        ppgSelect.value = currentVal;
-        container.innerHTML = fullHtml;
-        filter();
-    }
-
-    function setCategory(cat) {
-        currentCategory = cat;
-        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-        document.getElementById('btn-' + cat).classList.add('active');
-        maybeCloseMenu();
-        filter();
-    }
-
-    function filter() {
-        const rawQuery = document.getElementById('searchInput').value;
-        const selPPG = document.getElementById('ppgFilter').value.toLowerCase();
-        const sections = document.querySelectorAll('.section-block');
-        const isFiltering = rawQuery.trim() !== '' || selPPG !== 'all';
-
-        // Contadores por seção (independente da categoria ativa)
-        const counts = {};
-        let totalCount = 0;
-
-        sections.forEach(section => {
-            const sectionId = section.id.replace('sec-', '');
-            const cards = section.querySelectorAll('.card');
-            let visibleInSection = 0;
-            let hasVisible = false;
-
-            if (currentCategory === 'all' || currentCategory === sectionId) {
-                cards.forEach(card => {
-                    const cardPPG = (card.getAttribute('data-ppg') || '').toLowerCase();
-
-                    let matchesPPG = false;
-                    if (selPPG === 'all') {
-                        matchesPPG = true;
-                    } else if (selPPG === 'geral') {
-                        matchesPPG = (cardPPG === 'geral');
-                    } else {
-                        matchesPPG = (cardPPG === selPPG);
-                    }
-
-                    const searchOk = !rawQuery.trim() || matchesSearch(card.innerText, rawQuery);
-
-                    if (matchesPPG && searchOk) {
-                        card.style.display = "";
-                        hasVisible = true;
-                        visibleInSection++;
-                    } else {
-                        card.style.display = "none";
-                    }
-                });
-                section.style.display = hasVisible ? "" : "none";
-            } else {
-                // Seção oculta pela categoria, mas ainda conta para os badges
-                cards.forEach(card => {
-                    const cardPPG = (card.getAttribute('data-ppg') || '').toLowerCase();
-                    let matchesPPG = selPPG === 'all' || (selPPG === 'geral' ? cardPPG === 'geral' : cardPPG === selPPG);
-                    const searchOk = !rawQuery.trim() || matchesSearch(card.innerText, rawQuery);
-                    if (matchesPPG && searchOk) visibleInSection++;
-                });
-                section.style.display = "none";
-            }
-
-            counts[sectionId] = visibleInSection;
-            totalCount += visibleInSection;
-        });
-
-        // Atualiza badges do sidebar
-        secoes.forEach(sec => {
-            const badge = document.getElementById('count-' + sec.id);
-            if (!badge) return;
-            const n = counts[sec.id] || 0;
-            if (isFiltering) {
-                badge.textContent = n;
-                badge.classList.add('visible');
-                badge.classList.toggle('zero', n === 0);
-            } else {
-                badge.classList.remove('visible');
-            }
-        });
-
-        // Badge do "Ver Tudo"
-        const badgeAll = document.getElementById('count-all');
-        if (badgeAll) {
-            if (isFiltering) {
-                badgeAll.textContent = totalCount;
-                badgeAll.classList.add('visible');
-                badgeAll.classList.toggle('zero', totalCount === 0);
-            } else {
-                badgeAll.classList.remove('visible');
-            }
-        }
-
-        updateFilterBadges();
-    }
-
-    carregarDados();
+// ══════════════════════════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════════════════════════
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('visible');
+}
+function maybeCloseMenu() {
+  if (window.innerWidth <= 1024) toggleMenu();
+}
+function getPPGColor(ppg) {
+  const lower = (ppg || '').toLowerCase();
+  if (!ppg || lower === 'geral' || lower === 'todos') return '#94a3b8';
+  const colors = ['#38bdf8','#10b981','#818cf8','#fbbf24','#2dd4bf','#6366f1'];
+  let hash = 0;
+  for (let i = 0; i < ppg.length; i++) hash = ppg.charCodeAt(i) + ((hash << 5) - hash);
+  return colors[Math.abs(hash) % colors.length];
+}
 </script>
 </body>
 </html>
