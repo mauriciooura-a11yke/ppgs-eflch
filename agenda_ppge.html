@@ -708,8 +708,23 @@
 
 <div class="main-content">
     <div class="header">
-        <h1>CRONOGRAMA INTEGRADO PPGE</h1>
-        <p>ARQUITETURA DE PRECISÃO — COM CALENDÁRIO SEMANAL DETALHADO POR DATA DE ENTRADA</p>
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div>
+                <h1>CRONOGRAMA INTEGRADO PPGE</h1>
+                <p>ARQUITETURA DE PRECISÃO — COM CALENDÁRIO SEMANAL DETALHADO POR DATA DE ENTRADA</p>
+            </div>
+            <div id="painel-atualizar" style="display:none; flex-direction:column; align-items:flex-end; gap:6px;">
+                <button id="btn-atualizar-topo" onclick="atualizarManual()"
+                    style="padding:10px 18px; background:#1E3A5F; color:#93C5FD; border:1px solid #1D4ED8;
+                           border-radius:6px; font-family:'Poppins'; font-size:13px; font-weight:700;
+                           cursor:pointer; display:flex; align-items:center; gap:8px; white-space:nowrap; transition:all 0.2s;">
+                    <i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA
+                </button>
+                <span id="timestamp-atualizacao"
+                    style="font-size:11px; color:#64748B; font-family:'Poppins'; font-weight:600; text-align:right;">
+                </span>
+            </div>
+        </div>
     </div>
 
     <div id="gantt-container" class="gantt-timeline">
@@ -759,10 +774,10 @@
 
     async function autenticarECarregar() {
         try {
-            const r = await fetch(APPS_SCRIPT_URL + '?tipo=agenda&token=' + encodeURIComponent(tokenGoogle));
+            const r = await fetch(APPS_SCRIPT_URL + '?token=' + encodeURIComponent(tokenGoogle));
             const dados = await r.json();
 
-            if (dados.ok === false) {
+            if (!dados.ok) {
                 tokenGoogle = null;
                 localStorage.removeItem("ppge_token");
                 localStorage.removeItem("ppge_token_exp");
@@ -773,7 +788,6 @@
             // Autorizado — esconde tela de login
             document.getElementById("tela-login").style.display = "none";
 
-            // dados._meta vem do doGet com email e se é editor
             const meta = dados._meta || {};
             if (meta.email) definirStatusAuth("✓ " + meta.email, true);
 
@@ -782,15 +796,17 @@
             document.getElementById("btn-entrar").style.display = "none";
             document.getElementById("btn-sair").style.display = "flex";
 
-            // Carrega ocultos e mostra botão atualizar para editores
+            // Editores veem ocultos e botão atualizar
             if (meta.editor) {
-                await carregarOcultos();
-                document.getElementById("btn-atualizar").style.display = "flex";
+                datasetOcultos = dados.ocultos || [];
+                atualizarBotaoOcultos();
+                document.getElementById("painel-atualizar").style.display = "flex";
             }
 
-            // Remove _meta antes de processar os dados
-            const dadosLimpos = Array.isArray(dados) ? dados : (dados.agenda || []);
-            processarDados(dadosLimpos);
+            // Timestamp
+            if (meta.atualizado) atualizarTimestamp(meta.atualizado);
+
+            processarDados(dados.agenda || []);
 
         } catch (e) {
             console.error("Erro em autenticarECarregar:", e);
@@ -800,133 +816,25 @@
         }
     }
 
-    function fazerLogout() {
-        tokenGoogle = null;
-        datasetCompleto = [];
-        datasetOcultos = [];
-        modoOcultoAtivo = false;
-        localStorage.removeItem("ppge_token");
-        localStorage.removeItem("ppge_token_exp");
-        document.body.classList.remove("modo-edicao");
-        document.getElementById("btn-entrar").style.display = "flex";
-        document.getElementById("btn-sair").style.display = "none";
-        document.getElementById("btn-atualizar").style.display = "none";
-        const btnOcultos = document.getElementById("btn-mostrar-ocultos");
-        btnOcultos.classList.remove("ativo");
-        btnOcultos.innerHTML = '<i class="fa-solid fa-eye-slash"></i> MOSTRAR OCULTOS';
-        definirStatusAuth("NÃO AUTENTICADO", null);
-        document.getElementById("tela-login").style.display = "flex";
-        document.getElementById("login-status").textContent = "";
-    }
-
-    async function carregarOcultos() {
+    function atualizarTimestamp(isoStr) {
         try {
-            const url = APPS_SCRIPT_URL + '?tipo=ocultos&token=' + encodeURIComponent(tokenGoogle);
-            const r = await fetch(url);
-            const texto = await r.text(); // pega texto bruto primeiro
-            console.log("Resposta ocultos (bruta):", texto.substring(0, 300));
-
-            let dados;
-            try { dados = JSON.parse(texto); } catch(e) {
-                console.error("Erro ao parsear JSON de ocultos:", e);
-                datasetOcultos = [];
-                return;
-            }
-
-            if (Array.isArray(dados)) {
-                datasetOcultos = dados;
-            } else if (dados && Array.isArray(dados.data)) {
-                datasetOcultos = dados.data;
-            } else {
-                console.warn("Formato inesperado:", dados);
-                datasetOcultos = [];
-            }
-
-            console.log("Ocultos carregados:", datasetOcultos.length);
-            const btn = document.getElementById("btn-mostrar-ocultos");
-            btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> OCULTOS (${datasetOcultos.length})`;
-        } catch (e) {
-            console.error("Erro ao carregar ocultos:", e);
-            datasetOcultos = [];
-        }
+            const d = new Date(isoStr);
+            const fmt = d.toLocaleString('pt-BR', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+            document.getElementById("timestamp-atualizacao").textContent = "⏱ DADOS DE: " + fmt;
+        } catch(e) {}
     }
 
-    async function atualizarManual() {
-        const btn = document.getElementById("btn-atualizar");
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ATUALIZANDO...';
-
-        try {
-            const resultado = await chamarWebApp({ acao: "atualizar", token: tokenGoogle });
-            if (resultado.ok) {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> ATUALIZADO!';
-                setTimeout(async () => {
-                    const r = await fetch(APPS_SCRIPT_URL + '?tipo=agenda&token=' + encodeURIComponent(tokenGoogle));
-                    const dados = await r.json();
-                    processarDados(Array.isArray(dados) ? dados : (dados.agenda || []));
-                    await carregarOcultos();
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA';
-                }, 1500);
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-xmark"></i> ERRO';
-                setTimeout(() => { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA'; }, 2000);
-            }
-        } catch (e) {
-            btn.innerHTML = '<i class="fa-solid fa-xmark"></i> FALHA';
-            setTimeout(() => { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA'; }, 2000);
-        }
-    }
-
-    function toggleOcultos() {
-        modoOcultoAtivo = !modoOcultoAtivo;
+    function atualizarBotaoOcultos() {
         const btn = document.getElementById("btn-mostrar-ocultos");
         const total = datasetOcultos.length;
-        if (modoOcultoAtivo) {
-            btn.classList.add("ativo");
-            btn.innerHTML = `<i class="fa-solid fa-eye"></i> OCULTAR OCULTOS (${total})`;
-        } else {
-            btn.classList.remove("ativo");
-            btn.innerHTML = `<i class="fa-solid fa-eye-slash"></i> OCULTOS (${total})`;
-        }
-        filtrarCronograma();
-    }
-
-    async function revelarEvento(linha, btnEl) {
-        if (!tokenGoogle) { alert("Faça login primeiro."); return; }
-        if (!confirm(`Revelar o evento da linha ${linha}? Ele voltará a aparecer na agenda pública.`)) return;
-
-        btnEl.disabled = true;
-        btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AGUARDE';
-
-        try {
-            const resultado = await chamarWebApp({ acao: "revelar", token: tokenGoogle, linha });
-            if (resultado.ok) {
-                const card = btnEl.closest(".event-card-horizontal");
-                const ganttRow = card.closest(".gantt-row");
-                card.style.transition = "opacity 0.4s";
-                card.style.opacity = "0";
-                setTimeout(async () => {
-                    card.remove();
-                    if (ganttRow && ganttRow.querySelectorAll(".event-card-horizontal").length === 0) {
-                        ganttRow.style.transition = "opacity 0.3s";
-                        ganttRow.style.opacity = "0";
-                        setTimeout(() => ganttRow.remove(), 300);
-                    }
-                    // Atualiza o dataset de ocultos e o contador do botão
-                    await carregarOcultos();
-                    filtrarCronograma();
-                }, 400);
-            } else {
-                alert("Erro: " + (resultado.erro || "resposta inesperada"));
-                btnEl.disabled = false;
-                btnEl.innerHTML = '<i class="fa-solid fa-eye"></i> REVELAR';
-            }
-        } catch (e) {
-            alert("Falha de comunicação com o servidor.");
-            btnEl.disabled = false;
-            btnEl.innerHTML = '<i class="fa-solid fa-eye"></i> REVELAR';
-        }
+        const ativo = modoOcultoAtivo;
+        btn.innerHTML = ativo
+            ? `<i class="fa-solid fa-eye"></i> OCULTAR OCULTOS (${total})`
+            : `<i class="fa-solid fa-eye-slash"></i> OCULTOS (${total})`;
+        btn.classList.toggle("ativo", ativo);
     }
 
     function definirStatusAuth(msg, ok) {
@@ -944,30 +852,95 @@
         return r.json();
     }
 
+    function toggleOcultos() {
+        modoOcultoAtivo = !modoOcultoAtivo;
+        atualizarBotaoOcultos();
+        filtrarCronograma();
+    }
+
+    async function atualizarManual() {
+        const btn = document.getElementById("btn-atualizar-topo");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ATUALIZANDO...';
+        try {
+            const r = await fetch(APPS_SCRIPT_URL + '?token=' + encodeURIComponent(tokenGoogle));
+            const dados = await r.json();
+            if (dados.ok) {
+                datasetOcultos = dados.ocultos || [];
+                atualizarBotaoOcultos();
+                if (dados._meta && dados._meta.atualizado) atualizarTimestamp(dados._meta.atualizado);
+                processarDados(dados.agenda || []);
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> ATUALIZADO!';
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-xmark"></i> ERRO';
+            }
+        } catch (e) {
+            btn.innerHTML = '<i class="fa-solid fa-xmark"></i> FALHA';
+        }
+        setTimeout(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA';
+        }, 2000);
+    }
+
+    function fazerLogout() {
+        tokenGoogle = null;
+        datasetCompleto = [];
+        datasetOcultos = [];
+        modoOcultoAtivo = false;
+        localStorage.removeItem("ppge_token");
+        localStorage.removeItem("ppge_token_exp");
+        document.body.classList.remove("modo-edicao");
+        document.getElementById("btn-entrar").style.display = "flex";
+        document.getElementById("btn-sair").style.display = "none";
+        document.getElementById("painel-atualizar").style.display = "none";
+        document.getElementById("timestamp-atualizacao").textContent = "";
+        const btnOcultos = document.getElementById("btn-mostrar-ocultos");
+        btnOcultos.classList.remove("ativo");
+        btnOcultos.innerHTML = '<i class="fa-solid fa-eye-slash"></i> MOSTRAR OCULTOS';
+        definirStatusAuth("NÃO AUTENTICADO", null);
+        document.getElementById("tela-login").style.display = "flex";
+        document.getElementById("login-status").textContent = "";
+    }
+
+    async function revelarEvento(linha, btnEl) {
+        if (!tokenGoogle) { alert("Faça login primeiro."); return; }
+        if (!confirm(`Revelar o evento da linha ${linha}? Ele voltará a aparecer na agenda.`)) return;
+
+        btnEl.disabled = true;
+        btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+        try {
+            const resultado = await chamarWebApp({ acao: "revelar", token: tokenGoogle, linha });
+            if (resultado.ok) {
+                datasetOcultos = resultado.ocultos || [];
+                atualizarBotaoOcultos();
+                processarDados(resultado.agenda || []);
+            } else {
+                alert("Erro: " + (resultado.erro || "resposta inesperada"));
+                btnEl.disabled = false;
+                btnEl.innerHTML = '<i class="fa-solid fa-eye"></i> REVELAR';
+            }
+        } catch (e) {
+            alert("Falha de comunicação com o servidor.");
+            btnEl.disabled = false;
+            btnEl.innerHTML = '<i class="fa-solid fa-eye"></i> REVELAR';
+        }
+    }
+
     async function ocultarEvento(linha, btnEl) {
         if (!tokenGoogle) { alert("Faça login primeiro."); return; }
         if (!confirm(`Ocultar o evento da linha ${linha}? Ele deixará de aparecer na agenda.`)) return;
 
         btnEl.disabled = true;
-        btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> AGUARDE';
+        btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
 
         try {
             const resultado = await chamarWebApp({ acao: "ocultar", token: tokenGoogle, linha });
             if (resultado.ok) {
-                // Remove o card visualmente sem precisar recarregar
-                const card = btnEl.closest(".event-card-horizontal");
-                const ganttRow = card.closest(".gantt-row");
-                card.style.transition = "opacity 0.4s";
-                card.style.opacity = "0";
-                setTimeout(() => {
-                    card.remove();
-                    // Se a linha ficou sem cards, remove a linha inteira
-                    if (ganttRow && ganttRow.querySelectorAll(".event-card-horizontal").length === 0) {
-                        ganttRow.style.transition = "opacity 0.3s";
-                        ganttRow.style.opacity = "0";
-                        setTimeout(() => ganttRow.remove(), 300);
-                    }
-                }, 400);
+                datasetOcultos = resultado.ocultos || [];
+                atualizarBotaoOcultos();
+                processarDados(resultado.agenda || []);
             } else {
                 alert("Erro: " + (resultado.erro || "resposta inesperada"));
                 btnEl.disabled = false;
@@ -978,7 +951,7 @@
             btnEl.disabled = false;
             btnEl.innerHTML = '<i class="fa-solid fa-eye-slash"></i> OCULTAR';
         }
-    }     
+    }
 
     const DIAS_SEMANA_COMPLETO = ["DOMINGO", "SEGUNDA-FEIRA", "TERÇA-FEIRA", "QUARTA-FEIRA", "QUINTA-FEIRA", "SEXTA-FEIRA", "SÁBADO"];
     const DIAS_SEMANA_CURTO = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
