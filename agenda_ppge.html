@@ -697,6 +697,9 @@
         <button id="btn-sair" class="btn-auth btn-auth-sair" onclick="fazerLogout()" style="display:none">
             <i class="fa-solid fa-right-from-bracket"></i> SAIR DO MODO EDIÇÃO
         </button>
+        <button id="btn-atualizar" class="btn-mostrar-ocultos" onclick="atualizarManual()" style="display:none">
+            <i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA
+        </button>
         <button id="btn-mostrar-ocultos" class="btn-mostrar-ocultos" onclick="toggleOcultos()">
             <i class="fa-solid fa-eye-slash"></i> MOSTRAR OCULTOS
         </button>
@@ -779,10 +782,10 @@
             document.getElementById("btn-entrar").style.display = "none";
             document.getElementById("btn-sair").style.display = "flex";
 
-            // Carrega ocultos para editores
-            console.log("É editor?", meta.editor);
+            // Carrega ocultos e mostra botão atualizar para editores
             if (meta.editor) {
                 await carregarOcultos();
+                document.getElementById("btn-atualizar").style.display = "flex";
             }
 
             // Remove _meta antes de processar os dados
@@ -807,6 +810,7 @@
         document.body.classList.remove("modo-edicao");
         document.getElementById("btn-entrar").style.display = "flex";
         document.getElementById("btn-sair").style.display = "none";
+        document.getElementById("btn-atualizar").style.display = "none";
         const btnOcultos = document.getElementById("btn-mostrar-ocultos");
         btnOcultos.classList.remove("ativo");
         btnOcultos.innerHTML = '<i class="fa-solid fa-eye-slash"></i> MOSTRAR OCULTOS';
@@ -844,6 +848,33 @@
         } catch (e) {
             console.error("Erro ao carregar ocultos:", e);
             datasetOcultos = [];
+        }
+    }
+
+    async function atualizarManual() {
+        const btn = document.getElementById("btn-atualizar");
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ATUALIZANDO...';
+
+        try {
+            const resultado = await chamarWebApp({ acao: "atualizar", token: tokenGoogle });
+            if (resultado.ok) {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> ATUALIZADO!';
+                setTimeout(async () => {
+                    const r = await fetch(APPS_SCRIPT_URL + '?tipo=agenda&token=' + encodeURIComponent(tokenGoogle));
+                    const dados = await r.json();
+                    processarDados(Array.isArray(dados) ? dados : (dados.agenda || []));
+                    await carregarOcultos();
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA';
+                }, 1500);
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-xmark"></i> ERRO';
+                setTimeout(() => { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA'; }, 2000);
+            }
+        } catch (e) {
+            btn.innerHTML = '<i class="fa-solid fa-xmark"></i> FALHA';
+            setTimeout(() => { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA'; }, 2000);
         }
     }
 
