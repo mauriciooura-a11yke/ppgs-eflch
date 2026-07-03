@@ -497,8 +497,15 @@ async function buscarDados(action) {
     '<p style="text-align:center;padding:60px;color:var(--text-dim)">Carregando...</p>';
 
   try {
-    const url  = `${GAS_URL}?action=${action}&email=${encodeURIComponent(currentUserEmail)}`;
-    const resp = await fetch(url);
+    const url = `${GAS_URL}?action=${action}&email=${encodeURIComponent(currentUserEmail)}`;
+
+    // Timeout de 30s — GAS pode demorar na primeira leitura
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 30000);
+
+    const resp = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+
     const dados = await resp.json();
 
     if (dados.error === 'unauthorized') {
@@ -515,7 +522,11 @@ async function buscarDados(action) {
     renderizarTudo(dados);
 
   } catch (err) {
-    setStatus('❌ Erro ao carregar dados. Verifique a conexão e tente novamente.', 'error');
+    if (err.name === 'AbortError') {
+      setStatus('⏱️ O servidor demorou muito para responder. Tente novamente.', 'error');
+    } else {
+      setStatus('❌ Erro ao carregar dados. Verifique a conexão e tente novamente.', 'error');
+    }
     console.error(err);
   }
 }
