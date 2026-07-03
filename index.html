@@ -373,11 +373,11 @@
 // 1. Client ID OAuth do projeto GCP vinculado ao GAS
 //    console.cloud.google.com → APIs e serviços → Credenciais → Criar credencial OAuth
 //    Tipo: "Aplicativo da Web" | Origens: URL do seu Web App GAS
-const GOOGLE_CLIENT_ID = '1080172089518-bf1cqpg2t7e35rcpr0bsqm68ug8qra5a.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = 'SEU_CLIENT_ID_AQUI.apps.googleusercontent.com';
 
 // 2. URL do GAS após publicar como Web App
 //    Implantar → Novo Implantação → Tipo: Web App → Executar como: Eu → Acesso: Todos
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxJd6AWjRuHzzAo65SERCviH8gyj3n74UaYuTGfkXsw_EsOFLt5sM4Z6tkaDLhRJRju/exec';
+const GAS_URL = 'https://script.google.com/macros/s/SEU_DEPLOYMENT_ID/exec';
 
 // Cache local: 6 horas
 const CACHE_TTL = 6 * 60 * 60 * 1000;
@@ -485,8 +485,8 @@ async function refreshDados() {
   const btn = document.getElementById('btn-refresh');
   btn.disabled = true;
   btn.textContent = '⏳ Atualizando...';
-  localStorage.removeItem(CACHE_KEY); // força busca nova
-  await buscarDados('getData');
+  localStorage.removeItem(CACHE_KEY); // limpa cache do frontend
+  await buscarDados('refresh');       // limpa cache do GAS e busca dados frescos
   btn.disabled = false;
   btn.textContent = '🔄 Atualizar Dados';
 }
