@@ -761,15 +761,87 @@
                     document.getElementById("login-status").textContent = "ERRO AO AUTENTICAR";
                     return;
                 }
-                tokenGoogle = resposta.access_token;
-                // localStorage persiste enquanto o navegador estiver aberto (e além)
-                localStorage.setItem("ppge_token", tokenGoogle);
-                localStorage.setItem("ppge_token_exp", Date.now() + (resposta.expires_in * 1000));
+                salvarToken(resposta.access_token, resposta.expires_in);
                 document.getElementById("login-status").textContent = "CARREGANDO AGENDA...";
                 await autenticarECarregar();
             }
         });
         client.requestAccessToken();
+    }
+
+    // Tenta renovar o token silenciosamente (sem popup)
+    function renovarTokenSilencioso() {
+        return new Promise((resolve) => {
+            try {
+                const client = google.accounts.oauth2.initTokenClient({
+                    client_id: GOOGLE_CLIENT_ID,
+                    scope: "openid email profile",
+                    prompt: '',       // sem popup de seleção de conta
+                    callback: (resposta) => {
+                        if (resposta.error || !resposta.access_token) {
+                            resolve(false);
+                        } else {
+                            salvarToken(resposta.access_token, resposta.expires_in);
+                            resolve(true);
+                        }
+                    }
+                });
+                client.requestAccessToken();
+            } catch(e) {
+                resolve(false);
+            }
+        });
+    }
+
+    function salvarToken(token, expiresIn) {
+        tokenGoogle = token;
+        // Salva com margem de 5 min antes do vencimento real para renovar antes de expirar
+        const exp = Date.now() + ((expiresIn - 300) * 1000);
+        localStorage.setItem("ppge_token", token);
+        localStorage.setItem("ppge_token_exp", exp);
+    }
+
+    // Verifica se o token está próximo de expirar e renova silenciosamente
+    async function garantirToken() {
+        const exp = parseInt(localStorage.getItem("ppge_token_exp") || "0");
+        const tokenSalvo = localStorage.getItem("ppge_token");
+        if (!tokenSalvo) return false;
+        // Token ainda válido
+        if (Date.now() < exp) {
+            tokenGoogle = tokenSalvo;
+            return true;
+        }
+        // Token expirado — tenta renovar silenciosamente
+        console.log("Token expirado, tentando renovar silenciosamente...");
+        const renovado = await renovarTokenSilencioso();
+        if (renovado) {
+            console.log("Token renovado com sucesso.");
+            return true;
+        }
+        // Não conseguiu renovar — limpa e pede login
+        localStorage.removeItem("ppge_token");
+        localStorage.removeItem("ppge_token_exp");
+        tokenGoogle = null;
+        return false;
+    }
+
+    // Agenda renovação automática 5 min antes do vencimento
+    function agendarRenovacao() {
+        const exp = parseInt(localStorage.getItem("ppge_token_exp") || "0");
+        const msAteRenovar = exp - Date.now();
+        if (msAteRenovar <= 0) return;
+        console.log(`Renovação do token agendada em ${Math.round(msAteRenovar/60000)} min`);
+        setTimeout(async () => {
+            if (!tokenGoogle) return;
+            const renovado = await renovarTokenSilencioso();
+            if (renovado) {
+                agendarRenovacao(); // reagenda para o próximo ciclo
+            } else {
+                // Não conseguiu renovar — mostra tela de login
+                fazerLogout();
+                document.getElementById("login-status").textContent = "SESSÃO EXPIRADA — FAÇA LOGIN NOVAMENTE";
+            }
+        }, msAteRenovar);
     }
 
     async function autenticarECarregar() {
@@ -790,6 +862,9 @@
 
             const meta = dados._meta || {};
             if (meta.email) definirStatusAuth("✓ " + meta.email, true);
+
+            // Agenda renovação automática do token
+            agendarRenovacao();
 
             // Todos os autorizados entram em modo edição
             document.body.classList.add("modo-edicao");
@@ -1034,14 +1109,16 @@
 
     async function inicializar() {
         const tokenSalvo = localStorage.getItem("ppge_token");
-        const expSalvo   = localStorage.getItem("ppge_token_exp");
+        if (!tokenSalvo) return; // sem sessão — tela de login permanece
 
-        if (tokenSalvo && expSalvo && Date.now() < parseInt(expSalvo)) {
-            tokenGoogle = tokenSalvo;
-            document.getElementById("login-status").textContent = "RESTAURANDO SESSÃO...";
+        document.getElementById("login-status").textContent = "RESTAURANDO SESSÃO...";
+        const valido = await garantirToken();
+
+        if (valido) {
             await autenticarECarregar();
+        } else {
+            document.getElementById("login-status").textContent = "SESSÃO EXPIRADA — FAÇA LOGIN NOVAMENTE";
         }
-        // Se não há sessão válida, tela de login permanece visível
     }
 
     function extrairCategoriasDaBase() {
