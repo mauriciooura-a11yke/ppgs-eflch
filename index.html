@@ -373,12 +373,11 @@
 // 1. Client ID OAuth do projeto GCP vinculado ao GAS
 //    console.cloud.google.com → APIs e serviços → Credenciais → Criar credencial OAuth
 //    Tipo: "Aplicativo da Web" | Origens: URL do seu Web App GAS
-const GOOGLE_CLIENT_ID = '1080172089518-bf1cqpg2t7e35rcpr0bsqm68ug8qra5a.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = 'SEU_CLIENT_ID_AQUI.apps.googleusercontent.com';
 
 // 2. URL do GAS após publicar como Web App
 //    Implantar → Novo Implantação → Tipo: Web App → Executar como: Eu → Acesso: Todos
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxJd6AWjRuHzzAo65SERCviH8gyj3n74UaYuTGfkXsw_EsOFLt5sM4Z6tkaDLhRJRju/exec';
- 
+const GAS_URL = 'https://script.google.com/macros/s/SEU_DEPLOYMENT_ID/exec';
 
 // Cache local: 6 horas
 const CACHE_TTL = 6 * 60 * 60 * 1000;
@@ -388,37 +387,129 @@ const CACHE_TS  = 'portal_dados_ts_v1';
 // ══════════════════════════════════════════════════════════════
 //  AUTH — Google Identity Services
 // ══════════════════════════════════════════════════════════════
+// ── Estado de auth ──────────────────────────────────────────
 let currentUserEmail = null;
 let currentUserName  = null;
+let _renovacaoTimer  = null;
 
+// Chaves localStorage para persistir sessão entre abas/reaberturas
+const SESSION_EMAIL   = 'portal_session_email';
+const SESSION_NAME    = 'portal_session_name';
+const SESSION_EXPIRY  = 'portal_session_expiry';  // timestamp de expiração do token (55min)
+
+const TOKEN_DURACAO   = 55 * 60 * 1000;   // 55 min em ms (5min antes do limite real de 1h do GIS)
+
+// ── Inicialização ────────────────────────────────────────────
 window.addEventListener('load', () => {
-  // Aguarda o script GIS carregar
   const initGIS = () => {
     if (typeof google === 'undefined' || !google.accounts) {
       setTimeout(initGIS, 100);
       return;
     }
+
+    // Inicializa GIS com auto_select: true para renovação silenciosa
     google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
-      callback: handleCredentialResponse,
-      auto_select: false,
+      callback:  handleCredentialResponse,
+      auto_select: true,   // permite renovação sem clique quando sessão Google está ativa
     });
 
-    // Tenta restaurar sessão
-    const savedEmail = sessionStorage.getItem('portal_email');
-    const savedName  = sessionStorage.getItem('portal_name');
-
-    if (savedEmail) {
-      currentUserEmail = savedEmail;
-      currentUserName  = savedName || savedEmail;
-      entrarNoApp();
-    } else {
-      mostrarLogin();
-    }
+    tentarRenovacaoSilenciosa();
   };
   initGIS();
 });
 
+// Tenta renovar silenciosamente usando a sessão Google ativa no navegador.
+// Se funcionar → callback handleCredentialResponse é chamado automaticamente.
+// Se não funcionar → exibe tela de login manual.
+function tentarRenovacaoSilenciosa() {
+  const expiry = parseInt(localStorage.getItem(SESSION_EXPIRY) || '0');
+  const email  = localStorage.getItem(SESSION_EMAIL);
+
+  if (email && Date.now() < expiry) {
+    // Token ainda válido — entra direto sem chamar GIS
+    currentUserEmail = email;
+    currentUserName  = localStorage.getItem(SESSION_NAME) || email;
+    entrarNoApp();
+    agendarRenovacao(expiry - Date.now()); // agenda pro tempo restante real
+    return;
+  }
+
+  // Token expirado ou ausente — pede renovação silenciosa ao GIS
+  // Se o usuário ainda tem sessão Google ativa no browser, o callback
+  // handleCredentialResponse é chamado automaticamente sem UI.
+  // Se não tiver sessão → google.accounts.id.prompt() não dispara callback
+  // e o timeout abaixo cai no mostrarLogin().
+  const timeoutLogin = setTimeout(() => mostrarLogin(), 3000);
+
+  google.accounts.id.prompt(notification => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      // GIS não conseguiu renovar silenciosamente — pede login manual
+      clearTimeout(timeoutLogin);
+      mostrarLogin();
+    }
+    // Se renovação silenciosa funcionou, handleCredentialResponse cancela o timeout
+  });
+
+  // handleCredentialResponse chama clearTimeout(timeoutLogin) via _renovacaoPendente
+  window._renovacaoPendente = timeoutLogin;
+}
+
+// ── Callback do GIS (login manual OU renovação silenciosa) ──
+function handleCredentialResponse(response) {
+  if (window._renovacaoPendente) {
+    clearTimeout(window._renovacaoPendente);
+    window._renovacaoPendente = null;
+  }
+
+  const payload = JSON.parse(atob(response.credential.split('.')[1]));
+  currentUserEmail = payload.email;
+  currentUserName  = payload.name || payload.email;
+
+  // Persiste sessão com expiração em 55min
+  const expiry = Date.now() + TOKEN_DURACAO;
+  localStorage.setItem(SESSION_EMAIL,  currentUserEmail);
+  localStorage.setItem(SESSION_NAME,   currentUserName);
+  localStorage.setItem(SESSION_EXPIRY, String(expiry));
+
+  document.getElementById('login-error').style.display = 'none';
+
+  // Se o app já estava aberto (renovação em background) — apenas reagenda
+  const appVisivel = document.getElementById('app-screen').style.display !== 'none';
+  if (appVisivel) {
+    agendarRenovacao(TOKEN_DURACAO);
+    return;
+  }
+
+  entrarNoApp();
+}
+
+// ── Agenda renovação silenciosa para daqui a `ms` milissegundos ──
+function agendarRenovacao(ms) {
+  if (_renovacaoTimer) clearTimeout(_renovacaoTimer);
+  _renovacaoTimer = setTimeout(() => {
+    // Tenta renovar sem mostrar nada ao usuário
+    google.accounts.id.prompt(notification => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        // Sessão Google expirou — força login manual
+        logout(true);
+      }
+      // Se ok → handleCredentialResponse reagenda automaticamente
+    });
+  }, ms);
+}
+
+// ── Entra no app ────────────────────────────────────────────
+function entrarNoApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display   = 'flex';
+  document.getElementById('user-name').textContent  = currentUserName;
+  document.getElementById('user-email').textContent = currentUserEmail;
+  agendarRenovacao(TOKEN_DURACAO);
+  iniciarApp();
+}
+
+// ── Tela de login ───────────────────────────────────────────
 function mostrarLogin() {
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app-screen').style.display   = 'none';
@@ -428,34 +519,22 @@ function mostrarLogin() {
   );
 }
 
-function handleCredentialResponse(response) {
-  // Decodifica JWT (verificação real é feita pelo GAS via e-mail)
-  const payload = JSON.parse(atob(response.credential.split('.')[1]));
-  currentUserEmail = payload.email;
-  currentUserName  = payload.name || payload.email;
+// ── Logout ──────────────────────────────────────────────────
+// forçado=true → chamado internamente quando sessão expirou
+// forçado=false (padrão) → clique do usuário no botão Sair
+function logout(forcado = false) {
+  if (_renovacaoTimer) { clearTimeout(_renovacaoTimer); _renovacaoTimer = null; }
+  if (!forcado && typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
 
-  sessionStorage.setItem('portal_email', currentUserEmail);
-  sessionStorage.setItem('portal_name',  currentUserName);
-
-  document.getElementById('login-error').style.display = 'none';
-  entrarNoApp();
-}
-
-function entrarNoApp() {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app-screen').style.display   = 'flex';
-  document.getElementById('user-name').textContent  = currentUserName;
-  document.getElementById('user-email').textContent = currentUserEmail;
-  iniciarApp();
-}
-
-function logout() {
-  if (typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
-  sessionStorage.clear();
+  localStorage.removeItem(SESSION_EMAIL);
+  localStorage.removeItem(SESSION_NAME);
+  localStorage.removeItem(SESSION_EXPIRY);
   localStorage.removeItem(CACHE_KEY);
   localStorage.removeItem(CACHE_TS);
+
   currentUserEmail = null;
   currentUserName  = null;
+
   mostrarLogin();
 }
 
