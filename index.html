@@ -306,7 +306,19 @@
   <div id="login-box">
     <h1>Portal do Conhecimento<br><span>PPGs · EFLCH</span></h1>
     <p>Acesso restrito a usuários autorizados.<br>Faça login com sua conta Google.</p>
-    <div id="g_id_signin"></div>
+    <div id="g_id_signin">
+      <button id="btn-login-google" onclick="fazerLogin()" style="
+        display: inline-flex; align-items: center; gap: 12px;
+        background: #fff; color: #3c4043; border: 1px solid #dadce0;
+        border-radius: 4px; padding: 10px 24px; font-size: 0.95rem;
+        font-weight: 500; cursor: pointer; font-family: 'Google Sans', sans-serif;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: box-shadow 0.2s;
+      " onmouseover="this.style.boxShadow='0 2px 6px rgba(0,0,0,0.3)'"
+         onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.2)'">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/></svg>
+        Entrar com Google
+      </button>
+    </div>
     <div id="login-error">⚠️ Acesso não autorizado para este e-mail.</div>
   </div>
 </div>
@@ -371,12 +383,9 @@
 // ══════════════════════════════════════════════════════════════
 
 // 1. Client ID OAuth do projeto GCP vinculado ao GAS
-//    console.cloud.google.com → APIs e serviços → Credenciais → Criar credencial OAuth
-//    Tipo: "Aplicativo da Web" | Origens: URL do seu Web App GAS
 const GOOGLE_CLIENT_ID = 'SEU_CLIENT_ID_AQUI.apps.googleusercontent.com';
 
 // 2. URL do GAS após publicar como Web App
-//    Implantar → Novo Implantação → Tipo: Web App → Executar como: Eu → Acesso: Todos
 const GAS_URL = 'https://script.google.com/macros/s/SEU_DEPLOYMENT_ID/exec';
 
 // Cache local: 6 horas
@@ -385,21 +394,21 @@ const CACHE_KEY = 'portal_dados_v1';
 const CACHE_TS  = 'portal_dados_ts_v1';
 
 // ══════════════════════════════════════════════════════════════
-//  AUTH — Google Identity Services
+//  AUTH — google.accounts.oauth2 (Token Client)
+//  Funciona dentro de iframes GAS, sem redirect bloqueado pela org
 // ══════════════════════════════════════════════════════════════
-// ── Estado de auth ──────────────────────────────────────────
 let currentUserEmail = null;
 let currentUserName  = null;
+let _accessToken     = null;
 let _renovacaoTimer  = null;
 
-// Chaves localStorage para persistir sessão entre abas/reaberturas
-const SESSION_EMAIL   = 'portal_session_email';
-const SESSION_NAME    = 'portal_session_name';
-const SESSION_EXPIRY  = 'portal_session_expiry';  // timestamp de expiração do token (55min)
+const SESSION_EMAIL  = 'portal_session_email';
+const SESSION_NAME   = 'portal_session_name';
+const SESSION_EXPIRY = 'portal_session_expiry';
+const TOKEN_DURACAO  = 55 * 60 * 1000;  // 55 min
 
-const TOKEN_DURACAO   = 55 * 60 * 1000;   // 55 min em ms (5min antes do limite real de 1h do GIS)
+let tokenClient = null;
 
-// ── Inicialização ────────────────────────────────────────────
 window.addEventListener('load', () => {
   const initGIS = () => {
     if (typeof google === 'undefined' || !google.accounts) {
@@ -407,66 +416,87 @@ window.addEventListener('load', () => {
       return;
     }
 
-    // Inicializa GIS com auto_select: true para renovação silenciosa
-    google.accounts.id.initialize({
+    // Token Client — usa popup OAuth nativo do Google (não One Tap)
+    // Não sofre bloqueio de iframe porque o popup abre fora do iframe
+    tokenClient = google.accounts.oauth2.initTokenClient({
       client_id: GOOGLE_CLIENT_ID,
-      callback:  handleCredentialResponse,
-      auto_select: true,   // permite renovação sem clique quando sessão Google está ativa
+      scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+      callback: handleTokenResponse,
+      error_callback: (err) => {
+        console.error('OAuth erro:', err);
+        mostrarLoginComErro('Erro ao autenticar. Tente novamente.');
+      },
     });
 
-    tentarRenovacaoSilenciosa();
+    tentarRestaurarSessao();
   };
   initGIS();
 });
 
-// Tenta renovar silenciosamente usando a sessão Google ativa no navegador.
-// Se funcionar → callback handleCredentialResponse é chamado automaticamente.
-// Se não funcionar → exibe tela de login manual.
-function tentarRenovacaoSilenciosa() {
+// Tenta restaurar sessão salva no localStorage
+function tentarRestaurarSessao() {
   const expiry = parseInt(localStorage.getItem(SESSION_EXPIRY) || '0');
   const email  = localStorage.getItem(SESSION_EMAIL);
 
   if (email && Date.now() < expiry) {
-    // Token ainda válido — entra direto sem chamar GIS
+    // Sessão ainda válida — entra direto
     currentUserEmail = email;
     currentUserName  = localStorage.getItem(SESSION_NAME) || email;
     entrarNoApp();
-    agendarRenovacao(expiry - Date.now()); // agenda pro tempo restante real
+    agendarRenovacao(expiry - Date.now());
+  } else {
+    // Expirou ou não existe — tenta renovar silenciosamente
+    // prompt: none → não mostra UI; se tiver sessão Google ativa, renova
+    tokenClient.requestAccessToken({ prompt: '' });
+    // Se falhar (sem sessão), o error_callback → mostrarLoginComErro
+    // mas queremos mostrar login normal, então colocamos timeout
+    const t = setTimeout(() => mostrarLogin(), 2000);
+    window._loginTimeout = t;
+  }
+}
+
+// Callback do Token Client — chamado após concessão do token
+async function handleTokenResponse(tokenResponse) {
+  if (window._loginTimeout) {
+    clearTimeout(window._loginTimeout);
+    window._loginTimeout = null;
+  }
+
+  if (tokenResponse.error) {
+    mostrarLogin();
     return;
   }
 
-  // Token expirado ou ausente — pede renovação silenciosa ao GIS
-  // Se o usuário ainda tem sessão Google ativa no browser, o callback
-  // handleCredentialResponse é chamado automaticamente sem UI.
-  // Se não tiver sessão → google.accounts.id.prompt() não dispara callback
-  // e o timeout abaixo cai no mostrarLogin().
-  const timeoutLogin = setTimeout(() => mostrarLogin(), 3000);
+  _accessToken = tokenResponse.access_token;
 
-  google.accounts.id.prompt(notification => {
-    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-      // GIS não conseguiu renovar silenciosamente — pede login manual
-      clearTimeout(timeoutLogin);
-      mostrarLogin();
-    }
-    // Se renovação silenciosa funcionou, handleCredentialResponse cancela o timeout
-  });
-
-  // handleCredentialResponse chama clearTimeout(timeoutLogin) via _renovacaoPendente
-  window._renovacaoPendente = timeoutLogin;
-}
-
-// ── Callback do GIS (login manual OU renovação silenciosa) ──
-function handleCredentialResponse(response) {
-  if (window._renovacaoPendente) {
-    clearTimeout(window._renovacaoPendente);
-    window._renovacaoPendente = null;
+  // Busca dados do usuário via token
+  try {
+    const resp = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: { Authorization: `Bearer ${_accessToken}` }
+    });
+    const info = await resp.json();
+    currentUserEmail = info.email;
+    currentUserName  = info.name || info.email;
+  } catch (_) {
+    mostrarLoginComErro('Não foi possível obter dados do usuário.');
+    return;
   }
 
-  const payload = JSON.parse(atob(response.credential.split('.')[1]));
-  currentUserEmail = payload.email;
-  currentUserName  = payload.name || payload.email;
+  // Verifica autorização no GAS
+  try {
+    const checkUrl = `${GAS_URL}?action=checkAuth&email=${encodeURIComponent(currentUserEmail)}`;
+    const r    = await fetch(checkUrl);
+    const json = await r.json();
+    if (!json.authorized) {
+      mostrarLoginComErro(`⚠️ Acesso não autorizado para ${currentUserEmail}`);
+      return;
+    }
+  } catch (_) {
+    mostrarLoginComErro('Erro ao verificar autorização.');
+    return;
+  }
 
-  // Persiste sessão com expiração em 55min
+  // Salva sessão
   const expiry = Date.now() + TOKEN_DURACAO;
   localStorage.setItem(SESSION_EMAIL,  currentUserEmail);
   localStorage.setItem(SESSION_NAME,   currentUserName);
@@ -474,9 +504,9 @@ function handleCredentialResponse(response) {
 
   document.getElementById('login-error').style.display = 'none';
 
-  // Se o app já estava aberto (renovação em background) — apenas reagenda
   const appVisivel = document.getElementById('app-screen').style.display !== 'none';
   if (appVisivel) {
+    // Renovação silenciosa em background — só reagenda
     agendarRenovacao(TOKEN_DURACAO);
     return;
   }
@@ -484,22 +514,15 @@ function handleCredentialResponse(response) {
   entrarNoApp();
 }
 
-// ── Agenda renovação silenciosa para daqui a `ms` milissegundos ──
+// Agenda renovação silenciosa do token
 function agendarRenovacao(ms) {
   if (_renovacaoTimer) clearTimeout(_renovacaoTimer);
   _renovacaoTimer = setTimeout(() => {
-    // Tenta renovar sem mostrar nada ao usuário
-    google.accounts.id.prompt(notification => {
-      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-        // Sessão Google expirou — força login manual
-        logout(true);
-      }
-      // Se ok → handleCredentialResponse reagenda automaticamente
-    });
+    // prompt: '' → silencioso, sem popup
+    tokenClient.requestAccessToken({ prompt: '' });
   }, ms);
 }
 
-// ── Entra no app ────────────────────────────────────────────
 function entrarNoApp() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app-screen').style.display   = 'flex';
@@ -509,22 +532,33 @@ function entrarNoApp() {
   iniciarApp();
 }
 
-// ── Tela de login ───────────────────────────────────────────
 function mostrarLogin() {
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app-screen').style.display   = 'none';
-  google.accounts.id.renderButton(
-    document.getElementById('g_id_signin'),
-    { theme: 'filled_blue', size: 'large', text: 'signin_with', locale: 'pt-BR' }
-  );
+  // Garante que o botão está visível e funcional
+  const btn = document.getElementById('btn-login-google');
+  if (btn) btn.style.display = 'inline-flex';
 }
 
-// ── Logout ──────────────────────────────────────────────────
-// forçado=true → chamado internamente quando sessão expirou
-// forçado=false (padrão) → clique do usuário no botão Sair
+function mostrarLoginComErro(msg) {
+  mostrarLogin();
+  const el = document.getElementById('login-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// Chamado pelo botão "Entrar com Google"
+function fazerLogin() {
+  document.getElementById('login-error').style.display = 'none';
+  tokenClient.requestAccessToken({ prompt: 'select_account' });
+}
+
 function logout(forcado = false) {
   if (_renovacaoTimer) { clearTimeout(_renovacaoTimer); _renovacaoTimer = null; }
-  if (!forcado && typeof google !== 'undefined') google.accounts.id.disableAutoSelect();
+
+  if (!forcado && _accessToken && typeof google !== 'undefined') {
+    google.accounts.oauth2.revoke(_accessToken);
+  }
 
   localStorage.removeItem(SESSION_EMAIL);
   localStorage.removeItem(SESSION_NAME);
@@ -532,6 +566,7 @@ function logout(forcado = false) {
   localStorage.removeItem(CACHE_KEY);
   localStorage.removeItem(CACHE_TS);
 
+  _accessToken     = null;
   currentUserEmail = null;
   currentUserName  = null;
 
