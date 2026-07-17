@@ -38,6 +38,11 @@
             left: 0;
             overflow-y: auto;
             z-index: 10;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .sidebar.visivel {
+            opacity: 1;
         }
 
         .sidebar-title {
@@ -60,6 +65,11 @@
             flex-grow: 1;
             padding: 30px;
             width: calc(100% - 320px);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .main-content.visivel {
+            opacity: 1;
         }
         
         .header {
@@ -976,6 +986,8 @@
         definirStatusAuth("NÃO AUTENTICADO", null);
         document.getElementById("tela-login").style.display = "flex";
         document.getElementById("login-status").textContent = "";
+        document.querySelector('.sidebar').classList.remove('visivel');
+        document.querySelector('.main-content').classList.remove('visivel');
     }
 
     async function revelarEvento(linha, btnEl) {
@@ -1105,6 +1117,12 @@
         });
         extrairCategoriasDaBase();
         filtrarCronograma();
+
+        // Revela a interface suavemente após os dados estarem prontos
+        requestAnimationFrame(() => {
+            document.querySelector('.sidebar').classList.add('visivel');
+            document.querySelector('.main-content').classList.add('visivel');
+        });
     }
 
     async function inicializar() {
