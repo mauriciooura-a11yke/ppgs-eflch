@@ -288,6 +288,27 @@
 
     footer { margin-top: 60px; padding: 40px; border-top: 1px solid var(--border); text-align: center; font-size: 0.8rem; color: var(--text-dim); }
 
+    /* ── TELA DE CARREGAMENTO (evita piscar durante restauração de sessão) ── */
+    #loading-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 100vh;
+      gap: 16px;
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+    .spinner {
+      width: 32px; height: 32px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     @media (max-width: 1024px) {
       .sidebar { transform: translateX(-100%); }
       .sidebar.open { transform: translateX(0); }
@@ -300,9 +321,17 @@
 <body>
 
 <!-- ══════════════════════════════════════════════════════════
+     TELA DE CARREGAMENTO (mostrada durante restauração de sessão)
+════════════════════════════════════════════════════════════ -->
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <span>Verificando sessão...</span>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
      TELA DE LOGIN
 ════════════════════════════════════════════════════════════ -->
-<div id="login-screen">
+<div id="login-screen" style="display:none">
   <div id="login-box">
     <h1>Portal do Conhecimento<br><span>PPGs · EFLCH</span></h1>
     <p>Acesso restrito a usuários autorizados.<br>Faça login com sua conta Google.</p>
@@ -383,10 +412,10 @@
 // ══════════════════════════════════════════════════════════════
 
 // 1. Client ID OAuth do projeto GCP vinculado ao GAS
-const GOOGLE_CLIENT_ID = '1080172089518-bf1cqpg2t7e35rcpr0bsqm68ug8qra5a.apps.googleusercontent.com';
+const GOOGLE_CLIENT_ID = 'SEU_CLIENT_ID_AQUI.apps.googleusercontent.com';
 
 // 2. URL do GAS após publicar como Web App
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxJd6AWjRuHzzAo65SERCviH8gyj3n74UaYuTGfkXsw_EsOFLt5sM4Z6tkaDLhRJRju/exec';
+const GAS_URL = 'https://script.google.com/macros/s/SEU_DEPLOYMENT_ID/exec';
 
 // Cache local: 6 horas
 const CACHE_TTL = 6 * 60 * 60 * 1000;
@@ -423,8 +452,10 @@ window.addEventListener('load', () => {
       scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
       callback: handleTokenResponse,
       error_callback: (err) => {
+        if (window._loginTimeout) { clearTimeout(window._loginTimeout); window._loginTimeout = null; }
         console.error('OAuth erro:', err);
-        mostrarLoginComErro('Erro ao autenticar. Tente novamente.');
+        ocultarLoading();
+        mostrarLogin();
       },
     });
 
@@ -433,24 +464,29 @@ window.addEventListener('load', () => {
   initGIS();
 });
 
+function ocultarLoading() {
+  document.getElementById('loading-screen').style.display = 'none';
+}
+
 // Tenta restaurar sessão salva no localStorage
 function tentarRestaurarSessao() {
   const expiry = parseInt(localStorage.getItem(SESSION_EXPIRY) || '0');
   const email  = localStorage.getItem(SESSION_EMAIL);
 
   if (email && Date.now() < expiry) {
-    // Sessão ainda válida — entra direto
+    // Sessão ainda válida — entra direto, sem mostrar nada
     currentUserEmail = email;
     currentUserName  = localStorage.getItem(SESSION_NAME) || email;
+    ocultarLoading();
     entrarNoApp();
     agendarRenovacao(expiry - Date.now());
   } else {
-    // Expirou ou não existe — tenta renovar silenciosamente
-    // prompt: none → não mostra UI; se tiver sessão Google ativa, renova
+    // Tenta renovação silenciosa — mantém a tela de loading visível
+    // Se funcionar: handleTokenResponse chama entrarNoApp (sem piscar)
+    // Se falhar: error_callback → mostrarLogin (loading some, login aparece)
     tokenClient.requestAccessToken({ prompt: '' });
-    // Se falhar (sem sessão), o error_callback → mostrarLoginComErro
-    // mas queremos mostrar login normal, então colocamos timeout
-    const t = setTimeout(() => mostrarLogin(), 2000);
+    // Timeout de segurança: se o GIS não responder em 3s, mostra login
+    const t = setTimeout(() => { ocultarLoading(); mostrarLogin(); }, 3000);
     window._loginTimeout = t;
   }
 }
@@ -524,6 +560,7 @@ function agendarRenovacao(ms) {
 }
 
 function entrarNoApp() {
+  ocultarLoading();
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('app-screen').style.display   = 'flex';
   document.getElementById('user-name').textContent  = currentUserName;
@@ -533,9 +570,9 @@ function entrarNoApp() {
 }
 
 function mostrarLogin() {
+  ocultarLoading();
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app-screen').style.display   = 'none';
-  // Garante que o botão está visível e funcional
   const btn = document.getElementById('btn-login-google');
   if (btn) btn.style.display = 'inline-flex';
 }
