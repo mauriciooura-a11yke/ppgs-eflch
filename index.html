@@ -349,16 +349,19 @@
 // ══════════════════════════════════════════════════════════════
 //  CONFIGURAÇÃO
 // ══════════════════════════════════════════════════════════════
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxJd6AWjRuHzzAo65SERCviH8gyj3n74UaYuTGfkXsw_EsOFLt5sM4Z6tkaDLhRJRju/exec';
+const SECOES_CONFIG = [
+  { id: 'fluxo',      titulo: 'Fluxos',      arquivo: 'fluxos.json',      tagClass: 'tag-flow'      },
+  { id: 'sistema',    titulo: 'Sistemas',     arquivo: 'sistemas.json',    tagClass: 'tag-system'    },
+  { id: 'dashboard',  titulo: 'Dashboards',   arquivo: 'dashboards.json',  tagClass: 'tag-dashboard' },
+  { id: 'tutorial',   titulo: 'Tutoriais',    arquivo: 'tutoriais.json',   tagClass: 'tag-tutorial'  },
+  { id: 'normativo',  titulo: 'Normativos',   arquivo: 'normativos.json',  tagClass: 'tag-normative' },
+  { id: 'processo',   titulo: 'Processos',    arquivo: 'processos.json',   tagClass: 'tag-process'   },
+];
 
-const CACHE_TTL = 6 * 60 * 60 * 1000;
-const CACHE_KEY = 'portal_dados_v1';
-const CACHE_TS  = 'portal_dados_ts_v1';
-
-window.addEventListener('load', () => iniciarApp());
+window.addEventListener('load', () => carregarDados());
 
 // ══════════════════════════════════════════════════════════════
-//  DADOS
+//  DADOS — lê JSONs locais do repositório
 // ══════════════════════════════════════════════════════════════
 function setStatus(msg, tipo = '') {
   const el = document.getElementById('status-bar');
@@ -366,66 +369,47 @@ function setStatus(msg, tipo = '') {
   el.className = tipo;
 }
 
-async function iniciarApp() {
-  const ts     = parseInt(localStorage.getItem(CACHE_TS) || '0');
-  const cached = localStorage.getItem(CACHE_KEY);
-  const age    = Date.now() - ts;
+async function carregarDados() {
+  document.getElementById('content-area').innerHTML =
+    '<p style="text-align:center;padding:60px;color:var(--text-dim)">Carregando...</p>';
 
-  if (cached && age < CACHE_TTL) {
-    const mins = Math.round(age / 60000);
-    setStatus(`⚡ Carregado do cache local (atualizado há ${mins < 1 ? '<1' : mins} min)`);
-    renderizarTudo(JSON.parse(cached));
-  } else {
-    await buscarDados('getData');
+  const dados = { secoes: [] };
+  let erros = 0;
+
+  await Promise.all(SECOES_CONFIG.map(async cfg => {
+    try {
+      const resp = await fetch(`${cfg.arquivo}?v=${Date.now()}`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      const itens = await resp.json();
+      dados.secoes.push({ id: cfg.id, titulo: cfg.titulo, tagClass: cfg.tagClass, itens });
+    } catch (e) {
+      erros++;
+      console.error(`Erro ao carregar ${cfg.arquivo}:`, e);
+    }
+  }));
+
+  // Reordena conforme SECOES_CONFIG
+  dados.secoes.sort((a, b) =>
+    SECOES_CONFIG.findIndex(c => c.id === a.id) - SECOES_CONFIG.findIndex(c => c.id === b.id)
+  );
+
+  if (erros === SECOES_CONFIG.length) {
+    setStatus('❌ Erro ao carregar dados. Verifique os arquivos JSON.', 'error');
+    return;
   }
+
+  setStatus('');
+  renderizarTudo(dados);
 }
 
 async function refreshDados() {
   const btn = document.getElementById('btn-refresh');
   btn.disabled = true;
   btn.textContent = '⏳ Atualizando...';
-  localStorage.removeItem(CACHE_KEY); // limpa cache do frontend
-  await buscarDados('refresh');       // limpa cache do GAS e busca dados frescos
+  await carregarDados();
   btn.disabled = false;
   btn.textContent = '🔄 Atualizar Dados';
 }
-
-async function buscarDados(action) {
-  setStatus('⏳ Carregando dados da planilha...', 'loading');
-  document.getElementById('content-area').innerHTML =
-    '<p style="text-align:center;padding:60px;color:var(--text-dim)">Carregando...</p>';
-
-  try {
-    const url = `${GAS_URL}?action=${action}`;
-
-    // Timeout de 30s — GAS pode demorar na primeira leitura
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 30000);
-
-    const resp = await fetch(url, { signal: controller.signal });
-    clearTimeout(timer);
-
-    const dados = await resp.json();
-
-    localStorage.setItem(CACHE_KEY, JSON.stringify(dados));
-    localStorage.setItem(CACHE_TS, String(Date.now()));
-
-    const ts = new Date().toLocaleTimeString('pt-BR');
-    setStatus(`✅ Dados atualizados às ${ts} — próxima atualização automática em 6h`);
-    renderizarTudo(dados);
-
-  } catch (err) {
-    if (err.name === 'AbortError') {
-      setStatus('⏱️ O servidor demorou muito para responder. Tente novamente.', 'error');
-    } else {
-      setStatus('❌ Erro ao carregar dados. Verifique a conexão e tente novamente.', 'error');
-    }
-    console.error(err);
-  }
-}
-
-// Atualização automática a cada 6h enquanto a aba estiver aberta
-setInterval(() => { if (currentUserEmail) buscarDados('getData'); }, CACHE_TTL);
 
 // ══════════════════════════════════════════════════════════════
 //  RENDER
@@ -636,4 +620,3 @@ function getPPGColor(ppg) {
 </script>
 </body>
 </html>
-
