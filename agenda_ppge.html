@@ -756,11 +756,11 @@
     let todasCategoriasExistentes = [];
     let categoriasFiltradasAtivas = []; 
     let statusFiltradosAtivos = [];
-    let tokenGoogle = null; // token OAuth do usuário autenticado
-    let datasetOcultos = []; // eventos com OCULTAR=SIM
-    let modoOcultoAtivo = false; // controla exibição dos ocultos
+    let tokenGoogle = null;
+    let datasetOcultos = [];
+    let modoOcultoAtivo = false;
 
-    // ─── AUTENTICAÇÃO GOOGLE ─────────────────────────────────────────
+    // ─── AUTENTICAÇÃO ────────────────────────────────────────────────
 
     function iniciarLogin() {
         const client = google.accounts.oauth2.initTokenClient({
@@ -771,96 +771,19 @@
                     document.getElementById("login-status").textContent = "ERRO AO AUTENTICAR";
                     return;
                 }
-                salvarToken(resposta.access_token, resposta.expires_in);
+                tokenGoogle = resposta.access_token;
+                const exp = Date.now() + ((resposta.expires_in - 300) * 1000);
+                localStorage.setItem("ppge_token", tokenGoogle);
+                localStorage.setItem("ppge_token_exp", String(exp));
+                localStorage.setItem("ppge_email", "");
                 document.getElementById("login-status").textContent = "CARREGANDO AGENDA...";
-                await autenticarECarregar();
+                await carregarDados();
             }
         });
         client.requestAccessToken();
     }
 
-    // Tenta renovar o token silenciosamente (sem popup)
-    function renovarTokenSilencioso() {
-        return new Promise((resolve) => {
-            const timer = setTimeout(() => resolve(false), 6000);
-            try {
-                // login_hint passa o e-mail salvo para o Google pular a seleção de conta
-                const emailSalvo = localStorage.getItem("ppge_email") || "";
-                const client = google.accounts.oauth2.initTokenClient({
-                    client_id: GOOGLE_CLIENT_ID,
-                    scope: "openid email profile",
-                    prompt: 'none',       // nunca exibe popup
-                    login_hint: emailSalvo,
-                    callback: (resposta) => {
-                        clearTimeout(timer);
-                        if (resposta.error || !resposta.access_token) {
-                            resolve(false);
-                        } else {
-                            salvarToken(resposta.access_token, resposta.expires_in);
-                            resolve(true);
-                        }
-                    }
-                });
-                client.requestAccessToken();
-            } catch(e) {
-                clearTimeout(timer);
-                resolve(false);
-            }
-        });
-    }
-
-    function salvarToken(token, expiresIn) {
-        tokenGoogle = token;
-        // Salva com margem de 5 min antes do vencimento real para renovar antes de expirar
-        const exp = Date.now() + ((expiresIn - 300) * 1000);
-        localStorage.setItem("ppge_token", token);
-        localStorage.setItem("ppge_token_exp", exp);
-    }
-
-    // Verifica se o token está próximo de expirar e renova silenciosamente
-    async function garantirToken() {
-        const exp = parseInt(localStorage.getItem("ppge_token_exp") || "0");
-        const tokenSalvo = localStorage.getItem("ppge_token");
-        if (!tokenSalvo) return false;
-        // Token ainda válido
-        if (Date.now() < exp) {
-            tokenGoogle = tokenSalvo;
-            return true;
-        }
-        // Token expirado — tenta renovar silenciosamente
-        console.log("Token expirado, tentando renovar silenciosamente...");
-        const renovado = await renovarTokenSilencioso();
-        if (renovado) {
-            console.log("Token renovado com sucesso.");
-            return true;
-        }
-        // Não conseguiu renovar — limpa e pede login
-        localStorage.removeItem("ppge_token");
-        localStorage.removeItem("ppge_token_exp");
-        tokenGoogle = null;
-        return false;
-    }
-
-    // Agenda renovação automática 5 min antes do vencimento
-    function agendarRenovacao() {
-        const exp = parseInt(localStorage.getItem("ppge_token_exp") || "0");
-        const msAteRenovar = exp - Date.now();
-        if (msAteRenovar <= 0) return;
-        console.log(`Renovação do token agendada em ${Math.round(msAteRenovar/60000)} min`);
-        setTimeout(async () => {
-            if (!tokenGoogle) return;
-            const renovado = await renovarTokenSilencioso();
-            if (renovado) {
-                agendarRenovacao(); // reagenda para o próximo ciclo
-            } else {
-                // Não conseguiu renovar — mostra tela de login
-                fazerLogout();
-                document.getElementById("login-status").textContent = "SESSÃO EXPIRADA — FAÇA LOGIN NOVAMENTE";
-            }
-        }, msAteRenovar);
-    }
-
-    async function autenticarECarregar() {
+    async function carregarDados() {
         try {
             const r = await fetch(APPS_SCRIPT_URL + '?token=' + encodeURIComponent(tokenGoogle));
             const dados = await r.json();
@@ -873,7 +796,6 @@
                 return;
             }
 
-            // Autorizado — esconde tela de login
             document.getElementById("tela-login").style.display = "none";
 
             const meta = dados._meta || {};
@@ -882,30 +804,21 @@
                 localStorage.setItem("ppge_email", meta.email);
             }
 
-            // Agenda renovação automática do token
-            agendarRenovacao();
-
-            // Todos os autorizados entram em modo edição
             document.body.classList.add("modo-edicao");
             document.getElementById("btn-entrar").style.display = "none";
             document.getElementById("btn-sair").style.display = "flex";
 
-            // Editores veem ocultos e botão atualizar
             if (meta.editor) {
                 datasetOcultos = dados.ocultos || [];
                 atualizarBotaoOcultos();
                 document.getElementById("painel-atualizar").style.display = "flex";
             }
 
-            // Timestamp
             if (meta.atualizado) atualizarTimestamp(meta.atualizado);
-
             processarDados(dados.agenda || []);
 
-        } catch (e) {
-            console.error("Erro em autenticarECarregar:", e);
-            tokenGoogle = null;
-            localStorage.removeItem("ppge_token");
+        } catch(e) {
+            console.error("Erro ao carregar dados:", e);
             document.getElementById("login-status").textContent = "ERRO DE CONEXÃO";
         }
     }
@@ -938,6 +851,7 @@
     }
 
     async function chamarWebApp(payload) {
+        payload.token = tokenGoogle;
         const r = await fetch(APPS_SCRIPT_URL, {
             method: "POST",
             body: JSON.stringify(payload)
@@ -949,7 +863,7 @@
     function toggleOcultos() {
         modoOcultoAtivo = !modoOcultoAtivo;
         atualizarBotaoOcultos();
-        extrairCategoriasDaBase(); // atualiza sidebar com categorias dos ocultos
+        extrairCategoriasDaBase();
         filtrarCronograma();
     }
 
@@ -969,7 +883,7 @@
             } else {
                 btn.innerHTML = '<i class="fa-solid fa-xmark"></i> ERRO';
             }
-        } catch (e) {
+        } catch(e) {
             btn.innerHTML = '<i class="fa-solid fa-xmark"></i> FALHA';
         }
         setTimeout(() => {
@@ -978,7 +892,7 @@
         }, 2000);
     }
 
-    function fazerLogout() {
+    async function fazerLogout() {
         tokenGoogle = null;
         datasetCompleto = [];
         datasetOcultos = [];
@@ -1004,12 +918,10 @@
     async function revelarEvento(linha, btnEl) {
         if (!tokenGoogle) { alert("Faça login primeiro."); return; }
         if (!confirm(`Revelar o evento da linha ${linha}? Ele voltará a aparecer na agenda.`)) return;
-
         btnEl.disabled = true;
         btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-
         try {
-            const resultado = await chamarWebApp({ acao: "revelar", token: tokenGoogle, linha });
+            const resultado = await chamarWebApp({ acao: "revelar", linha });
             if (resultado.ok) {
                 datasetOcultos = resultado.ocultos || [];
                 atualizarBotaoOcultos();
@@ -1019,8 +931,7 @@
                 btnEl.disabled = false;
                 btnEl.innerHTML = '<i class="fa-solid fa-eye"></i> REVELAR';
             }
-        } catch (e) {
-            alert("Falha de comunicação com o servidor.");
+        } catch(e) {
             btnEl.disabled = false;
             btnEl.innerHTML = '<i class="fa-solid fa-eye"></i> REVELAR';
         }
@@ -1029,12 +940,10 @@
     async function ocultarEvento(linha, btnEl) {
         if (!tokenGoogle) { alert("Faça login primeiro."); return; }
         if (!confirm(`Ocultar o evento da linha ${linha}? Ele deixará de aparecer na agenda.`)) return;
-
         btnEl.disabled = true;
         btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-
         try {
-            const resultado = await chamarWebApp({ acao: "ocultar", token: tokenGoogle, linha });
+            const resultado = await chamarWebApp({ acao: "ocultar", linha });
             if (resultado.ok) {
                 datasetOcultos = resultado.ocultos || [];
                 atualizarBotaoOcultos();
@@ -1044,8 +953,7 @@
                 btnEl.disabled = false;
                 btnEl.innerHTML = '<i class="fa-solid fa-eye-slash"></i> OCULTAR';
             }
-        } catch (e) {
-            alert("Falha de comunicação com o servidor.");
+        } catch(e) {
             btnEl.disabled = false;
             btnEl.innerHTML = '<i class="fa-solid fa-eye-slash"></i> OCULTAR';
         }
@@ -1138,22 +1046,16 @@
 
     async function inicializar() {
         const tokenSalvo = localStorage.getItem("ppge_token");
-        if (!tokenSalvo) return; // sem sessão — tela de login permanece
+        const expSalvo   = localStorage.getItem("ppge_token_exp");
+        if (!tokenSalvo || !expSalvo) return;
 
-        document.getElementById("login-status").textContent = "RESTAURANDO SESSÃO...";
-
-        // Timeout de 8s — se não responder, cai no login manual limpo
-        const timeout = new Promise(resolve => setTimeout(() => resolve(false), 8000));
-        const valido = await Promise.race([garantirToken(), timeout]);
-
-        if (valido) {
-            await autenticarECarregar();
+        if (Date.now() < parseInt(expSalvo)) {
+            tokenGoogle = tokenSalvo;
+            document.getElementById("login-status").textContent = "RESTAURANDO SESSÃO...";
+            await carregarDados();
         } else {
-            // Limpa sessão e deixa tela de login pronta para clique manual
             localStorage.removeItem("ppge_token");
             localStorage.removeItem("ppge_token_exp");
-            tokenGoogle = null;
-            document.getElementById("login-status").textContent = "";
         }
     }
 
