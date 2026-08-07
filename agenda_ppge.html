@@ -782,12 +782,15 @@
     // Tenta renovar o token silenciosamente (sem popup)
     function renovarTokenSilencioso() {
         return new Promise((resolve) => {
+            // Timeout de 6s para não ficar pendurado
+            const timer = setTimeout(() => resolve(false), 6000);
             try {
                 const client = google.accounts.oauth2.initTokenClient({
                     client_id: GOOGLE_CLIENT_ID,
                     scope: "openid email profile",
-                    prompt: '',       // sem popup de seleção de conta
+                    prompt: '',
                     callback: (resposta) => {
+                        clearTimeout(timer);
                         if (resposta.error || !resposta.access_token) {
                             resolve(false);
                         } else {
@@ -798,6 +801,7 @@
                 });
                 client.requestAccessToken();
             } catch(e) {
+                clearTimeout(timer);
                 resolve(false);
             }
         });
@@ -1130,12 +1134,19 @@
         if (!tokenSalvo) return; // sem sessão — tela de login permanece
 
         document.getElementById("login-status").textContent = "RESTAURANDO SESSÃO...";
-        const valido = await garantirToken();
+
+        // Timeout de 8s — se não responder, cai no login manual limpo
+        const timeout = new Promise(resolve => setTimeout(() => resolve(false), 8000));
+        const valido = await Promise.race([garantirToken(), timeout]);
 
         if (valido) {
             await autenticarECarregar();
         } else {
-            document.getElementById("login-status").textContent = "SESSÃO EXPIRADA — FAÇA LOGIN NOVAMENTE";
+            // Limpa sessão e deixa tela de login pronta para clique manual
+            localStorage.removeItem("ppge_token");
+            localStorage.removeItem("ppge_token_exp");
+            tokenGoogle = null;
+            document.getElementById("login-status").textContent = "";
         }
     }
 
