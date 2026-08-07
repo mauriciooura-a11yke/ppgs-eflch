@@ -1,0 +1,29 @@
+[
+  {
+    "ppg": "Geral",
+    "titulo": "Manual Pré-Matrícula",
+    "descricao": "Manual de acesso e preenchimento da Pré-matrícula da Pós-Graduação Stricto Sensu",
+    "link": "https://drive.google.com/file/d/1nWTVdihwukGEtC-MCYQkEhd4x20aksPc/view?usp=drive_link",
+    "botao": "ABRIR DOCUMENTO",
+    "status": "ativo",
+    "palavras_chave": "manual, pré-matrícula"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Estrutura curricular PPGE",
+    "descricao": "Estrutura curricular do PPGE - revisão 08/05/2026. Divulgado em https://ppg.unifesp.br/educacao/pesquisa/linhas-de-pesquisa",
+    "link": "https://drive.google.com/file/d/1caLuDecc4d2p-uNyYW4ODx3vax4Ceu8F/view?usp=drivesdk",
+    "botao": "ABRIR DOCUMENTO",
+    "status": "ativo",
+    "palavras_chave": "estrutura curricular, créditos, integralização"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Ingresso Pós-doutorado",
+    "descricao": "POP  (versão 026, de 08/05/2026) da Câmara de Pós-Graduação e Pesquisa ref. início de estágio de pós-doutorado. ",
+    "link": "https://drive.google.com/file/d/191ZKeoNgAfDCGPy1x12wt6ZZfmFi3vwd/view?usp=drive_link",
+    "botao": "ABRIR DOCUMENTO",
+    "status": "ativo",
+    "palavras_chave": "pós-doc, pós-doutorado, pop, capgpq"
+  }
+]
