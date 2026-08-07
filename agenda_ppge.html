@@ -949,6 +949,7 @@
     function toggleOcultos() {
         modoOcultoAtivo = !modoOcultoAtivo;
         atualizarBotaoOcultos();
+        extrairCategoriasDaBase(); // atualiza sidebar com categorias dos ocultos
         filtrarCronograma();
     }
 
@@ -1157,16 +1158,42 @@
     }
 
     function extrairCategoriasDaBase() {
-        const list = new Set();
+        const listVisiveis = new Set();
         datasetCompleto.forEach(ev => {
             const c = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
-            if(c) list.add(c);
+            if (c) listVisiveis.add(c);
         });
-        todasCategoriasExistentes = Array.from(list).sort();
-        renderizarBotoesSidebar();
+
+        const listOcultos = new Set();
+        if (modoOcultoAtivo) {
+            datasetOcultos.forEach(ev => {
+                const c = String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase().trim();
+                if (c) listOcultos.add(c);
+            });
+        }
+
+        // União ordenada de visíveis + ocultos (sem duplicatas)
+        const todas = new Set([...listVisiveis, ...listOcultos]);
+        todasCategoriasExistentes = Array.from(todas).sort();
+
+        renderizarBotoesSidebar(listVisiveis, listOcultos);
     }
 
-    function renderizarBotoesSidebar() {
+    function renderizarBotoesSidebar(listVisiveis, listOcultos) {
+        // Permite chamar sem argumentos (ex: ao filtrar) — recalcula internamente
+        if (!listVisiveis) {
+            listVisiveis = new Set(datasetCompleto.map(ev =>
+                String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase().trim()
+            ));
+        }
+        if (!listOcultos) {
+            listOcultos = modoOcultoAtivo
+                ? new Set(datasetOcultos.map(ev =>
+                    String(ev["CATEGORIA DO EVENTO"] || ev["CATEGORIA"] || 'GERAL').toUpperCase().trim()
+                  ))
+                : new Set();
+        }
+
         const container = document.getElementById('container-tags-categoria');
         if (!container) return;
         container.innerHTML = '';
@@ -1175,20 +1202,27 @@
             const btn = document.createElement('button');
             const cores = gerarCorPorTexto(cat);
             const ehAtiva = categoriasFiltradasAtivas.length === 0 || categoriasFiltradasAtivas.includes(cat);
-            
+            const soOcultos = !listVisiveis.has(cat) && listOcultos.has(cat);
+
             btn.className = 'tag-button';
-            btn.innerHTML = `<span>${cat}</span> <i class="fa-solid ${ehAtiva ? 'fa-check' : 'fa-minus'}"></i>`;
-            
+
+            // Badge adicional para categorias que só têm ocultos
+            const badgeOculto = soOcultos
+                ? ` <span style="font-size:9px;opacity:0.8;margin-left:2px">(OCULTOS)</span>`
+                : '';
+
+            btn.innerHTML = `<span>${cat}${badgeOculto}</span> <i class="fa-solid ${ehAtiva ? 'fa-check' : 'fa-minus'}"></i>`;
+
             if (ehAtiva) {
-                btn.style.backgroundColor = cores.borda;
-                btn.style.borderColor = cores.borda;
+                btn.style.backgroundColor = soOcultos ? '#5B21B6' : cores.borda;
+                btn.style.borderColor = soOcultos ? '#7C3AED' : cores.borda;
                 btn.style.color = '#FFF';
             } else {
                 btn.style.backgroundColor = '#1E293B';
                 btn.style.borderColor = '#334155';
                 btn.style.color = '#94A3B8';
             }
-            
+
             btn.onclick = () => gerenciarCliqueCategoria(cat);
             container.appendChild(btn);
         });
