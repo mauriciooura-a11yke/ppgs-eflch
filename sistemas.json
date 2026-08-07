@@ -1,0 +1,263 @@
+[
+  {
+    "ppg": "Geral",
+    "titulo": "Área Exclusiva - Sistema de Bancas",
+    "descricao": "Acesso ao Sistema Área Exclusiva para cadastro de bancas.",
+    "link": "https://procdados.epm.br/dpd/pg/",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "banca, cadastro, membros, defesa"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Repositório Institucional",
+    "descricao": "Acesso ao Sistema Repositório Institucional.",
+    "link": "https://repositorio.unifesp.br/login",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "repositório, depósito"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Pré-matrícula - Tela do Ingressante",
+    "descricao": "Acesso ao Sistema de Pré-Matrícula - Tela do ingressante.",
+    "link": "https://notas-propgpq.siiu.unifesp.br/prematricula",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "pré-matrícula"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Sucupira",
+    "descricao": "Sistema de coleta de dados e avaliação dos programas de pós-graduação.",
+    "link": "https://sucupira.capes.gov.br",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "sucupira, coleta, censo"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Cadastro de Autorizados",
+    "descricao": "Sistema de cadastro de autorizados.",
+    "link": "https://phpu.unifesp.br/drhunifesp/autorizados/index.php",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "cadastro, autorizados"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Consulta de Matrícula - Crachá",
+    "descricao": "Interface para o ingressante consultar a matrícula e crachá.",
+    "link": "https://infoti.unifesp.edu.br/cracha/",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "matrícula, crachá"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Portal SEI - Acesso pelo Usuário Externo",
+    "descricao": "Interface para usuários externos.",
+    "link": "https://portalsei.unifesp.br/usuario-externo",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "sei!, sei, usuário, externo"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "SEI!",
+    "descricao": "Interface para o servidor público.",
+    "link": "https://sei.unifesp.br",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "sei!, sei, usuário, externo"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "SIIU",
+    "descricao": "Sistema Integrado de Informações Universitárias",
+    "link": "https://siiu.unifesp.br/login",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "siiu, notas, rematrícula, bolsas, pré-matrícula, cronograma, sinopg"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Lattes",
+    "descricao": "Buscar currículo",
+    "link": "https://buscatextual.cnpq.br/buscatextual/busca.do?metodo=apresentar",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "lattes, cnpq"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "SIGRH",
+    "descricao": "Sistema Integrado de Recursos Humanos (necessita vpn)",
+    "link": "https://sigrh.unifesp.br/",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "sigrh, rh, férias"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Polare",
+    "descricao": "Polare (necessita vpn)",
+    "link": "https://polare.unifesp.br/polare/login",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "polare, pgd"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Gerador de mailing list pós",
+    "descricao": "Gerador de Mailing List - Corpo Discente Pós",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbx0vz26OWwOfLKuawrViMYkvXYJuQCC8NTaiWaB0H4zD9zb_R2tYUTdozK2RABZHGVyeQ/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "e-mail, mailing, list"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Gestor de Diárias PROAP EDUCAÇÂO",
+    "descricao": "Interface para gerenciamento da verba de diárias com verba PROAP do PPGE.",
+    "link": "https://script.google.com/macros/s/AKfycbxQR0rycq7ibvJgkUxh0DeohBq-rtXMY2gRnt440_JgmHWqITXPQXxKZtTrCNm1Xdo6/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "proap, diárias, ppge"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "SUA UNIFESP",
+    "descricao": "Sistema de Atendimento",
+    "link": "https://atendimento.unifesp.br/",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "atendimento, suaunifesp, ti, pessoal, pessoas, serviços"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Booked",
+    "descricao": "Sistema de Agendamento ",
+    "link": "https://agenda.unifesp.br/guarulhos/Web/view-schedule.php",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "agenda, salas, ensamento, booked"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Gerador de ata de reunião CEPG PPG EDUCAÇÃO",
+    "descricao": "Sistema em Google Apps Script para gerar atas de reunião da CEPG ***** Acesso restrito ***** .",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbxRRmLbtQfhy8HgR8CthSapqOK1EhKGozNuaFKg_gEiQwYFWgdxcCFkSoiP8HdDqEngQg/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "cepg, ata, reunião"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Agenda da Secretaria do PPGE",
+    "descricao": "Agenda de atividades da secretaria do PPGE.  ***** Acesso restrito ***** .",
+    "link": "https://mauriciooura-a11yke.github.io/ppgs-eflch/agenda_ppge.html",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "agenda ppge, follow-up, acompanhamento"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Sistema de Gestão do PPGE (Prazos, Bancas, Homologações e Diplomas)",
+    "descricao": "",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbzsaHdWnorTXWw4xdA_whpJTVUfFPEYE3Los37fAi1FMDNazImHQ0XJwvxZHxAdR3k/exec?pli=1",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "ppge, prazos, bancas, acompahamento, follow-up, prazo, homologação, diploma"
+  },
+  {
+    "ppg": "Filosofia",
+    "titulo": "Gerador de ata de reunião CEPG PPG FILOSOFIA",
+    "descricao": "Sistema em Google Apps Script para gerar atas de reunião da CEPG ***** Acesso restrito ***** .",
+    "link": "https://script.google.com/macros/s/AKfycbwsWUoRj4Qh9bcKa7Cym60Eknr8BVqgpUBgEyahTPpNXCuv4RdqnOwqc8hN_VudfxAM/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "cepg, ata, reunião"
+  },
+  {
+    "ppg": "História",
+    "titulo": "Gerador de ata de reunião CEPG PPG HISTÓRIA",
+    "descricao": "Sistema em Google Apps Script para gerar atas de reunião da CEPG ***** Acesso restrito ***** .",
+    "link": "https://script.google.com/macros/s/AKfycbzV5IkHFJUl76RavXcqsGVEQfBG_rvHqLXEOl7OI8iSdNeSioZRRs2VgZX6WWhEUIcG/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "cepg, ata, reunião"
+  },
+  {
+    "ppg": "Ciências Sociais",
+    "titulo": "Gerador de ata de reunião CEPG PPG CIÊNCIAS SOCIAIS",
+    "descricao": "Sistema em Google Apps Script para gerar atas de reunião da CEPG ***** Acesso restrito ***** .",
+    "link": "https://script.google.com/macros/s/AKfycbzd2cMO66dCOXWFEO89KtX9C795t4b2Jgv4tNFo1JEJMVjcZCBOEzlHK1w6XKIQJtru/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "cepg, ata, reunião"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Gerador de declaração EMTU",
+    "descricao": "[EM TESTE]",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbzQ9pGxX1gRpEOt2vnvlv8ByFiiS5IEMuzRv018lVy1h4QobF_zfIv6Cbu6wHUwW0k3IA/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "emtu, declaração"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Gerador de quadro de disciplinas para Joomla",
+    "descricao": "[EM TESTE]",
+    "link": "https://script.google.com/macros/s/AKfycbzB-g9CKF95d8TbB3WJEm1OqXeNhvvtNmBSXNiVwnqBdv6OgT60pA6ovwsCEAX8C5EM/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "joomla, quadro de disciplinas"
+  },
+  {
+    "ppg": "Educação e Saúde",
+    "titulo": "Gerador de ata de reunião CEPG PPGESIA (EDUCAÇÃO E SAÚDE)",
+    "descricao": "Sistema em Google Apps Script para gerar atas de reunião da CEPG ***** Acesso restrito ***** .",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbxGPsGVJDNznl0JnOQY1QRb87-DbztgreFEMWSbMY_L68wXQSrJJZmyXNmMFtDBXeRY/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "cepg, ata, reunião"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Controle e bolsas CAPES/DS PPGE",
+    "descricao": "[EM TESTE]",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbzwuMZLMvwVjq3pf40JAnSuUfVjL9Po3uL4saWfIByyGq4MDLysJPiMHiPxM6DMzsne/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "bolsa capes, demanda social, ds"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Gerador de declaração para alunos especiais PPGE",
+    "descricao": "[EM TESTE]",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbwiU6YWQAqa_DOxm167wJoOJcETExAWwJIzGhQTJ5oRTJfZUKOWYivLfRBmUgPGhRN7dA/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "aluno especial, declaração"
+  },
+  {
+    "ppg": "Letras",
+    "titulo": "Gerador de ata de reunião CEPG PPG LETRAS",
+    "descricao": "[EM TESTE]",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbxD91_SC_Non96E9Zbd_fB_JDTy5KeSsEuLr79rZ4NRpolbNu8cR0aDUSkbxPv9oe-qOQ/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "cepg, ata, reunião"
+  },
+  {
+    "ppg": "Ciências Sociais",
+    "titulo": "Controle e bolsas CAPES/DS PPGCS",
+    "descricao": "[EM TESTE]",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbxqZPG27CwHK7XUmKmgcVqmvoRmSB40DtKpKy5jOD2turYk9nZCu0GqDB78bIoKSUrGSA/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "bolsa capes, demanda social, ds"
+  }
+]
