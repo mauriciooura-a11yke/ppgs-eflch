@@ -782,13 +782,15 @@
     // Tenta renovar o token silenciosamente (sem popup)
     function renovarTokenSilencioso() {
         return new Promise((resolve) => {
-            // Timeout de 6s para não ficar pendurado
             const timer = setTimeout(() => resolve(false), 6000);
             try {
+                // login_hint passa o e-mail salvo para o Google pular a seleção de conta
+                const emailSalvo = localStorage.getItem("ppge_email") || "";
                 const client = google.accounts.oauth2.initTokenClient({
                     client_id: GOOGLE_CLIENT_ID,
                     scope: "openid email profile",
-                    prompt: '',
+                    prompt: 'none',       // nunca exibe popup
+                    login_hint: emailSalvo,
                     callback: (resposta) => {
                         clearTimeout(timer);
                         if (resposta.error || !resposta.access_token) {
@@ -875,7 +877,10 @@
             document.getElementById("tela-login").style.display = "none";
 
             const meta = dados._meta || {};
-            if (meta.email) definirStatusAuth("✓ " + meta.email, true);
+            if (meta.email) {
+                definirStatusAuth("✓ " + meta.email, true);
+                localStorage.setItem("ppge_email", meta.email);
+            }
 
             // Agenda renovação automática do token
             agendarRenovacao();
@@ -979,6 +984,7 @@
         modoOcultoAtivo = false;
         localStorage.removeItem("ppge_token");
         localStorage.removeItem("ppge_token_exp");
+        localStorage.removeItem("ppge_email");
         document.body.classList.remove("modo-edicao");
         document.getElementById("btn-entrar").style.display = "flex";
         document.getElementById("btn-sair").style.display = "none";
