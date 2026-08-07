@@ -1,0 +1,29 @@
+[
+  {
+    "ppg": "Geral",
+    "titulo": "Corpo Discente Pós-Graduação",
+    "descricao": "Corpo Discente Pós-Graduação",
+    "link": "https://datastudio.google.com/u/0/reporting/0b9f5e48-3fd2-464d-8cad-b650408c9286/page/g79YE",
+    "botao": "ACESSAR PAINEL",
+    "status": "ativo",
+    "palavras_chave": "estatistica, prazo, defesa, homologação"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Agenda de Bancas",
+    "descricao": "Bancas agendadas. Painel divulgado na páginal inicial do PPGE.",
+    "link": "https://datastudio.google.com/u/0/reporting/322acdc7-ed75-4c08-8a70-a9c9cbf9c33c/page/rUZxF",
+    "botao": "ACESSAR PAINEL",
+    "status": "ativo",
+    "palavras_chave": "agenda, programação, bancas"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "SICAP",
+    "descricao": "Painel da Sicap. Acesso restrito aos servidores do Setor.",
+    "link": "https://datastudio.google.com/u/0/reporting/0f9d06dc-a98d-4120-a21c-69b92863ddd3/page/kqtFE?pli=1",
+    "botao": "ACESSAR PAINEL",
+    "status": "ativo",
+    "palavras_chave": "sicap, férias e afastamentos"
+  }
+]
