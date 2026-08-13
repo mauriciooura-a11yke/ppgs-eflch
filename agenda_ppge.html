@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
     
     <style>
         * { box-sizing: border-box; }
@@ -38,13 +37,7 @@
             left: 0;
             overflow-y: auto;
             z-index: 10;
-            opacity: 0;
-            transition: opacity 0.4s ease;
         }
-        .sidebar.visivel {
-            opacity: 1;
-        }
-
         .sidebar-title {
             font-family: 'Poppins';
             font-size: 18px;
@@ -65,11 +58,6 @@
             flex-grow: 1;
             padding: 30px;
             width: calc(100% - 320px);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        .main-content.visivel {
-            opacity: 1;
         }
         
         .header {
@@ -657,15 +645,30 @@
 </head>
 <body>
 
-<!-- TELA DE LOGIN — cobre tudo até autenticar -->
-<div id="tela-login">
-    <div class="login-logo">🔒</div>
-    <h2>CRONOGRAMA INTEGRADO PPGE</h2>
-    <p>ACESSO RESTRITO — FAÇA LOGIN PARA CONTINUAR</p>
-    <button class="btn-auth btn-auth-entrar" onclick="iniciarLogin()">
-        <i class="fa-brands fa-google"></i> ENTRAR COM GOOGLE
+<!-- TELA DE SENHA — cobre tudo até autenticar -->
+<div id="tela-senha" style="
+    position:fixed; inset:0; background:#0F172A;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:20px; z-index:9999;">
+    <div style="font-size:48px">🔒</div>
+    <h2 style="font-family:'Poppins'; font-size:20px; font-weight:700; color:#F1F5F9; margin:0; letter-spacing:1px;">
+        CRONOGRAMA INTEGRADO PPGE
+    </h2>
+    <p style="font-family:'Poppins'; font-size:11px; color:#64748B; font-weight:600; margin:0;">
+        ACESSO RESTRITO — DIGITE A SENHA PARA CONTINUAR
+    </p>
+    <input id="input-senha-tela" type="password" placeholder="SENHA"
+        style="padding:12px 20px; border-radius:6px; border:1px solid #475569;
+               background:#1E293B; color:#F1F5F9; font-family:'Poppins'; font-size:14px;
+               font-weight:700; letter-spacing:3px; width:260px; text-align:center; outline:none;"
+        onkeydown="if(event.key==='Enter') tentarAcesso()">
+    <button onclick="tentarAcesso()" style="
+        padding:12px 28px; background:#1E3A5F; color:#93C5FD; border:1px solid #1D4ED8;
+        border-radius:6px; font-family:'Poppins'; font-size:13px; font-weight:700;
+        cursor:pointer; display:flex; align-items:center; gap:8px;">
+        <i class="fa-solid fa-unlock"></i> ENTRAR
     </button>
-    <div id="login-status" class="login-status"></div>
+    <div id="senha-status" style="font-size:11px; font-weight:700; color:#F87171; min-height:16px;"></div>
 </div>
 
 <div class="sidebar">
@@ -697,18 +700,12 @@
         <div id="container-tags-categoria" class="tag-selector-container"></div>
     </div>
 
-    <!-- PAINEL DE AUTENTICAÇÃO -->
+    <!-- PAINEL DE EDIÇÃO -->
     <div class="auth-panel">
         <label><i class="fa-solid fa-lock"></i> MODO EDIÇÃO</label>
-        <div id="auth-status" class="auth-status">NÃO AUTENTICADO</div>
-        <button id="btn-entrar" class="btn-auth btn-auth-entrar" onclick="iniciarLogin()">
-            <i class="fa-brands fa-google"></i> ENTRAR COM GOOGLE
-        </button>
-        <button id="btn-sair" class="btn-auth btn-auth-sair" onclick="fazerLogout()" style="display:none">
+        <div id="auth-status" class="auth-status"></div>
+        <button id="btn-sair" class="btn-auth btn-auth-sair" onclick="fazerLogout()">
             <i class="fa-solid fa-right-from-bracket"></i> SAIR DO MODO EDIÇÃO
-        </button>
-        <button id="btn-atualizar" class="btn-mostrar-ocultos" onclick="atualizarManual()" style="display:none">
-            <i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA
         </button>
         <button id="btn-mostrar-ocultos" class="btn-mostrar-ocultos" onclick="toggleOcultos()">
             <i class="fa-solid fa-eye-slash"></i> MOSTRAR OCULTOS
@@ -747,88 +744,53 @@
     // Substitua pela URL do seu Web App publicado no Apps Script
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwf7zYm_PkmlaVUV8tV6vm518mSO3_RY16oEeGqmBPnCSuB5Om--VgGg-z8ioF6czSwTw/exec";
 
-    // Client ID do projeto Google Cloud vinculado ao Apps Script
-    // Obtenha em: console.cloud.google.com → APIs e serviços → Credenciais
-    const GOOGLE_CLIENT_ID = "232452777424-94i4lltsg2e4d1n0ah2lsii4lpm5nna1.apps.googleusercontent.com";
-    // ────────────────────────────────────────────────────────────────
-
     let datasetCompleto = [];
     let todasCategoriasExistentes = [];
     let categoriasFiltradasAtivas = []; 
     let statusFiltradosAtivos = [];
-    let chaveSessao = null;
+    let senhaEditor = null;
     let datasetOcultos = [];
     let modoOcultoAtivo = false;
 
-    // ─── AUTENTICAÇÃO ────────────────────────────────────────────────
+    // ─── AUTENTICAÇÃO POR SENHA ──────────────────────────────────────
 
-    function iniciarLogin() {
-        const client = google.accounts.oauth2.initTokenClient({
-            client_id: GOOGLE_CLIENT_ID,
-            scope: "openid email profile",
-            callback: async (resposta) => {
-                if (resposta.error) {
-                    document.getElementById("login-status").textContent = "ERRO AO AUTENTICAR";
-                    return;
-                }
-                document.getElementById("login-status").textContent = "CRIANDO SESSÃO...";
-                try {
-                    const r = await fetch(APPS_SCRIPT_URL + '?acao=login&token=' + encodeURIComponent(resposta.access_token), { redirect: 'follow' });
-                    const dados = await r.json();
-                    if (!dados.ok) {
-                        document.getElementById("login-status").textContent = dados.erro || "ACESSO NÃO AUTORIZADO";
-                        return;
-                    }
-                    localStorage.setItem("ppge_chave", dados.chave);
-                    localStorage.setItem("ppge_email", dados.email);
-                    localStorage.setItem("ppge_editor", dados.editor ? "1" : "0");
-                    chaveSessao = dados.chave;
-                    await carregarDados();
-                } catch(e) {
-                    document.getElementById("login-status").textContent = "ERRO DE CONEXÃO";
-                }
-            }
-        });
-        client.requestAccessToken();
-    }
-
-    async function carregarDados() {
-        try {
-            const r = await fetch(APPS_SCRIPT_URL + '?acao=dados&chave=' + encodeURIComponent(chaveSessao), { redirect: 'follow' });
-            const dados = await r.json();
-            if (!dados.ok) {
-                if (dados.relogin) {
-                    limparSessaoLocal();
-                    document.getElementById("login-status").textContent = "SESSÃO EXPIRADA — FAÇA LOGIN NOVAMENTE";
-                } else {
-                    document.getElementById("login-status").textContent = dados.erro || "ERRO AO CARREGAR";
-                }
-                return;
-            }
-            document.getElementById("tela-login").style.display = "none";
-            const meta = dados._meta || {};
-            if (meta.email) definirStatusAuth("✓ " + meta.email, true);
-            document.body.classList.add("modo-edicao");
-            document.getElementById("btn-entrar").style.display = "none";
-            document.getElementById("btn-sair").style.display = "flex";
-            if (meta.editor) {
-                datasetOcultos = dados.ocultos || [];
-                atualizarBotaoOcultos();
-                document.getElementById("painel-atualizar").style.display = "flex";
-            }
-            if (meta.atualizado) atualizarTimestamp(meta.atualizado);
-            processarDados(dados.agenda || []);
-        } catch(e) {
-            console.error("Erro ao carregar dados:", e);
-            document.getElementById("login-status").textContent = "ERRO DE CONEXÃO";
+    async function tentarAcesso() {
+        const input = document.getElementById("input-senha-tela");
+        const senha = input.value.trim();
+        if (!senha) return;
+        document.getElementById("senha-status").textContent = "VERIFICANDO...";
+        const ok = await carregarDados(senha);
+        if (!ok) {
+            document.getElementById("senha-status").textContent = "SENHA INCORRETA";
+            input.value = "";
+            input.focus();
         }
     }
 
-    function limparSessaoLocal() {
-        chaveSessao = null;
-        localStorage.removeItem("ppge_chave");
-        localStorage.removeItem("ppge_email");
-        localStorage.removeItem("ppge_editor");
+    async function carregarDados(senha) {
+        try {
+            const url = APPS_SCRIPT_URL + '?senha=' + encodeURIComponent(senha || '');
+            const r = await fetch(url, { redirect: 'follow' });
+            const dados = await r.json();
+            if (!dados.ok || !dados.editor) return false;
+
+            senhaEditor = senha;
+            localStorage.setItem("ppge_senha", senha);
+            document.getElementById("tela-senha").style.display = "none";
+            document.body.classList.add("modo-edicao");
+            definirStatusAuth("✓ MODO EDIÇÃO ATIVO", true);
+            document.getElementById("painel-atualizar").style.display = "flex";
+            datasetOcultos = dados.ocultos || [];
+            atualizarBotaoOcultos();
+            if (dados.atualizado) atualizarTimestamp(dados.atualizado);
+            processarDados(dados.agenda || []);
+            return true;
+        } catch(e) {
+            console.error("Erro:", e);
+            if (document.getElementById("senha-status"))
+                document.getElementById("senha-status").textContent = "ERRO DE CONEXÃO";
+            return false;
+        }
     }
 
     function atualizarTimestamp(isoStr) {
@@ -856,17 +818,10 @@
     }
 
     async function chamarWebApp(payload) {
-        payload.chave = chaveSessao;
+        payload.senha = senhaEditor;
         const r = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
         if (!r.ok) throw new Error("Erro HTTP " + r.status);
-        const dados = await r.json();
-        if (dados.relogin) {
-            limparSessaoLocal();
-            fazerLogout();
-            document.getElementById("login-status").textContent = "SESSÃO EXPIRADA — FAÇA LOGIN NOVAMENTE";
-            throw new Error("Sessão expirada");
-        }
-        return dados;
+        return r.json();
     }
 
     function toggleOcultos() {
@@ -881,12 +836,12 @@
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ATUALIZANDO...';
         try {
-            const r = await fetch(APPS_SCRIPT_URL + '?acao=dados&chave=' + encodeURIComponent(chaveSessao), { redirect: 'follow' });
+            const r = await fetch(APPS_SCRIPT_URL + '?senha=' + encodeURIComponent(senhaEditor || ''), { redirect: 'follow' });
             const dados = await r.json();
             if (dados.ok) {
                 datasetOcultos = dados.ocultos || [];
                 atualizarBotaoOcultos();
-                if (dados._meta && dados._meta.atualizado) atualizarTimestamp(dados._meta.atualizado);
+                if (dados.atualizado) atualizarTimestamp(dados.atualizado);
                 processarDados(dados.agenda || []);
                 btn.innerHTML = '<i class="fa-solid fa-check"></i> ATUALIZADO!';
             } else {
@@ -898,32 +853,27 @@
         setTimeout(() => { btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-rotate"></i> ATUALIZAR AGENDA'; }, 2000);
     }
 
-    async function fazerLogout() {
-        if (chaveSessao) {
-            try { await fetch(APPS_SCRIPT_URL + '?acao=logout&chave=' + encodeURIComponent(chaveSessao)); } catch(e) {}
-        }
-        limparSessaoLocal();
+    function fazerLogout() {
+        senhaEditor = null;
         datasetCompleto = [];
         datasetOcultos = [];
         modoOcultoAtivo = false;
+        localStorage.removeItem("ppge_senha");
         document.body.classList.remove("modo-edicao");
-        document.getElementById("btn-entrar").style.display = "flex";
-        document.getElementById("btn-sair").style.display = "none";
         document.getElementById("painel-atualizar").style.display = "none";
-        document.getElementById("timestamp-atualizacao").textContent = "";
         const btnOcultos = document.getElementById("btn-mostrar-ocultos");
         btnOcultos.classList.remove("ativo");
         btnOcultos.innerHTML = '<i class="fa-solid fa-eye-slash"></i> MOSTRAR OCULTOS';
-        definirStatusAuth("NÃO AUTENTICADO", null);
-        document.getElementById("tela-login").style.display = "flex";
-        document.getElementById("login-status").textContent = "";
-        document.querySelector('.sidebar').classList.remove('visivel');
-        document.querySelector('.main-content').classList.remove('visivel');
+        definirStatusAuth("", null);
+        document.getElementById("tela-senha").style.display = "flex";
+        document.getElementById("input-senha-tela").value = "";
+        document.getElementById("senha-status").textContent = "";
+        filtrarCronograma();
     }
 
     async function revelarEvento(linha, btnEl) {
-        if (!chaveSessao) { alert("Faça login primeiro."); return; }
-        if (!confirm(`Revelar o evento da linha ${linha}? Ele voltará a aparecer na agenda.`)) return;
+        if (!senhaEditor) { alert("Entre no modo edição primeiro."); return; }
+        if (!confirm(`Revelar o evento da linha ${linha}?`)) return;
         btnEl.disabled = true; btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
         try {
             const resultado = await chamarWebApp({ acao: "revelar", linha });
@@ -933,8 +883,8 @@
     }
 
     async function ocultarEvento(linha, btnEl) {
-        if (!chaveSessao) { alert("Faça login primeiro."); return; }
-        if (!confirm(`Ocultar o evento da linha ${linha}? Ele deixará de aparecer na agenda.`)) return;
+        if (!senhaEditor) { alert("Entre no modo edição primeiro."); return; }
+        if (!confirm(`Ocultar o evento da linha ${linha}?`)) return;
         btnEl.disabled = true; btnEl.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
         try {
             const resultado = await chamarWebApp({ acao: "ocultar", linha });
@@ -1020,20 +970,19 @@
         });
         extrairCategoriasDaBase();
         filtrarCronograma();
-
-        // Revela a interface suavemente após os dados estarem prontos
-        requestAnimationFrame(() => {
-            document.querySelector('.sidebar').classList.add('visivel');
-            document.querySelector('.main-content').classList.add('visivel');
-        });
     }
 
     async function inicializar() {
-        const chaveSalva = localStorage.getItem("ppge_chave");
-        if (!chaveSalva) return;
-        chaveSessao = chaveSalva;
-        document.getElementById("login-status").textContent = "RESTAURANDO SESSÃO...";
-        await carregarDados();
+        const senhaSalva = localStorage.getItem("ppge_senha");
+        if (senhaSalva) {
+            document.getElementById("senha-status").textContent = "RESTAURANDO SESSÃO...";
+            const ok = await carregarDados(senhaSalva);
+            if (!ok) {
+                localStorage.removeItem("ppge_senha");
+                document.getElementById("senha-status").textContent = "";
+            }
+        }
+        // Se não tem senha salva, a tela de senha permanece visível
     }
 
     function extrairCategoriasDaBase() {
