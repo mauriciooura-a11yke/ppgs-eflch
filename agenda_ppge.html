@@ -773,7 +773,7 @@
                 }
                 document.getElementById("login-status").textContent = "CRIANDO SESSÃO...";
                 try {
-                    const r = await fetch(APPS_SCRIPT_URL + '?acao=login&token=' + encodeURIComponent(resposta.access_token));
+                    const r = await fetch(APPS_SCRIPT_URL + '?acao=login&token=' + encodeURIComponent(resposta.access_token), { redirect: 'follow' });
                     const dados = await r.json();
                     if (!dados.ok) {
                         document.getElementById("login-status").textContent = dados.erro || "ACESSO NÃO AUTORIZADO";
@@ -794,7 +794,7 @@
 
     async function carregarDados() {
         try {
-            const r = await fetch(APPS_SCRIPT_URL + '?acao=dados&chave=' + encodeURIComponent(chaveSessao));
+            const r = await fetch(APPS_SCRIPT_URL + '?acao=dados&chave=' + encodeURIComponent(chaveSessao), { redirect: 'follow' });
             const dados = await r.json();
             if (!dados.ok) {
                 if (dados.relogin) {
@@ -881,7 +881,7 @@
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> ATUALIZANDO...';
         try {
-            const r = await fetch(APPS_SCRIPT_URL + '?acao=dados&chave=' + encodeURIComponent(chaveSessao));
+            const r = await fetch(APPS_SCRIPT_URL + '?acao=dados&chave=' + encodeURIComponent(chaveSessao), { redirect: 'follow' });
             const dados = await r.json();
             if (dados.ok) {
                 datasetOcultos = dados.ocultos || [];
