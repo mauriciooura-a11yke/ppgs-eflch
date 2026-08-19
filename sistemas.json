@@ -172,6 +172,15 @@
   },
   {
     "ppg": "Filosofia",
+    "titulo": "Sistema de Gestão do PPGF (Prazos, Bancas, Homologações e Diplomas)",
+    "descricao": "",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbzsaHdWnorTXWw4xdA_whpJTVUfFPEYE3Los37fAi1FMDNazImHQ0XJwvxZHxAdR3k/exec?ppg=2",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "ppgf, prazos, bancas, acompahamento, follow-up, prazo, homologação, diploma"
+  },
+  {
+    "ppg": "Filosofia",
     "titulo": "Gerador de ata de reunião CEPG PPG FILOSOFIA",
     "descricao": "Sistema em Google Apps Script para gerar atas de reunião da CEPG ***** Acesso restrito ***** .",
     "link": "https://script.google.com/macros/s/AKfycbwsWUoRj4Qh9bcKa7Cym60Eknr8BVqgpUBgEyahTPpNXCuv4RdqnOwqc8hN_VudfxAM/exec",
