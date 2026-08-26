@@ -268,5 +268,14 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "bolsa capes, demanda social, ds"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Gerador de Declaração de Matrícula em Disciplinas",
+    "descricao": "Gerador de Declaração de Matrícula em Disciplinas",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbxjJQPgFFrCEPI6Q0UDsuTozYCD8MwezIJymyXz2-dyRjEDy5nWjr7ZgAKOIAOrgMh5DA/exec",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "gerador, matrícula, disciplinas"
   }
 ]
