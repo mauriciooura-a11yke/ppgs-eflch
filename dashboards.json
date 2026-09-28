@@ -5,7 +5,7 @@
     "descricao": "Corpo Discente Pós-Graduação",
     "link": "https://datastudio.google.com/u/0/reporting/0b9f5e48-3fd2-464d-8cad-b650408c9286/page/g79YE",
     "botao": "ACESSAR PAINEL",
-    "status": "ativo",
+    "status": "inativo",
     "palavras_chave": "estatistica, prazo, defesa, homologação"
   },
   {
@@ -25,5 +25,14 @@
     "botao": "ACESSAR PAINEL",
     "status": "ativo",
     "palavras_chave": "sicap, férias e afastamentos"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Corpo Discente Pós-Graduação (Novo)",
+    "descricao": "Corpo Discente Pós-Graduação",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbyf6Hl4x91yWK-gkdGPm6UKe1cIw6RpVymqLczZZwK5GM40zTqDkmFMRoxochxWsWQCQg/exec",
+    "botao": "ACESSAR PAINEL",
+    "status": "ativo",
+    "palavras_chave": "estatistica, prazo, defesa, homologação"
   }
 ]
