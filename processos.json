@@ -376,5 +376,14 @@
     "botao": "ABRIR PROCESSO",
     "status": "ativo",
     "palavras_chave": "scdp, empenho"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "23089.035110/2026-11",
+    "descricao": "Regularização de históricos sem data de defesa",
+    "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=3971665",
+    "botao": "ABRIR PROCESSO",
+    "status": "ativo",
+    "palavras_chave": "defesa, inconsistẽncia"
   }
 ]
