@@ -362,6 +362,12 @@
 
   <nav id="sidebar" class="sidebar">
     <div class="sidebar-actions">
+      <a href="https://docs.google.com/spreadsheets/d/1GXiIW2zvLJXGxnFMgTKCftvkg4V872uHjvX1Umci1hQ/edit"
+         target="_blank" class="btn-sidebar-action"
+         style="display:block;text-decoration:none;opacity:0.75;font-size:0.75rem"
+         onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.75">
+        📊 Planilha Fonte de Dados
+      </a>
       <button class="btn-sidebar-action" id="btn-refresh" onclick="refreshDados()">🔄 Atualizar Dados</button>
       <button class="btn-sidebar-action" onclick="resetAllFilters()">🧹 Redefinir Filtros</button>
     </div>
@@ -397,16 +403,7 @@
     <input type="text" id="searchInput" onkeyup="filter()" placeholder="Busque por título ou palavras-chave...">
     <div id="activeFilters" class="active-filters-bar"></div>
     <div id="content-area"></div>
-    <footer>
-      &copy; 2026 UNIFESP | EFLCH | Desenvolvido por Mauricio Massao Oura
-      <br><br>
-      <a href="https://docs.google.com/spreadsheets/d/1GXiIW2zvLJXGxnFMgTKCftvkg4V872uHjvX1Umci1hQ/edit"
-         target="_blank"
-         style="color:var(--accent);text-decoration:none;font-size:0.75rem;opacity:0.7;transition:opacity 0.2s"
-         onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">
-        📊 Planilha fonte de dados
-      </a>
-    </footer>
+    <footer>&copy; 2026 UNIFESP | EFLCH | Desenvolvido por Mauricio Massao Oura</footer>
   </div>
 
 </div>
