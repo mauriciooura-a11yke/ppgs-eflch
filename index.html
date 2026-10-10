@@ -112,17 +112,24 @@
       padding-left: 5px;
     }
 
-    .ppg-selector {
-      width: 100%;
-      padding: 10px;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text-bright);
-      font-size: 0.9rem;
+    /* PPG chips */
+    #ppgChips {
+      display: flex; flex-wrap: wrap; gap: 6px;
       margin-bottom: 20px;
-      outline: none;
-      cursor: pointer;
+    }
+    .ppg-chip {
+      font-size: 0.68rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 20px; cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent; color: var(--text-dim);
+      transition: 0.2s; white-space: nowrap;
+      letter-spacing: 0.3px;
+    }
+    .ppg-chip:hover { background: rgba(255,255,255,0.06); color: var(--text-bright); }
+    .ppg-chip.active {
+      background: rgba(56,189,248,0.15);
+      border-color: rgba(56,189,248,0.4);
+      color: var(--accent);
     }
 
     .sidebar-link {
@@ -360,10 +367,10 @@
     </div>
 
     <div class="sidebar-title">Filtro por PPG</div>
-    <select id="ppgFilter" class="ppg-selector" onchange="filter(); maybeCloseMenu();">
-      <option value="all">Todos os PPGs (+ Geral)</option>
-      <option value="geral">Apenas GERAL</option>
-    </select>
+    <div id="ppgChips">
+      <button class="ppg-chip active" data-ppg="all" onclick="setPPG('all')">Todos</button>
+      <button class="ppg-chip" data-ppg="geral" onclick="setPPG('geral')">Geral</button>
+    </div>
 
     <div class="sidebar-title">Categorias</div>
     <a onclick="setCategory('all')"       id="btn-all"       class="sidebar-link active">🏠 Ver Tudo    <span class="cat-count" id="count-all"></span></a>
@@ -390,7 +397,16 @@
     <input type="text" id="searchInput" onkeyup="filter()" placeholder="Busque por título ou palavras-chave...">
     <div id="activeFilters" class="active-filters-bar"></div>
     <div id="content-area"></div>
-    <footer>&copy; 2026 UNIFESP | EFLCH | Desenvolvido por Mauricio Massao Oura</footer>
+    <footer>
+      &copy; 2026 UNIFESP | EFLCH | Desenvolvido por Mauricio Massao Oura
+      <br><br>
+      <a href="https://docs.google.com/spreadsheets/d/1GXiIW2zvLJXGxnFMgTKCftvkg4V872uHjvX1Umci1hQ/edit"
+         target="_blank"
+         style="color:var(--accent);text-decoration:none;font-size:0.75rem;opacity:0.7;transition:opacity 0.2s"
+         onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">
+        📊 Planilha fonte de dados
+      </a>
+    </footer>
   </div>
 
 </div>
@@ -466,11 +482,11 @@ async function refreshDados() {
 // ══════════════════════════════════════════════════════════════
 let secoes = [];
 let currentCategory = 'all';
+let currentPPG = 'all';
 
 function renderizarTudo(dados) {
   secoes = dados.secoes || [];
   const container = document.getElementById('content-area');
-  const ppgSelect = document.getElementById('ppgFilter');
   const ppgsFound = new Set();
   let   fullHtml  = '';
 
@@ -499,12 +515,17 @@ function renderizarTudo(dados) {
       </div>`;
   });
 
-  const currentVal = ppgSelect.value;
-  ppgSelect.innerHTML = '<option value="all">Todos os PPGs (+ Geral)</option><option value="geral">Apenas GERAL</option>';
-  Array.from(ppgsFound).sort().forEach(p =>
-    ppgSelect.innerHTML += `<option value="${p}">${p.toUpperCase()}</option>`
-  );
-  ppgSelect.value = ppgsFound.has(currentVal) ? currentVal : 'all';
+  // Reconstrói chips de PPG
+  const chipsContainer = document.getElementById('ppgChips');
+  const prevPPG = currentPPG;
+  chipsContainer.innerHTML =
+    `<button class="ppg-chip${prevPPG==='all'?' active':''}" data-ppg="all" onclick="setPPG('all')">Todos</button>` +
+    `<button class="ppg-chip${prevPPG==='geral'?' active':''}" data-ppg="geral" onclick="setPPG('geral')">Geral</button>`;
+  Array.from(ppgsFound).sort().forEach(p => {
+    const active = prevPPG === p ? ' active' : '';
+    chipsContainer.innerHTML += `<button class="ppg-chip${active}" data-ppg="${p}" onclick="setPPG('${p}')">${p.toUpperCase()}</button>`;
+  });
+  if (!ppgsFound.has(prevPPG) && prevPPG !== 'geral') currentPPG = 'all';
 
   container.innerHTML = fullHtml;
   filter();
@@ -580,9 +601,18 @@ function matchesSearch(text, query) {
   return terms.every(t => hay.includes(t));
 }
 
+function setPPG(val) {
+  currentPPG = val;
+  document.querySelectorAll('.ppg-chip').forEach(c =>
+    c.classList.toggle('active', c.dataset.ppg === val)
+  );
+  maybeCloseMenu();
+  filter();
+}
+
 function filter() {
   const rawQuery    = document.getElementById('searchInput').value;
-  const selPPG      = document.getElementById('ppgFilter').value.toLowerCase();
+  const selPPG      = currentPPG;
   const sections    = document.querySelectorAll('.section-block');
   const isFiltering = rawQuery.trim() !== '' || selPPG !== 'all';
   const counts      = {};
@@ -655,13 +685,13 @@ function setCategory(cat) {
 
 function resetAllFilters() {
   document.getElementById('searchInput').value = '';
-  document.getElementById('ppgFilter').value   = 'all';
+  setPPG('all');
   setCategory('all');
 }
 
 function updateFilterBadges() {
   const bar    = document.getElementById('activeFilters');
-  const ppg    = document.getElementById('ppgFilter').value;
+  const ppg    = currentPPG;
   const search = document.getElementById('searchInput').value;
   let html = '';
   if (ppg !== 'all' || currentCategory !== 'all' || search !== '') {
