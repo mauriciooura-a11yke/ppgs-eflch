@@ -190,12 +190,21 @@
   },
   {
     "ppg": "Letras",
-    "titulo": "Sistema de Gestão do PPGH (Prazos, Bancas, Homologações e Diplomas)",
+    "titulo": "Sistema de Gestão do PPG L (Prazos, Bancas, Homologações e Diplomas)",
     "descricao": "",
     "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbzsaHdWnorTXWw4xdA_whpJTVUfFPEYE3Los37fAi1FMDNazImHQ0XJwvxZHxAdR3k/exec?ppg=4",
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "ppgl, prazos, bancas, acompahamento, follow-up, prazo, homologação, diploma"
+  },
+  {
+    "ppg": "História da Arte",
+    "titulo": "Sistema de Gestão do PPGHARTE (Prazos, Bancas, Homologações e Diplomas)",
+    "descricao": "",
+    "link": "https://script.google.com/a/macros/unifesp.br/s/AKfycbzsaHdWnorTXWw4xdA_whpJTVUfFPEYE3Los37fAi1FMDNazImHQ0XJwvxZHxAdR3k/exec?ppg=5",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "ppgHARTE, prazos, bancas, acompahamento, follow-up, prazo, homologação, diploma"
   },
   {
     "ppg": "Filosofia",
