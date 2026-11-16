@@ -205,5 +205,14 @@
     "botao": "ABRIR DOCUMENTO",
     "status": "ativo",
     "palavras_chave": "arquivo, cpad, salvaguarda de documentos, matrícula"
+  },
+  {
+    "ppg": "Geral",
+    "titulo": "Instrução Normativa nº 2, de 3 de Dezembro de 2024",
+    "descricao": "Estabelece diretrizes gerais para a implementação de processos híbridos de ensino e aprendizagem na Pós-Graduação stricto sensu presencial.",
+    "link": "https://cad.capes.gov.br/ato-administrativo-detalhar?idAtoAdmElastic=16843#anchor",
+    "botao": "ABRIR DOCUMENTO",
+    "status": "ativo",
+    "palavras_chave": "ensino híbrido, capes"
   }
 ]
