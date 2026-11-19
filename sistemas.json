@@ -304,5 +304,23 @@
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "gerador, matrícula, disciplinas"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "Joomla - Site PPG Educação",
+    "descricao": "",
+    "link": "https://admin-ppg.unifesp.br/educacao/administrator/",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "joomla, ppge"
+  },
+  {
+    "ppg": "Profhistória",
+    "titulo": "Joomla - Site ProfHistória",
+    "descricao": "",
+    "link": "https://admin-ppg.unifesp.br/profhistoria/administrator/",
+    "botao": "ACESSAR SISTEMA",
+    "status": "ativo",
+    "palavras_chave": "joomla, profhistoria, ensino de história"
   }
 ]
