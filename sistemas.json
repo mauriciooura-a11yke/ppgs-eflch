@@ -138,7 +138,7 @@
     "ppg": "Geral",
     "titulo": "Booked",
     "descricao": "Sistema de Agendamento ",
-    "link": "https://agenda.unifesp.br/guarulhos/Web/view-schedule.php",
+    "link": "https://agendamentos.unifesp.br/gua/Web/view-schedule.php",
     "botao": "ACESSAR SISTEMA",
     "status": "ativo",
     "palavras_chave": "agenda, salas, ensamento, booked"
