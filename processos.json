@@ -56,8 +56,17 @@
   {
     "ppg": "Educação",
     "titulo": "23089.008797/2025-22",
-    "descricao": "Processo seletivo 2025 - Ingresso em 2026 (processo principal)",
+    "descricao": "Processo seletivo 2025 - Ingresso em 2026 (processo principal com documentos dos matriculados)",
     "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=2871172",
+    "botao": "ABRIR PROCESSO",
+    "status": "inativo",
+    "palavras_chave": "seletivo, ingresso"
+  },
+  {
+    "ppg": "Educação",
+    "titulo": "23089.040163/2025-64",
+    "descricao": "Processo seletivo 2025 - Ingresso em 2026 (heteroidentificação)",
+    "link": "https://sei.unifesp.br/controlador.php?acao=procedimento_trabalhar&id_procedimento=3312577",
     "botao": "ABRIR PROCESSO",
     "status": "inativo",
     "palavras_chave": "seletivo, ingresso"
